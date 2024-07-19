@@ -1,13 +1,13 @@
-package com.practice.back;
+package kakao.login;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BackApplication {
+public class LoginApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BackApplication.class, args);
+		SpringApplication.run(LoginApplication.class, args);
 	}
 
 }
