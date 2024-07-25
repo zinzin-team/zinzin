@@ -1,0 +1,73 @@
+input {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+
+label, label:before {
+    height: 400px;
+    width: 400px;  
+    background-size: 200px 200px;
+    background-repeat: no-repeat;
+    background-position: top left,top right,bottom left,bottom right,center;
+    background-size: 50% 50%, 50% 50%, 50% 50%, 50% 50%, 10% 10%;
+    transition: all linear 0.4s;
+}
+
+label {
+  display: inline-block;
+    background-image:
+            radial-gradient(circle at 75% 85.5%, #D1D6EE 25%, transparent 25%),
+            radial-gradient(circle at 25% 85.5%, #D1D6EE 25%, transparent 25%),
+            radial-gradient(circle at 108.8% -41%, #D1D6EE 40%, transparent 40%),
+            radial-gradient(circle at -8.8% -41%, #D1D6EE  40%, transparent 40%),
+            linear-gradient(to bottom, #D1D6EE 50%, transparent 50%);
+    
+}
+
+label:before{
+    content: '';
+    position: absolute;
+    background-image:
+    radial-gradient(circle at 75% 85.5%, #FF7187 25%, transparent 25%),
+    radial-gradient(circle at 25% 85.5%, #FF7187 25%, transparent 25%),
+    radial-gradient(circle at 108.8% -41%, #FF7187 40%, transparent 40%),
+    radial-gradient(circle at -8.8% -41%, #FF7187 40%, transparent 40%),
+    linear-gradient(to bottom, #FF7187 50%, transparent 50%);
+    opacity: 0;
+}
+
+input:checked ~ label:before{
+    opacity: 1;
+}
+
+label:after{
+    content:' ';
+    position: absolute;
+    height: 110px;
+    width: 110px;
+    background-color: white;
+    border-radius: 50%;
+    /* border: 1px solid black; */
+    animation: heart-out 0.45s linear forwards;
+}
+
+@keyframes heart-out{
+    0% {transform: translate(195px,116px);}
+    25% {transform: translate(178px,134px);}
+    50% {transform: translate(145px,145px);}
+    75% {transform: translate(114px,134px);}
+    100% {transform: translate(95px,116px);}
+}
+
+input:checked ~ label:after{
+    animation: heart-in 0.45s linear forwards;
+}
+
+@keyframes heart-in{
+    0% {transform: translate(95px,116px);}
+    25% {transform: translate(114px,134px);}
+    50% {transform: translate(145px,145px);}
+    75% {transform: translate(178px,134px);}
+    100% {transform: translate(195px,116px);}
+}
