@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <style>
+      .form-group {
+        padding: 10px;
+      }
+
+      textarea {
+        width: 200px;
+        height: 100px;
+        margin: 10px 0;
+      }
+
+      input {
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <form action="/api/cards" method="post">
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+          <br>
+          <label for="intro">한 줄 소개</label>
+          <br>
+          <textarea id="intro" name="intro" placeholder="한 줄 소개를 입력하세요"></textarea>
+          <br>
+        </div>
+        <button type="submit">생성하기</button>
+      </form>
+    </div> <!-- /container -->
+  </body>
+</html>
