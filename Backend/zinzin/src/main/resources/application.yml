@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: zinzin
+  config:
+      import: application-secret.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.database}?useUnicode=true&serverTimezone=Asia/Seoul
+    username: ${mysql.username}
+    password: ${mysql.password}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        globally_quoted_identifiers: true
+        format_sql: true
+        show_sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+
+  neo4j:
+    uri: bolt://${neo4j.host}:${neo4j.port}
+    authentication:
+      username: ${neo4j.username}
+      password: ${neo4j.password}
