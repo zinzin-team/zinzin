@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/mates")
+@RequestMapping("/mates")
 public class FollowController {
 
     private final FollowService followService;
