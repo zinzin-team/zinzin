@@ -24,3 +24,7 @@ spring:
     authentication:
       username: ${neo4j.username}
       password: ${neo4j.password}
+
+server:
+  servlet:
+    context-path: /api
