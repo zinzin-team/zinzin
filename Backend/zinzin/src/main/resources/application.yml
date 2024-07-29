@@ -24,3 +24,23 @@ spring:
     authentication:
       username: ${neo4j.username}
       password: ${neo4j.password}
+
+  jwt:
+    token:
+      secret-key: mySecr3tK3yWith$pec!alChar@cter$
+    access:
+      expiration: 600000
+    refresh:
+      expiration: 21600000
+
+kakao:
+  client:
+    id: 0a13c112d9dbea04a9e0244e2bf8f4ac
+    secret: QKFFcXfKwgwIeBQ1u28DBbPETFCKcNNw
+    redirect-uri: http://localhost:8080/api/oauth2/kakao/callback
+  auth-url: https://kauth.kakao.com/oauth/authorize
+  token-url: https://kauth.kakao.com/oauth/token
+  user-info-url: https://kapi.kakao.com/v2/user/me
+#  friends-url: https://kapi.kakao.com/v1/api/talk/friends
+  grant-type: authorization_code
+  scope: profile_nickname,account_email,openid,
