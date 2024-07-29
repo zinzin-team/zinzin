@@ -18,7 +18,6 @@ public class FollowService {
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-
         Integer created = followRepository.createFollowRelation(request.getUserMemberId(), request.getTargetMemberId());
         if(created != null && created > 0){
             return;

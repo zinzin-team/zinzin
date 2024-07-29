@@ -16,7 +16,6 @@ public class FollowController {
 
     @PostMapping
     public ResponseEntity<?> requestFollow(@RequestBody FollowRequest request){
-        System.out.println(request);
         followService.requestFollow(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
