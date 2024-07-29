@@ -12,4 +12,22 @@ public interface FollowRepository extends Neo4jRepository<Person, Long> {
             "MERGE (a)-[:REQUEST_FOLLOW]->(b)" +
             "RETURN count(*) AS created")
     Integer createFollowRelation(Long userMemberId, Long targetMemberId);
+
+    @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
+            "RETURN count(r)")
+    Integer existsRequestFollowRelation(Long fromMemberId, Long toMemberId);
+
+
+    @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
+            "DELETE r " +
+            "CREATE (a)-[:FOLLOW]->(b) " +
+            "WITH a, b " +
+            "MERGE (b)-[:FOLLOW]->(a) " +
+            "RETURN count(*)")
+    Integer acceptFollowRequest(Long fromMemberId, Long toMemberId);
+
+    @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
+            "MERGE (b)-[:REJECT_FOLLOW]->(a) " +
+            "RETURN count(*)")
+    Integer rejectFollowRequest(Long fromMemberId, Long toMemberId);
 }
