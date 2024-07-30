@@ -1,30 +1,28 @@
 package com.fanclub.zinzin.global.auth;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
+import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
-import com.fanclub.zinzin.global.error.code.AuthErrorCode;
-import com.fanclub.zinzin.global.error.code.MemberErrorCode;
-import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fanclub.zinzin.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/oauth2")
+@RequestMapping("/oauth2")
 @RequiredArgsConstructor
 public class OAuth2Controller {
 
     private final OAuth2Service oAuth2Service;
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
-//  public final KakaoFriendsService kakaoFriendsService;
 
     @GetMapping("/authorize")
     public ResponseEntity<String> getKakaoAuthorizeUrl() {
@@ -32,23 +30,32 @@ public class OAuth2Controller {
     }
 
     @GetMapping("/kakao/callback")
-    public ResponseEntity<String> kakaoCallback(@RequestParam("code") String code, Model model) {
+    public ResponseEntity<Map<String, String>> kakaoCallback(@RequestParam("code") String code) {
         ArrayList<String> tokens = oAuth2Service.getKakaoTokens(code);
 
         String accessToken = tokens.get(0);
         String refreshToken = tokens.get(1);
         String idToken = tokens.get(2);
 
-        Long kakaoId = jwtUtil.getSubFromIdToken(idToken);
-        String email = jwtUtil.getEmailFromIdToken(idToken);
+        String[] claims = jwtUtil.getSubAndEmailFromIdToken(idToken);
+        String sub = claims[0];
+        String email = claims[1];
 
-        Member member = memberRepository.findBySub(kakaoId);
+        Member member = memberRepository.findBySub(sub);
 
-        if (member == null) {
-            throw new BaseException(MemberErrorCode.USER_NOT_FOUND);
+        if (member != null) {
+            String ourAccessToken = jwtUtil.generateAccessToken(email, Role.USER);
+            String ourRefreshToken = jwtUtil.generateRefreshToken(email, Role.USER);
+            Map<String, String> tokensMap = new HashMap<>();
+            tokensMap.put("accessToken", ourAccessToken);
+            tokensMap.put("refreshToken", ourRefreshToken);
+            return ResponseEntity.ok(tokensMap);
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "유저를 찾을 수 없습니다. 회원가입 페이지로 안내합니다");
+            response.put("sub", sub); // 클라이언트에서 회원가입 시 사용할 수 있는 정보 제공
+            response.put("email", email);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-
-
-        return ResponseEntity.ok("kakaoId");
     }
 }

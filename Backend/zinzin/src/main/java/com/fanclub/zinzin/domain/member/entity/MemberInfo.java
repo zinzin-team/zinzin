@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -41,4 +42,14 @@ public class MemberInfo {
     @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
+
+    @Builder
+    public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
+        this.profile_image = profileImage;
+        this.nickname = nickname;
+        this.searchId = searchId;
+        this.matchingVisibility = matchingVisibility;
+        this.matchingMode = matchingMode;
+        this.member = member;
+    }
 }

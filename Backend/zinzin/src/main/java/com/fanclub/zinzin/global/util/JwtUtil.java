@@ -1,11 +1,10 @@
 package com.fanclub.zinzin.global.util;
 
+import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.global.error.code.TokenErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,19 +21,18 @@ public class JwtUtil {
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
 
-    @Value("${spring.jwt.token.secret-key}")
+    @Value("${jwt.token.secret-key}")
     private String secretKeyString;
-    @Value("${spring.jwt.access.expiration}")
+    @Value("${jwt.access.expiration}")
     private long accessExpiration;
-    @Value("${spring.jwt.refresh.expiration}")
+    @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
 
-    public String generateAccessToken(String id, String role) {
-        if (id == null || role == null) {
+    public String generateAccessToken(String sub, Role role) {
+        if (sub == null || role == null) {
             throw new BaseException(TokenErrorCode.INVALID_INPUT);
         }
         Map<String, Object> claims = new HashMap<>();
-        claims.put("memberId", id);
         claims.put("role", role);
 
         Date now = new Date();
@@ -43,7 +41,7 @@ public class JwtUtil {
         try {
             return Jwts.builder()
                     .setClaims(claims)
-                    .setSubject(id)
+                    .setSubject(sub)
                     .setIssuedAt(now)
                     .setExpiration(validity)
                     .signWith(SignatureAlgorithm.HS256, secretKeyString)
@@ -53,13 +51,12 @@ public class JwtUtil {
         }
     }
 
-    public String generateRefreshToken(String id, String role) {
-        if (id == null || role == null) {
+    public String generateRefreshToken(String sub, Role role) {
+        if (sub == null || role == null) {
             throw new BaseException(TokenErrorCode.INVALID_INPUT);
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("memberId", id);
         claims.put("role", role);
 
         Date now = new Date();
@@ -68,7 +65,7 @@ public class JwtUtil {
         try {
             return Jwts.builder()
                     .setClaims(claims)
-                    .setSubject(id)
+                    .setSubject(sub)
                     .setIssuedAt(now)
                     .setExpiration(validity)
                     .signWith(SignatureAlgorithm.HS256, secretKeyString)
@@ -91,6 +88,17 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(secretKeyString).parseClaimsJws(token).getBody();
     }
 
+    public Claims getClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(secretKeyString)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims(); // 만료된 토큰에서도 클레임을 얻을 수 있음
+        }
+    }
+
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
@@ -99,30 +107,39 @@ public class JwtUtil {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    // 토큰 유효성 검증
-    public boolean validateToken(String token, String email) {
-        return (extractUsername(token).equals(email) && !isTokenExpired(token));
-    }
-
-    // idToken 유효성 검증
-    public boolean validateToken(String idToken) {
-        return true;
-    }
-
-    public static Long getSubFromIdToken(String idToken) {
+    // idToken 유효성 검증은 추후 구현 예정
+    public boolean validateToken(String token) {
         try {
-            String[] parts = idToken.split("\\.");
-            if (parts.length < 2) {
-                throw new IllegalArgumentException("Invalid ID token format.");
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKeyString)
+                    .parseClaimsJws(token)
+                    .getBody();
+            if (isTokenExpired(token)) {
+                return false;
             }
-            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
-            Map<String, Object> payloadMap = objectMapper.readValue(payload, Map.class);
-            return (Long) payloadMap.get("sub");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to decode ID token", e);
+            return true;
+        } catch (SignatureException | ExpiredJwtException e) {
+            return false;
         }
     }
 
-    public String getEmailFromIdToken(String idToken) {
+    public static String[] getSubAndEmailFromIdToken(String idToken) {
+        try {
+            String[] parts = idToken.split("\\.");
+            if (parts.length < 2) {
+                throw new BaseException(TokenErrorCode.ID_TOKEN_FORMAT_ERROR);
+            }
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            Map<String, Object> payloadMap = objectMapper.readValue(payload, Map.class);
+            String sub = (String) payloadMap.get("sub");
+            String email = (String) payloadMap.get("email");
+            return new String[]{sub, email};
+        } catch (Exception e) {
+            throw new BaseException(TokenErrorCode.TOKEN_DECODE_FAILED);
+        }
+    }
+
+    public boolean validateRefreshToken(String refreshToken) {
+        return validateToken(refreshToken);
     }
 }
