@@ -5,18 +5,34 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 public interface FollowRepository extends Neo4jRepository<Person, Long> {
-    @Query("MATCH (a:Person {member_id: $userMemberId})" +
+
+    @Query("MATCH (a:Person {member_id: $userMemberId}) " +
             "MATCH (b:Person {member_id: $targetMemberId}) " +
-            "OPTIONAL MATCH (a)-[r:FOLLOW|REQUEST_FOLLOW|REJECT_FOLLOW|UNFOLLOW]-(b) " +
-            "WITH a, b, r WHERE r IS NULL " +
-            "MERGE (a)-[:REQUEST_FOLLOW]->(b)" +
+            "OPTIONAL MATCH (a)-[r:REJECT_FOLLOW|UNFOLLOW]-(b) " +
+            "DELETE r " +
+            "WITH a, b " +
+            "OPTIONAL MATCH (a)-[r2:FOLLOW|REQUEST_FOLLOW]-(b) " +
+            "WITH a, b, r2 WHERE r2 IS NULL " +
+            "MERGE (a)-[:REQUEST_FOLLOW]->(b) " +
             "RETURN count(*) AS created")
     Integer createFollowRelation(Long userMemberId, Long targetMemberId);
+
+    @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:FOLLOW]-(b:Person {member_id: $toMemberId}) " +
+            "RETURN count(r)")
+    Integer countFollowRelation(Long fromMemberId, Long toMemberId);
 
     @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
             "RETURN count(r)")
     Integer existsRequestFollowRelation(Long fromMemberId, Long toMemberId);
 
+    @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:FOLLOW]->(b:Person {member_id: $toMemberId}) " +
+            "DELETE r " +
+            "WITH a, b " +
+            "MATCH (b)-[r:FOLLOW]->(a) " +
+            "DELETE r " +
+            "CREATE (a)-[:UNFOLLOW]->(b) " +
+            "RETURN count(*)")
+    Integer unfollow(Long fromMemberId, Long toMemberId);
 
     @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
             "DELETE r " +
