@@ -3,13 +3,10 @@ package com.fanclub.zinzin.domain.follow.service;
 import com.fanclub.zinzin.domain.follow.dto.AnswerFollowRequest;
 import com.fanclub.zinzin.domain.follow.dto.FollowRequest;
 import com.fanclub.zinzin.domain.follow.repository.FollowRepository;
-import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.FollowErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
