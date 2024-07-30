@@ -41,7 +41,7 @@ public class OAuth2Controller {
         Member member = memberRepository.findBySub(sub);
 
         if (member != null) {
-            Map<String, String> tokensMap = oAuth2Service.generateTokens(email, Role.USER);
+            Map<String, String> tokensMap = oAuth2Service.generateTokens(sub, Role.USER);
             return ResponseEntity.ok(tokensMap);
         } else {
             Map<String, String> response = oAuth2Service.makeRegisterResponse(sub, email);
