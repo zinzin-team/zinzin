@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.follow.controller;
 
 import com.fanclub.zinzin.domain.follow.dto.AnswerFollowRequest;
+import com.fanclub.zinzin.domain.follow.dto.FollowingListRequest;
 import com.fanclub.zinzin.domain.follow.dto.FollowRequest;
 import com.fanclub.zinzin.domain.follow.service.FollowService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
 
     private final FollowService followService;
+
+    @GetMapping
+    public ResponseEntity<?> getFollowList(@RequestBody FollowingListRequest request){
+        return ResponseEntity.ok(followService.getFollowList(request));
+    }
 
     @PostMapping
     public ResponseEntity<?> requestFollow(@RequestBody FollowRequest request){
