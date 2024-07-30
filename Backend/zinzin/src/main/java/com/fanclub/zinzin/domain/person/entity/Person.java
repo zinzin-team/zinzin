@@ -19,6 +19,8 @@ public class Person {
     @Property(name = "member_id")
     private Long memberId;
 
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -40,7 +42,8 @@ public class Person {
     public String toString() {
         return "Peron{"+
                 "memberId="+memberId+
-                ", Gender="+gender+
+                ", name="+name+
+                ", gender="+gender+
                 ", cardId="+cardId+
                 ", matchingMode="+matchingMode+
                 "}";
