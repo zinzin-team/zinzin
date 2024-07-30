@@ -3,6 +3,7 @@ package com.fanclub.zinzin.global.auth;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.error.code.AuthErrorCode;
+import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fanclub.zinzin.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class OAuth2Controller {
 
     private final OAuth2Service oAuth2Service;
     private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
 //  public final KakaoFriendsService kakaoFriendsService;
 
     @GetMapping("/authorize")
@@ -37,9 +39,16 @@ public class OAuth2Controller {
         String refreshToken = tokens.get(1);
         String idToken = tokens.get(2);
 
-        String kakaoId = jwtUtil.getSubFromIdToken(idToken);
-        System.out.println(kakaoId);
+        Long kakaoId = jwtUtil.getSubFromIdToken(idToken);
+        String email = jwtUtil.getEmailFromIdToken(idToken);
 
-        return ResponseEntity.ok(kakaoId);
+        Member member = memberRepository.findBySub(kakaoId);
+
+        if (member == null) {
+            throw new BaseException(MemberErrorCode.USER_NOT_FOUND);
+        }
+
+
+        return ResponseEntity.ok("kakaoId");
     }
 }

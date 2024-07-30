@@ -109,7 +109,7 @@ public class JwtUtil {
         return true;
     }
 
-    public static String getSubFromIdToken(String idToken) {
+    public static Long getSubFromIdToken(String idToken) {
         try {
             String[] parts = idToken.split("\\.");
             if (parts.length < 2) {
@@ -117,9 +117,12 @@ public class JwtUtil {
             }
             String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
             Map<String, Object> payloadMap = objectMapper.readValue(payload, Map.class);
-            return (String) payloadMap.get("sub");
+            return (Long) payloadMap.get("sub");
         } catch (Exception e) {
             throw new RuntimeException("Failed to decode ID token", e);
         }
+    }
+
+    public String getEmailFromIdToken(String idToken) {
     }
 }
