@@ -24,6 +24,9 @@ public class Member extends BaseTimeEntity {
     @Column(length = 50, nullable = false)
     private String name;
 
+    @Column(length = 50, nullable = false)
+    private String sub;
+
     @Column(nullable = false)
     private LocalDate birth;
 
@@ -43,10 +46,11 @@ public class Member extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public Member(Long id, String email, String name, LocalDate birth, Gender gender, LocalDateTime deletedAt, Status status, Role role){
+    public Member(Long id, String email, String name, String sub, LocalDate birth, Gender gender, LocalDateTime deletedAt, Status status, Role role){
         this.id = id;
         this.email = email;
         this.name = name;
+        this.sub = sub;
         this.birth = birth;
         this.gender = gender;
         this.deletedAt = deletedAt;
