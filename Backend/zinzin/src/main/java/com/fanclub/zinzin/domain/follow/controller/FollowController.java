@@ -26,4 +26,10 @@ public class FollowController {
         followService.answerFollowRequest(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> unfollow(@RequestBody FollowRequest request){
+        followService.unfollow(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

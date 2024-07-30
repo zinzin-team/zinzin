@@ -53,4 +53,23 @@ public class FollowService {
             }
         }
     }
+
+    public void unfollow(FollowRequest request) {
+        if(request.getTargetMemberId() == null || request.getUserMemberId() == null){
+            throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
+        }
+
+        Long userMemberId = request.getUserMemberId();
+        Long targetMemberId = request.getTargetMemberId();
+
+        Integer followRelationCnt = followRepository.countFollowRelation(userMemberId, targetMemberId);
+        if(followRelationCnt == null || followRelationCnt != 2){
+            throw new BaseException(FollowErrorCode.INVALID_FOLLOW_RELATION);
+        }
+
+        Integer a = followRepository.unfollow(userMemberId, targetMemberId);
+        if(a == null || a == 0){
+            throw new BaseException(FollowErrorCode.UNFOLLOW_ERROR);
+        }
+    }
 }
