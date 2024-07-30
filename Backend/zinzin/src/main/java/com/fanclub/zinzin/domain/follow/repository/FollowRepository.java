@@ -27,6 +27,7 @@ public interface FollowRepository extends Neo4jRepository<Person, Long> {
     Integer acceptFollowRequest(Long fromMemberId, Long toMemberId);
 
     @Query("MATCH (a:Person {member_id: $fromMemberId})-[r:REQUEST_FOLLOW]->(b:Person {member_id: $toMemberId}) " +
+            "DELETE r " +
             "MERGE (b)-[:REJECT_FOLLOW]->(a) " +
             "RETURN count(*)")
     Integer rejectFollowRequest(Long fromMemberId, Long toMemberId);
