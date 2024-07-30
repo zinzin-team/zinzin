@@ -17,11 +17,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody MemberRegisterDto memberRegisterDto) {
-        try {
-            memberService.registerNewMember(memberRegisterDto);
-        } catch (Exception e) {
-            throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
-        }
+        memberService.registerNewMember(memberRegisterDto);
         return ResponseEntity.ok("회원가입 성공");
     }
 }

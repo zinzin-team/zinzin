@@ -1,21 +1,13 @@
 package com.fanclub.zinzin.domain.member.dto;
 
-import com.fanclub.zinzin.domain.member.entity.Gender;
-import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
-import com.fanclub.zinzin.domain.member.entity.Role;
-import com.fanclub.zinzin.domain.member.entity.Status;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fanclub.zinzin.domain.member.entity.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class MemberRegisterDto {
+public final class MemberRegisterDto {
     private String email;
     private String name;
     private String sub;
@@ -28,4 +20,26 @@ public class MemberRegisterDto {
     private String searchId;
     private MatchingVisibility matchingVisibility;
     private boolean matchingMode;
+
+    public Member toMemberEntity() {
+        return Member.builder()
+                .email(email)
+                .name(name)
+                .sub(sub)
+                .birth(birth)
+                .gender(gender)
+                .status(status)
+                .role(role).build();
+    }
+
+    public MemberInfo toMemberInfoEntity(Member member) {
+        return MemberInfo.builder()
+                .profileImage(profileImage)
+                .nickname(nickname)
+                .searchId(searchId)
+                .matchingVisibility(matchingVisibility)
+                .matchingMode(matchingMode)
+                .member(member)
+                .build();
+    }
 }
