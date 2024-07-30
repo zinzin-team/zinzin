@@ -1,10 +1,17 @@
 package com.fanclub.zinzin.domain.follow.repository;
 
+import com.fanclub.zinzin.domain.follow.dto.FollowingResponse;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
+import java.util.List;
+
 public interface FollowRepository extends Neo4jRepository<Person, Long> {
+
+    @Query("MATCH (a:Person {member_id: $memberId})-[:FOLLOW]->(b:Person), (b)-[:FOLLOW]->(a) " +
+            "RETURN b.member_id AS id, b.name AS name")
+    List<FollowingResponse> findPersonsFollowing(Long memberId);
 
     @Query("MATCH (a:Person {member_id: $userMemberId}) " +
             "MATCH (b:Person {member_id: $targetMemberId}) " +
