@@ -13,7 +13,7 @@ public class FilterConfig {
         FilterRegistrationBean<TokenAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new TokenAuthenticationFilter());
-        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.addUrlPatterns("/*");
 
         return registrationBean;
     }
