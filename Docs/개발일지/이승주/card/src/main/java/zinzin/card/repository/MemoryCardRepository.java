@@ -19,7 +19,7 @@ public class MemoryCardRepository implements CardRepository {
     }
 
     @Override
-    public Optional<Card> find(Long id) {
+    public Optional<Card> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
 

@@ -27,10 +27,11 @@
         </p>
         <hr>
         <div class="card" th:each="card : ${cards}">
-          <p># <span th:text="${card.id}">$</span></p>
-          <p>게시자: <span th:text="${card.name}">$</span></p>
+          <p># <span th:text="${card.id}"></span></p>
+          <p>게시자: <span th:text="${card.name}"></span></p>
           <p>소개글: </p>
-          <p th:text="${card.intro}">$</p>
+          <p><span th:text="${card.intro}"></span></p>
+          <a th:href="'/api/cards/'+${card.id}" method="put">수정</a>
         </div>
       </div>
     </div> <!-- /container -->

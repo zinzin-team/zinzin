@@ -7,6 +7,7 @@ import zinzin.card.repository.CardRepository;
 import zinzin.card.repository.MemoryCardRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CardService {
@@ -21,7 +22,15 @@ public class CardService {
         cardRepository.save(card);
     }
 
-    public List<Card> findCards() {
+    public List<Card> findAll() {
         return cardRepository.findAll();
+    }
+
+    public Optional<Card> findById(Long id) {
+        return cardRepository.findById(id);
+    }
+
+    public void update(Card card) {
+        cardRepository.save(card);
     }
 }
