@@ -11,7 +11,7 @@ public interface FollowRepository extends Neo4jRepository<Person, Long> {
 
     @Query("MATCH (a:Person {member_id: $memberId})-[:FOLLOW]->(b:Person), (b)-[:FOLLOW]->(a) " +
             "RETURN b.member_id AS id, b.name AS name")
-    List<FollowingResponse> findPersonsFollowing(Long memberId);
+    List<FollowingResponse> findPeopleByFollowRelation(Long memberId);
 
     @Query("MATCH (a:Person {member_id: $userMemberId}) " +
             "MATCH (b:Person {member_id: $targetMemberId}) " +

@@ -23,7 +23,7 @@ public class FollowService {
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        return followRepository.findPersonsFollowing(request.getUserMemberId());
+        return followRepository.findPeopleByFollowRelation(request.getUserMemberId());
     }
 
     public void requestFollow(FollowRequest request){
