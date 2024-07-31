@@ -28,12 +28,13 @@ public class JwtUtil {
     @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
 
-    public String generateAccessToken(String sub, Role role) {
+    public String generateAccessToken(Long memberId, String sub, Role role) {
         if (sub == null || role == null) {
             throw new BaseException(TokenErrorCode.INVALID_INPUT);
         }
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
+        claims.put("memberId", memberId);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + accessExpiration);
@@ -51,13 +52,14 @@ public class JwtUtil {
         }
     }
 
-    public String generateRefreshToken(String sub, Role role) {
+    public String generateRefreshToken(Long memberId, String sub, Role role) {
         if (sub == null || role == null) {
             throw new BaseException(TokenErrorCode.INVALID_INPUT);
         }
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
+        claims.put("memberId", memberId);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + refreshExpiration);
