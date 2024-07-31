@@ -9,14 +9,22 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class TokenAuthenticationFilter implements Filter {
-    private final JwtUtil jwtUtil = new JwtUtil();
+    private final JwtUtil jwtUtil;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    public TokenAuthenticationFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -32,6 +40,8 @@ public class TokenAuthenticationFilter implements Filter {
                 String accessToken = authorizationHeader.substring(7);
 
                 if (jwtUtil.validateToken(accessToken)) {
+                    Claims claims = jwtUtil.getClaims(accessToken);
+                    request.setAttribute("memberId",claims.get("memberId", Long.class));
                     chain.doFilter(request, response);
                     return;
                 }
@@ -51,6 +61,7 @@ public class TokenAuthenticationFilter implements Filter {
                     httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
                     httpResponse.setHeader("RefreshToken", "Bearer " + newRefreshToken);
 
+                    request.setAttribute("memberId",memberId);
                     chain.doFilter(request, response);
                     return;
                 } else {
