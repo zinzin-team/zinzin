@@ -33,8 +33,8 @@ public class MemberInfo {
     @ColumnDefault("'PRIVATE'")
     private MatchingVisibility matchingVisibility;
 
-    @Column(nullable = false)
-    private boolean matchingMode;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean matchingMode;
 
     @LastModifiedDate
     private LocalDateTime matchingModeLog;
