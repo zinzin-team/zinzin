@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -7,18 +7,18 @@ const Navbar = () => {
 
   return (
     <header className={styles.nav}>
-      <a href="/" className={location.pathname === "/" ? styles.selected : styles.notselected}>
-        <img src="/assets/image 16.svg" />
-      </a>
-      <a href="/Like" className={location.pathname === "/Like" ? styles.selected : styles.notselected}>
-        <img src="/assets/Union.svg" />
-      </a>
-      <a href="/Chat" className={location.pathname === "/Chat" ? styles.selected : styles.notselected}>
-        <img src="/assets/homepage 4.svg" />
-      </a>
-      <a href="/Mypage" className={location.pathname === "/Mypage" ? styles.selected : styles.notselected}>
-        <img src="/assets/homepage 5.svg" />
-      </a>
+      <Link to="/" className={location.pathname === "/" || location.pathname === "/create-card" ? styles.selected : styles.notselected}>
+        <img src={location.pathname === "/" || location.pathname === "/create-card" ? "/assets/match-after.png" : "/assets/match-before.png"} />
+      </Link>
+      <Link to="/like" className={location.pathname === "/like" ? styles.selected : styles.notselected}>
+        <img src={location.pathname === "/like" ? "/assets/list-after.png" : "/assets/list-before.png"} />
+      </Link>
+      <Link to="/chat" className={location.pathname === "/chat" ? styles.selected : styles.notselected}>
+        <img src={location.pathname === "/chat" ? "/assets/chat-after.png" : "/assets/chat-before.png"} />
+      </Link>
+      <Link to="/mypage" className={location.pathname === "/mypage" || location.pathname === "/update-card" ? styles.selected : styles.notselected}>
+        <img src={location.pathname === "/mypage" || location.pathname === "/update-card" ? "/assets/mypage-after.png" : "/assets/mypage-before.png"} />
+      </Link>
     </header>
   );
 };

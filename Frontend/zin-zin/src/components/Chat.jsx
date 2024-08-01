@@ -3,7 +3,7 @@ import styles from './Chat.module.css';
 
 const Chat = () => {
     return (
-        <div>
+        <div className={styles.chat}>
             채팅 탭
             <br/>
             <input type="checkbox"  id="heart-check"/>
