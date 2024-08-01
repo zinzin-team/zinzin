@@ -14,7 +14,8 @@ public class MemberRegisterDto {
     private final String sub;
     private final LocalDate birth;
     private final Gender gender;
-    private final String nickname;
+    @Setter
+    private String nickname;
     private final String searchId;
     private final MatchingVisibility matchingVisibility;
     private final boolean matchingMode;

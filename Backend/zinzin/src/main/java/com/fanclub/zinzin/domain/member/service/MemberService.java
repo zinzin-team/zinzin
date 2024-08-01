@@ -5,6 +5,7 @@ import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
+import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
@@ -21,10 +22,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberInfoRepository memberInfoRepository;
     private final PersonRepository personRepository;
+    private final RandomNicknameRepository randomNicknameRepository;
 
     public void registerNewMember(MemberRegisterDto memberRegisterDto) {
 
         try {
+            String randomNickname = randomNicknameRepository.getRandomNickname();
+            memberRegisterDto.setNickname(randomNickname);
+
             Member member = memberRegisterDto.toMemberEntity();
             memberRepository.save(member);
             MemberInfo memberInfo = memberRegisterDto.toMemberInfoEntity(member);
