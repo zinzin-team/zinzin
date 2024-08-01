@@ -1,17 +1,20 @@
 package com.fanclub.zinzin.domain.member.service;
 
+import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
+import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
+import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
+import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,5 +38,35 @@ public class MemberService {
         } catch (Exception e) {
             throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
         }
+    }
+
+    public CheckSearchIdResponse checkDuplicatedSearchId(String searchId){
+        if(searchId == null){
+            throw new BaseException(MemberErrorCode.INVALID_SEARCHID);
+        }
+
+        boolean isDuplicated = memberInfoRepository.existsBySearchId(searchId);
+        return CheckSearchIdResponse.of(isDuplicated);
+    }
+
+    @Transactional
+    public void changeMatchingMode(Long memberId, MatchingModeRequest matchingModeRequest) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        boolean matchingMode = matchingModeRequest.isMatchingMode();
+        MatchingVisibility matchingVisibility = matchingModeRequest.getMatchingVisibility();
+        if (matchingMode && matchingVisibility == null) {
+            throw new BaseException(CommonErrorCode.BAD_REQUEST);
+        }
+
+        personRepository.updateMatchingMode(memberId, matchingMode);
+
+        if (matchingMode) {
+            memberInfoRepository.updateMatchingModeAndVisibility(memberId, matchingMode, matchingVisibility);
+            return;
+        }
+        memberInfoRepository.updateMatchingMode(memberId, matchingMode);
     }
 }
