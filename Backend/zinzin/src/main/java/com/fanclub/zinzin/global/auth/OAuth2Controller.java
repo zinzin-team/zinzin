@@ -50,7 +50,7 @@ public class OAuth2Controller {
             MemberAuthResponseDto memberAuthResponseDto = new MemberAuthResponseDto(accessToken, refreshToken, true);
             return ResponseEntity.ok(memberAuthResponseDto);
         }
-        MemberAuthResponseDto memberAuthResponseDto = new MemberAuthResponseDto(sub, Role.USER, false);
+        MemberAuthResponseDto memberAuthResponseDto = new MemberAuthResponseDto(sub, Role.USER, false, email);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(memberAuthResponseDto);
     }
 }
