@@ -1,10 +1,10 @@
-input {
+.chat input {
     position: absolute;
     opacity: 0;
     visibility: hidden;
 }
 
-label, label:before {
+.chat label, label:before {
     height: 400px;
     width: 400px;  
     background-size: 200px 200px;
@@ -14,7 +14,7 @@ label, label:before {
     transition: all linear 0.4s;
 }
 
-label {
+.chat label {
   display: inline-block;
     background-image:
             radial-gradient(circle at 75% 85.5%, #D1D6EE 25%, transparent 25%),
@@ -25,7 +25,7 @@ label {
     
 }
 
-label:before{
+.chat label:before{
     content: '';
     position: absolute;
     background-image:
@@ -37,11 +37,11 @@ label:before{
     opacity: 0;
 }
 
-input:checked ~ label:before{
+.chat input:checked ~ label:before{
     opacity: 1;
 }
 
-label:after{
+.chat label:after{
     content:' ';
     position: absolute;
     height: 110px;
@@ -60,7 +60,7 @@ label:after{
     100% {transform: translate(95px,116px);}
 }
 
-input:checked ~ label:after{
+.chat input:checked ~ label:after{
     animation: heart-in 0.45s linear forwards;
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Matching from "../components/Matching";
+import Matching from "../components/matching/Matching";
 
 const HomeView = () => {
   return (

@@ -1,0 +1,112 @@
+.match img {
+    width:   285px;
+    height: auto;
+    border-radius: 20px;
+    
+}
+
+.match {  
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    /* justify-content: center; */
+    /* height: 100vh;  */
+    text-align: center;
+  }
+
+  .makecard{
+width: 290px;
+height: 229px;
+    background-color: white;
+    border-radius: 16px;
+    text-align: center;
+
+  }
+
+  .offModeContent {
+    margin-top: 20px;
+    width: 290px;
+height: 193px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.offModeContent p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+  .offModeContent button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.offModeContent button:hover {
+    background-color: #ff5252;
+    text-align: center;
+}
+
+.exhaustcard{
+  margin-top: 40px;
+  width: 290px;
+height: 443px;
+  background-color: white;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.exhaustcard img{
+  margin-top: 40px;
+  width: 232px;
+  height: 232px;
+}
+
+/* 여기 밑에는 수정하기 */
+
+.card {
+  cursor: pointer;
+  display: inline-block;
+  width: 300px;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.front, .back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+}
+
+.front {
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .front {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .back {
+  transform: rotateY(360deg);
+}
+
+.buttons {
+  margin-top: 20px;
+}

@@ -8,36 +8,53 @@
     display: flex;
     justify-content: space-evenly;
     position: fixed;
+    bottom: 0px;
     padding: 20px;
-    bottom: 0;
     width: 100%;
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 16px 16px 0px 0px;
+    border-radius: 24px 24px 0px 0px;
     background-color: #FFF;
     box-shadow: -6px 0px 47px 27px rgba(217, 217  , 217, 0.26);
     max-width: 400px;
 }
   
+.nav a{
+  display: flex;
+  padding: 10px;
+
+  /* width: 25px; */
+}
 
   .nav a.selected {
-    filter: drop-shadow(0px 4px 1px rgba(255, 0, 0, 0.75)); 
-    width: 26px;
-    height: 26px;
+    /* filter: drop-shadow(0px 4px 1px rgba(255, 0, 0, 0.75));  */
+    /* width: 26px;
+    height: 26px; */
     
     /* padding: 5px;
-    border-radius: 10px;
+    border-radius: 10px;  
     background-color: rgb(13, 170, 170);
     filter: invert(100%); 
     width: 30px;
     height: 40px; */
+
+    background-color: #f0f0f0; /* 원하는 배경색으로 변경 */
+    border-radius: 16px; /* 원하는 모서리 반경으로 변경 */
+    /* width: 80px; */
   }
 
   
   .nav a.notselected {
-    width: 26px;
-    height: 26px;
+    /* width: 26px;
+    height: 26px; */
+    /* width: 2px; */
+    /* width: 80px; */
 
  }
+ 
+ .nav img{
+  width: 26px;
+ }
+ 
 
  @media (max-width: 400px) {
   .nav {

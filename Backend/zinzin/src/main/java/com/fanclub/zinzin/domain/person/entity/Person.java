@@ -10,12 +10,9 @@ import org.springframework.data.neo4j.core.schema.Property;
 
 @Node("Person")
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Person {
 
     @Id
-    private Long id;
-
     @Property(name = "member_id")
     private Long memberId;
 
@@ -30,13 +27,21 @@ public class Person {
     @Property(name = "matching_mode")
     private boolean matchingMode;
 
-//    @Builder
-//    public Person(Long memberId, Gender gender, Long cardId, boolean matchingMode){
-//        this.memberId = memberId;
-//        this.gender = gender;
-//        this.cardId = cardId;
-//        this.matchingMode = matchingMode;
-//    }
+    private String nickname;
+
+    @Property(name = "profile_image")
+    private String profileImage;
+
+    @Builder
+    private Person(Long memberId, String name, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
+        this.memberId = memberId;
+        this.name = name;
+        this.gender = gender;
+        this.cardId = cardId;
+        this.matchingMode = matchingMode;
+        this.nickname = nickname;
+        this.profileImage = profileImage;
+    }
 
     @Override
     public String toString() {

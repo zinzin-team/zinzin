@@ -1,31 +1,32 @@
-/* @media (min-width: 400px) {
-    .App {
+  /* @media (min-width: 400px) {
+      .App {
+        width: 100%;
+      }
+  }
+
+  .App {
       width: 100%;
-    }
-}
-
-.App {
-    width: 100%;
-    max-width: 400px;
-    min-height: 100vh;
-    margin: 0 auto;
-    position: relative;
-    overflow-y: auto;
-    background-color: #FFFBF4;
-} */
-
-
-.App {
-    width: 100%;
-    max-width: 100%;
-    min-height: 100vh;
-    margin: 0 auto;
-    position: relative;
-    overflow-y: auto;
-    background-color: #FFFBF4;
-}
-@media (min-width: 400px) {
-    .App {
       max-width: 400px;
-    }
-}
+      min-height: 100vh;
+      margin: 0 auto;
+      position: relative;
+      overflow-y: auto;
+      background-color: #FFFBF4;
+  } */
+
+
+  .App {
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+      margin: 0 auto;
+      position: relative;
+      overflow-y: auto;
+      background-color: #FFFBF4;
+      padding-bottom: 86px;
+  }
+  @media (min-width: 400px) {
+      .App {
+        max-width: 400px;
+      }
+  }
