@@ -14,7 +14,13 @@ const FriendtabNavbar = ({ activeTab, setActiveTab }) => {
         className={`${styles.tabButton} ${activeTab === 'acquaintances' ? styles.active : ''}`}
         onClick={() => setActiveTab('acquaintances')}
       >
-        나의 지인 16
+        지인 16
+      </button>
+      <button
+        className={`${styles.tabButton} ${activeTab === 'search' ? styles.active : ''}`}
+        onClick={() => setActiveTab('search')}
+      >
+        친구 검색
       </button>
     </div>
   );
