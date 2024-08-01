@@ -15,20 +15,20 @@ public class FollowService {
 
     private final FollowRepository followRepository;
 
-    public List<FollowingResponse> getFollowList(FollowingListRequest request) {
-        if(request.getUserMemberId() == null){
+    public List<FollowingResponse> getFollowList(Long memberId) {
+        if(memberId == null){
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        return followRepository.findPeopleByFollowRelation(request.getUserMemberId());
+        return followRepository.findPeopleByFollowRelation(memberId);
     }
 
-    public void requestFollow(FollowRequest request){
-        if(request.getTargetMemberId() == null || request.getUserMemberId() == null){
+    public void requestFollow(Long memberId, FollowRequest request){
+        if(request.getTargetMemberId() == null || memberId == null){
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        Integer created = followRepository.createFollowRelation(request.getUserMemberId(), request.getTargetMemberId());
+        Integer created = followRepository.createFollowRelation(memberId, request.getTargetMemberId());
         if(created != null && created > 0){
             return;
         }
@@ -36,57 +36,55 @@ public class FollowService {
         throw new BaseException(FollowErrorCode.FOLLOW_RELATION_EXIST);
     }
 
-    public void answerFollowRequest(AnswerFollowRequest request){
-        if(request.getTargetMemberId() == null || request.getUserMemberId() == null){
+    public void answerFollowRequest(Long memberId, AnswerFollowRequest request){
+        if(request.getTargetMemberId() == null || memberId == null){
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        Long userMemberId = request.getUserMemberId();
         Long targetMemberId = request.getTargetMemberId();
-        Integer followRequestCnt = followRepository.existsRequestFollowRelation(targetMemberId, userMemberId);
+        Integer followRequestCnt = followRepository.existsRequestFollowRelation(targetMemberId, memberId);
 
         if(followRequestCnt == null || followRequestCnt == 0){
             throw new BaseException(FollowErrorCode.FOLLOW_REQUEST_NOT_FOUND);
         }
 
         if(request.isAccepted()){
-            Integer result = followRepository.acceptFollowRequest(targetMemberId, userMemberId);
+            Integer result = followRepository.acceptFollowRequest(targetMemberId, memberId);
             if(result == null || result == 0){
                 throw new BaseException(FollowErrorCode.ACCEPT_FOLLOW_ERROR);
             }
         }
         else{
-            Integer result = followRepository.rejectFollowRequest(targetMemberId, userMemberId);
+            Integer result = followRepository.rejectFollowRequest(targetMemberId, memberId);
             if(result == null || result == 0){
                 throw new BaseException(FollowErrorCode.REJECT_FOLLOW_ERROR);
             }
         }
     }
 
-    public void unfollow(FollowRequest request) {
-        if(request.getTargetMemberId() == null || request.getUserMemberId() == null){
+    public void unfollow(Long memberId, FollowRequest request) {
+        if(request.getTargetMemberId() == null || memberId == null){
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        Long userMemberId = request.getUserMemberId();
         Long targetMemberId = request.getTargetMemberId();
 
-        Integer followRelationCnt = followRepository.countFollowRelation(userMemberId, targetMemberId);
+        Integer followRelationCnt = followRepository.countFollowRelation(memberId, targetMemberId);
         if(followRelationCnt == null || followRelationCnt != 2){
             throw new BaseException(FollowErrorCode.INVALID_FOLLOW_RELATION);
         }
 
-        Integer a = followRepository.unfollow(userMemberId, targetMemberId);
+        Integer a = followRepository.unfollow(memberId, targetMemberId);
         if(a == null || a == 0){
             throw new BaseException(FollowErrorCode.UNFOLLOW_ERROR);
         }
     }
 
-    public List<FollowingRequestResponse> getFollowRequestList(FollowingListRequest request) {
-        if(request.getUserMemberId() == null){
+    public List<FollowingRequestResponse> getFollowRequestList(Long memberId) {
+        if(memberId == null){
             throw new BaseException(FollowErrorCode.FOLLOW_INFO_NOT_FOUND);
         }
 
-        return followRepository.findPeopleByRequestFollowRelation(request.getUserMemberId());
+        return followRepository.findPeopleByRequestFollowRelation(memberId);
     }
 }
