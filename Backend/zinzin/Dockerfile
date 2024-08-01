@@ -8,7 +8,7 @@ LABEL maintainer="hckhong@naver.com"
 WORKDIR /app
 
 # Copy the application's jar file to the container
-COPY build/libs/zinzin-*-SNAPSHOT.jar /app/zinzin.jar
+COPY build/libs/zinzin-*-SNAPSHOT.jar /zinzin.jar
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
