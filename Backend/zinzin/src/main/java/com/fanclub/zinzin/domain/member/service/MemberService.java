@@ -61,11 +61,12 @@ public class MemberService {
             throw new BaseException(CommonErrorCode.BAD_REQUEST);
         }
 
+        personRepository.updateMatchingMode(memberId, matchingMode);
+
         if (matchingMode) {
             memberInfoRepository.updateMatchingModeAndVisibility(memberId, matchingMode, matchingVisibility);
             return;
         }
-
         memberInfoRepository.updateMatchingMode(memberId, matchingMode);
     }
 }
