@@ -20,13 +20,13 @@ public class Member extends BaseTimeEntity {
     @Getter
     private Long id;
 
-    @Column(length = 320, nullable = false)
+    @Column(length = 320, nullable = false, unique = true)
     private String email;
 
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private String sub;
 
     @Column(nullable = false)
@@ -38,6 +38,7 @@ public class Member extends BaseTimeEntity {
 
     private LocalDateTime deletedAt;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private Status status;
@@ -48,7 +49,7 @@ public class Member extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public Member(Long id, String email, String name, String sub, LocalDate birth, Gender gender, LocalDateTime deletedAt, Status status, Role role){
+    private Member(Long id, String email, String name, String sub, LocalDate birth, Gender gender, LocalDateTime deletedAt){
         this.id = id;
         this.email = email;
         this.name = name;
@@ -56,7 +57,7 @@ public class Member extends BaseTimeEntity {
         this.birth = birth;
         this.gender = gender;
         this.deletedAt = deletedAt;
-        this.status = status;
-        this.role = role;
+        this.status = Status.ACTIVE;
+        this.role = Role.USER;
     }
 }

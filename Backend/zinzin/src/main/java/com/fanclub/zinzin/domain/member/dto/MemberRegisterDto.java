@@ -1,25 +1,23 @@
 package com.fanclub.zinzin.domain.member.dto;
 
 import com.fanclub.zinzin.domain.member.entity.*;
+import com.fanclub.zinzin.domain.person.entity.Person;
 import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public final class MemberRegisterDto {
-    private String email;
-    private String name;
-    private String sub;
-    private LocalDate birth;
-    private Gender gender;
-    private Status status;
-    private Role role;
-    private String profileImage;
-    private String nickname;
-    private String searchId;
-    private MatchingVisibility matchingVisibility;
-    private boolean matchingMode;
+public class MemberRegisterDto {
+    private final String email;
+    private final String name;
+    private final String sub;
+    private final LocalDate birth;
+    private final Gender gender;
+    private final String nickname;
+    private final String searchId;
+    private final MatchingVisibility matchingVisibility;
+    private final boolean matchingMode;
 
     public Member toMemberEntity() {
         return Member.builder()
@@ -28,18 +26,27 @@ public final class MemberRegisterDto {
                 .sub(sub)
                 .birth(birth)
                 .gender(gender)
-                .status(status)
-                .role(role).build();
+                .build();
     }
 
     public MemberInfo toMemberInfoEntity(Member member) {
         return MemberInfo.builder()
-                .profileImage(profileImage)
                 .nickname(nickname)
                 .searchId(searchId)
                 .matchingVisibility(matchingVisibility)
                 .matchingMode(matchingMode)
                 .member(member)
+                .build();
+    }
+
+    public Person toPersonEntity(Member member, MemberInfo memberInfo){
+        return Person.builder()
+                .memberId(member.getId())
+                .name(name)
+                .gender(gender)
+                .matchingMode(matchingMode)
+                .nickname(nickname)
+                .profileImage(memberInfo.getProfileImage())
                 .build();
     }
 }
