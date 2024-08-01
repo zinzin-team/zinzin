@@ -3,6 +3,7 @@ package com.fanclub.zinzin.domain.member.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,7 +22,8 @@ public class MemberInfo {
 
     @Column(length = 300, nullable = false)
     @ColumnDefault("'default.jpg'")
-    private String profile_image;
+    @Getter
+    private String profileImage;
 
     @Column(length = 30, nullable = false)
     private String nickname;
@@ -45,7 +47,7 @@ public class MemberInfo {
 
     @Builder
     public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
-        this.profile_image = profileImage;
+        this.profileImage = (profileImage==null)?"default.jpg":profileImage;
         this.nickname = nickname;
         this.searchId = searchId;
         this.matchingVisibility = matchingVisibility;
