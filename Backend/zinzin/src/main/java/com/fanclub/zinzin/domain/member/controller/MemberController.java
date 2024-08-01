@@ -18,4 +18,9 @@ public class MemberController {
         memberService.registerNewMember(memberRegisterDto);
         return ResponseEntity.ok("회원가입 성공");
     }
+
+    @GetMapping("/search-id/{searchId}")
+    public ResponseEntity<?> checkDuplicatedSearchId(@PathVariable(name = "searchId") String searchId){
+        return ResponseEntity.ok(memberService.checkDuplicatedSearchId(searchId));
+    }
 }
