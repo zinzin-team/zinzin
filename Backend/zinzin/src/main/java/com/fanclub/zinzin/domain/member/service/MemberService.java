@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.member.service;
 
+import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
@@ -10,8 +11,6 @@ import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,5 +34,14 @@ public class MemberService {
         } catch (Exception e) {
             throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
         }
+    }
+
+    public CheckSearchIdResponse checkDuplicatedSearchId(String searchId){
+        if(searchId == null){
+            throw new BaseException(MemberErrorCode.INVALID_SEARCHID);
+        }
+
+        boolean isDuplicated = memberInfoRepository.existsBySearchId(searchId);
+        return CheckSearchIdResponse.of(isDuplicated);
     }
 }
