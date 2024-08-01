@@ -21,6 +21,6 @@ public class SearcherService {
 
         SearchedMemberDto searchedMemberDto = memberInfoRepository.findSearcherResponseBySearchId(searchId)
                                                 .orElse(null);
-        return SearcherResponse.of(searchedMemberDto==null, searchedMemberDto);
+        return SearcherResponse.of(searchedMemberDto!=null, searchedMemberDto);
     }
 }
