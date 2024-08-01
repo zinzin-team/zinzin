@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.member.controller;
 
+import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class MemberController {
     }
 
     @GetMapping("/search-id/{searchId}")
-    public ResponseEntity<?> checkDuplicatedSearchId(@PathVariable(name = "searchId") String searchId){
+    public ResponseEntity<CheckSearchIdResponse> checkDuplicatedSearchId(@PathVariable(name = "searchId") String searchId){
         return ResponseEntity.ok(memberService.checkDuplicatedSearchId(searchId));
     }
 }
