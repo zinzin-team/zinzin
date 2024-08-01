@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomeView from "./views/HomeView";
-import ChatView from "./components/Chat";
+import ChatView from "./components/chating/Chat";
 import FriendsView from "./components/friends/Friends";
-import LeaveView from "./components/Leave";
-import LikeView from "./components/Like";
-import MatchingView from "./components/Matching";
-import MypageView from "./components/Mypage";
+import LeaveView from "./components/signup/Leave";
+import LikeView from "./components/list/Like";
+import MatchingView from "./components/matching/Matching";
+import MypageView from "./components/mypage/Mypage";
 import SignupView from "./components/signup/Signup";
-import Navbar from "./components/Navbar"; 
-import CreatecardView from './components/Createcard';
-import UpdatecardView from './components/Updatecard';
-import Header from './components/Header';
+import Navbar from "./components/navbar/Navbar"; 
+import CreatecardView from './components/matching/Createcard';
+import UpdatecardView from './components/mypage/Updatecard';
+import Header from './components/header/Header';
 import './App.css';
 
 const App = () => {
