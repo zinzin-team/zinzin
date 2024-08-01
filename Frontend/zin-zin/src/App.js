@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomeView from "./views/HomeView";
 import ChatView from "./components/Chat";
-import FriendsView from "./components/Friends";
+import FriendsView from "./components/friends/Friends";
 import LeaveView from "./components/Leave";
 import LikeView from "./components/Like";
 import MatchingView from "./components/Matching";
