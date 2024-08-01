@@ -17,6 +17,8 @@ public interface MemberInfoRepository extends JpaRepository<MemberInfo, Long> {
             "WHERE mi.searchId = :searchId")
     Optional<SearchedMemberDto> findSearcherResponseBySearchId(@Param("searchId") String searchId);
 
+    boolean existsBySearchId(String searchId);
+
     @Modifying
     @Query("update MemberInfo i set i.matchingMode = :matchingMode where i.member.id = :memberId")
     void updateMatchingMode(@Param("memberId") Long memberId, @Param("matchingMode") boolean matchingMode);

@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.member.service;
 
 import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
+import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
@@ -39,19 +40,28 @@ public class MemberService {
         }
     }
 
+    public CheckSearchIdResponse checkDuplicatedSearchId(String searchId){
+        if(searchId == null){
+            throw new BaseException(MemberErrorCode.INVALID_SEARCHID);
+        }
+
+        boolean isDuplicated = memberInfoRepository.existsBySearchId(searchId);
+        return CheckSearchIdResponse.of(isDuplicated);
+    }
+
     @Transactional
-    public void changeMatchingMode(Long memberId, MatchingModeRequest matchingModeRequest){
-        if(memberId == null){
+    public void changeMatchingMode(Long memberId, MatchingModeRequest matchingModeRequest) {
+        if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
         boolean matchingMode = matchingModeRequest.isMatchingMode();
         MatchingVisibility matchingVisibility = matchingModeRequest.getMatchingVisibility();
-        if(matchingMode && matchingVisibility == null){
+        if (matchingMode && matchingVisibility == null) {
             throw new BaseException(CommonErrorCode.BAD_REQUEST);
         }
 
-        if(matchingMode){
+        if (matchingMode) {
             memberInfoRepository.updateMatchingModeAndVisibility(memberId, matchingMode, matchingVisibility);
             return;
         }
