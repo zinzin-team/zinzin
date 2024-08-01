@@ -7,7 +7,7 @@ import LeaveView from "./components/Leave";
 import LikeView from "./components/Like";
 import MatchingView from "./components/Matching";
 import MypageView from "./components/Mypage";
-import SignupView from "./components/Signup";
+import SignupView from "./components/signup/Signup";
 import Navbar from "./components/Navbar"; 
 import CreatecardView from './components/Createcard';
 import UpdatecardView from './components/Updatecard';
