@@ -31,4 +31,21 @@ public class MemberAuthResponseDto {
         this.isUser = isUser;
         this.email = email;
     }
+
+    public static MemberAuthResponseDto createTokenResponse(String accessToken, String refreshToken) {
+        return tokenBuilder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .isUser(true)
+                .build();
+    }
+
+    public static MemberAuthResponseDto createRegisterResponse(String sub, String email) {
+        return registerBuilder()
+                .sub(sub)
+                .role(Role.USER)
+                .isUser(false)
+                .email(email)
+                .build();
+    }
 }

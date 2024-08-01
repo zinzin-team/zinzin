@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.member.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "random_nickname")
@@ -10,5 +11,6 @@ public class RandomNickname {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Getter
     private String nickname;
 }

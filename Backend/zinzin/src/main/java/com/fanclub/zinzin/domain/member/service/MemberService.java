@@ -6,6 +6,7 @@ import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
+import com.fanclub.zinzin.domain.member.entity.RandomNickname;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
@@ -16,7 +17,10 @@ import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +31,15 @@ public class MemberService {
     private final PersonRepository personRepository;
     private final RandomNicknameRepository randomNicknameRepository;
 
+    @Value("${random-nickname.size}")
+    private int randomNicknameSize;
+
     public void registerNewMember(MemberRegisterDto memberRegisterDto) {
 
         try {
-            String randomNickname = randomNicknameRepository.getRandomNickname();
-            memberRegisterDto.setNickname(randomNickname);
-
             Member member = memberRegisterDto.toMemberEntity();
             memberRepository.save(member);
-            MemberInfo memberInfo = memberRegisterDto.toMemberInfoEntity(member);
+            MemberInfo memberInfo = memberRegisterDto.toMemberInfoEntity(member, getRandomNickname().getNickname());
             memberInfoRepository.save(memberInfo);
 
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
@@ -45,8 +49,8 @@ public class MemberService {
         }
     }
 
-    public CheckSearchIdResponse checkDuplicatedSearchId(String searchId){
-        if(searchId == null){
+    public CheckSearchIdResponse checkDuplicatedSearchId(String searchId) {
+        if (searchId == null) {
             throw new BaseException(MemberErrorCode.INVALID_SEARCHID);
         }
 
@@ -73,5 +77,13 @@ public class MemberService {
             return;
         }
         memberInfoRepository.updateMatchingMode(memberId, matchingMode);
+    }
+
+    public RandomNickname getRandomNickname() {
+        Random random = new Random();
+        int randomId = random.nextInt(randomNicknameSize);
+
+        return randomNicknameRepository.findById((long) randomId)
+                .orElseThrow(() -> new BaseException(CommonErrorCode.INTERNAL_SERVER_ERROR));
     }
 }

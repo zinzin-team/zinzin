@@ -47,10 +47,8 @@ public class OAuth2Controller {
             String accessToken = tokensMap.get("accessToken");
             String refreshToken = tokensMap.get("refreshToken");
 
-            MemberAuthResponseDto memberAuthResponseDto = new MemberAuthResponseDto(accessToken, refreshToken, true);
-            return ResponseEntity.ok(memberAuthResponseDto);
+            return ResponseEntity.ok(MemberAuthResponseDto.createTokenResponse(accessToken, refreshToken));
         }
-        MemberAuthResponseDto memberAuthResponseDto = new MemberAuthResponseDto(sub, Role.USER, false, email);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(memberAuthResponseDto);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MemberAuthResponseDto.createRegisterResponse(sub, email));
     }
 }
