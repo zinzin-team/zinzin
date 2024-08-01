@@ -20,10 +20,10 @@ public interface MemberInfoRepository extends JpaRepository<MemberInfo, Long> {
     boolean existsBySearchId(String searchId);
 
     @Modifying
-    @Query("update MemberInfo i set i.matchingMode = :matchingMode where i.member.id = :memberId")
+    @Query("update MemberInfo i set i.matchingMode = :matchingMode, i.matchingModeLog = CURRENT_TIMESTAMP where i.member.id = :memberId")
     void updateMatchingMode(@Param("memberId") Long memberId, @Param("matchingMode") boolean matchingMode);
 
     @Modifying
-    @Query("update MemberInfo i set i.matchingMode = :matchingMode, i.matchingVisibility = :matchingVisibility where i.member.id = :memberId")
+    @Query("update MemberInfo i set i.matchingMode = :matchingMode, i.matchingVisibility = :matchingVisibility, i.matchingModeLog = CURRENT_TIMESTAMP where i.member.id = :memberId")
     void updateMatchingModeAndVisibility(@Param("memberId") Long memberId, @Param("matchingMode") boolean matchingMode, @Param("matchingVisibility") MatchingVisibility matchingVisibility);
 }
