@@ -17,6 +17,10 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
   neo4j:
     uri: bolt://${neo4j.host}:${neo4j.port}
