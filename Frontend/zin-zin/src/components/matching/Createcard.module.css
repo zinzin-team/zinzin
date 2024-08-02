@@ -1,0 +1,103 @@
+.link{
+    text-decoration: none;
+        color: black;
+        margin-top: 50px;
+        margin-left: 15px;
+}
+.link i{
+    
+}
+.createcard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.optionContainer {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 20px;
+}
+
+.optionLabel {
+    flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #b0b0b0;
+    position: relative;
+    outline: none;
+    transition: color 0.3s;
+}
+
+.optionLabel.active {
+    color: #FF9494;
+}
+
+.optionLabel::after {
+    content: '';
+    display: block;
+    margin: 10px auto 0 auto;
+    height: 3px;
+    width: 0%;
+    background: transparent;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.optionLabel.active::after {
+    width: 170px;
+    background: #FF9494;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+
+.deletepicture{
+    border: none;
+    background-color: transparent;
+}
+
+.cardcard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* background-color: red; */
+}
+
+/* .addpic{
+    transform: translateX(-32px);
+}
+
+.deletepic{
+    transform: translateX(-32px);
+} */
+
+.imgimg{
+    border-radius: 16px;
+}
+
+.labellabel{
+    /* transform: translateX(-32px); */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+}
+
+.tmptmp{
+    /* display: block;
+    position: absolute; */
+    padding: 8px;
+}
+
+.tmprelative{
+    position: relative;
+}

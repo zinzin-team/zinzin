@@ -170,7 +170,6 @@ const Matching = () => {
 
     const renderCreateCardContent = () => (
         <div className={styles.match}>
-            <br />
             <img src="/assets/Matchingnocard.png" alt="Matching No Card" />
             <div className={styles.makecard}>
                 <p>새로운 만남을 위해서</p>
@@ -259,8 +258,9 @@ const Matching = () => {
 
     const renderMatchingModeOffContent = () => (
         <div className={styles.match}>
-            <br />
+            <div className={styles.matchoff}>
             <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+            </div>
             <div className={styles.offModeContent}>
                 <p>매칭 OFF 상태 입니다</p>
                 <button onClick={() => navigate('/like')}>지인 현황보기</button>

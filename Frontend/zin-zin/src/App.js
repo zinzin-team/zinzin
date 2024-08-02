@@ -26,7 +26,7 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Navbar를 숨기기
-  const hideHeaderPaths = ['/friend'];
+  const hideHeaderPaths = ['/friend','/create-card','/update-card'];
   const hideNavbarPaths = ['/friend'];
 
   return (

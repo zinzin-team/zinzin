@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-axios.defaults.baseURL = "http://localhost:8080/api"
+axios.defaults.baseURL = "http://i11a304.p.ssafy.io/api"
 root.render(
   <React.StrictMode>
     <App />
