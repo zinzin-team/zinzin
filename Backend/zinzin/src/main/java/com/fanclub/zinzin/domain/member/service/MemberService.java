@@ -1,7 +1,10 @@
 package com.fanclub.zinzin.domain.member.service;
 
+import com.fanclub.zinzin.domain.card.entity.Card;
+import com.fanclub.zinzin.domain.card.repository.CardRepository;
 import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
 import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
+import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
@@ -15,6 +18,7 @@ import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +34,7 @@ public class MemberService {
     private final MemberInfoRepository memberInfoRepository;
     private final PersonRepository personRepository;
     private final RandomNicknameRepository randomNicknameRepository;
+    private final CardRepository cardRepository;
 
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
@@ -85,5 +90,16 @@ public class MemberService {
 
         return randomNicknameRepository.findById((long) randomId)
                 .orElseThrow(() -> new BaseException(CommonErrorCode.INTERNAL_SERVER_ERROR));
+    }
+
+    public MemberInfoResponse getMemberInfo(HttpServletRequest request) {
+        if (request.getAttribute("memberId") == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId((Long) request.getAttribute("memberId"))
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+        Card card = cardRepository.findCardByMemberId((Long) request.getAttribute("memberId")).orElse(null);
+        return MemberInfoResponse.of(memberInfo, card);
     }
 }
