@@ -19,4 +19,19 @@ public class CardTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private Tag tag;
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public static CardTag createCard(Card card, Tag tag) {
+        CardTag cardTag = new CardTag();
+        cardTag.setCard(card);
+        cardTag.setTag(tag);
+        return cardTag;
+    }
 }
