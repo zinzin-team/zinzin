@@ -14,10 +14,25 @@ public class Card extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String info;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public static Card createCard(String info, Member member) {
+        Card card = new Card();
+        card.setMember(member);
+        card.setInfo(info);
+        return card;
+    }
 }

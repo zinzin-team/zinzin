@@ -18,4 +18,19 @@ public class CardImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card card;
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public static CardImage createCard(Card card, String image) {
+        CardImage cardImage = new CardImage();
+        cardImage.setCard(card);
+        cardImage.setImage(image);
+        return cardImage;
+    }
 }
