@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.member.controller;
 
 import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
 import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
+import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,5 +33,10 @@ public class MemberController {
     public ResponseEntity<?> changeMatchingMode(HttpServletRequest request, @RequestBody MatchingModeRequest matchingModeRequest) {
         memberService.changeMatchingMode((Long) request.getAttribute("memberId"), matchingModeRequest);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<MemberInfoResponse> getOwnInfo(HttpServletRequest request){
+        return ResponseEntity.ok(memberService.getMemberInfo(request));
     }
 }
