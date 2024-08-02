@@ -114,7 +114,6 @@ public class OAuth2Service {
                 .queryParam("access_token", kakaoAccessToken)
                 .toUriString();
 
-
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
