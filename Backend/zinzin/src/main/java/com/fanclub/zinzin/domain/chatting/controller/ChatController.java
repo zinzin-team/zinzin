@@ -17,7 +17,6 @@ public class ChatController {
 
     @GetMapping("/rooms")
     public ResponseEntity<?> getRooms(HttpServletRequest request) {
-//        return ResponseEntity.ok(chatService.getChatRoomsByMemberId((Long) request.getAttribute("memberId")));
-        return ResponseEntity.ok(chatService.getChatRoomsByMemberId(1L));
+        return ResponseEntity.ok(chatService.getChatRoomsByMemberId((Long) request.getAttribute("memberId")));
     }
 }
