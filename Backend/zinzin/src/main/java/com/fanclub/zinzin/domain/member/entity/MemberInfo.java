@@ -49,12 +49,17 @@ public class MemberInfo {
 
     @Builder
     public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
-        this.profileImage = (profileImage==null)?"default.jpg":profileImage;
+        this.profileImage = (profileImage == null) ? "default.jpg" : profileImage;
         this.nickname = nickname;
         this.searchId = searchId;
         this.matchingVisibility = matchingVisibility;
         this.matchingMode = matchingMode;
         this.member = member;
 
+    }
+
+    @Transient
+    public Long getMemberId() {
+        return member != null ? member.getId() : null;
     }
 }
