@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.domain.mathcing.dto;
+package com.fanclub.zinzin.domain.person.dto;
 
 import com.fanclub.zinzin.domain.member.entity.Gender;
 import lombok.Getter;

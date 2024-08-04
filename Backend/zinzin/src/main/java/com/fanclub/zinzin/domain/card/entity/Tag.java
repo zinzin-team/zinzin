@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.card.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -12,6 +13,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(length = 50, nullable = false, updatable = false)
     private String content;
 }

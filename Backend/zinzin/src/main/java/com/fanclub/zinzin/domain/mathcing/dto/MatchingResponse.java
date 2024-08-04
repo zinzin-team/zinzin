@@ -1,23 +1,23 @@
 package com.fanclub.zinzin.domain.mathcing.dto;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
-
 @Getter
 public class MatchingResponse {
-    private final List<MatchingPartner> matchingPartners;
+    private final int totalCnt;
+    private final List<Matching> matchings;
 
     @Builder
-    private MatchingResponse(List<MatchingPartner> matchingPartners){
-        this.matchingPartners = matchingPartners;
+    private MatchingResponse(List<Matching> matchings){
+        this.totalCnt = matchings.size();
+        this.matchings = matchings;
     }
 
-    public static MatchingResponse of(List<MatchingPartner> matchingPartners){
+    public static MatchingResponse of(List<Matching> matchings){
         return MatchingResponse.builder()
-                .matchingPartners(matchingPartners)
+                .matchings(matchings)
                 .build();
     }
 }

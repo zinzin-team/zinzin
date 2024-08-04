@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.person.repository;
 
-import com.fanclub.zinzin.domain.mathcing.dto.MatchingPartner;
+import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
+import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -13,7 +14,11 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
     void updateMatchingMode(Long memberId, boolean matchingMode);
 
     @Query("MATCH (me:Person{member_id: $memberId})-[:FOLLOW]->(mate:Person)-[:FOLLOW]->(matching:Person) " +
-            "WHERE me.gender <> matching.gender AND NOT (matching)-[:FOLLOW]->(me) " +
+            "WHERE me.gender <> matching.gender AND NOT (matching)-[:FOLLOW]->(me) AND matching.card_id IS NOT NULL " +
             "RETURN DISTINCT matching")
-    List<MatchingPartner> getMatchingPartner(Long memberId);
+    List<MatchingPartner> getMatchingPartners(Long memberId);
+
+    @Query("MATCH (me:Person{member_id: $memberId})-[:FOLLOW]->(mate:Person)-[:FOLLOW]->(matching:Person{member_id: $matchingPartnerId}) " +
+            "RETURN DISTINCT mate")
+    List<Mate> getMates(Long memberId, Long matchingPartnerId);
 }

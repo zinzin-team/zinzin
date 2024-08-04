@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.card.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -16,6 +17,7 @@ public class CardTag {
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card card;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private Tag tag;

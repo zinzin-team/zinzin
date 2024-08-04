@@ -25,7 +25,9 @@ public class Card extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "card")
     private List<CardImage> cardImages;
-    
+
+    @OneToMany(mappedBy = "card")
+    private List<CardTag> tags;
 
     public void setInfo(String info) {
         this.info = info;
