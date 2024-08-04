@@ -62,7 +62,7 @@ letter-spacing: -0.4px;
       }
 
   .offModeContent {
-    margin-top: 20px;
+    margin-top: 43px;
     width: 290px;
 height: 193px;
     background-color: white;
@@ -82,12 +82,11 @@ height: 193px;
 }
 
 .offModeContent p {
-  color: #000;
   font-family: 'Pretendard', sans-serif;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  font-size: 21px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
   margin-bottom: 35px;
 }
 

@@ -194,40 +194,49 @@
                             <div>
                             </div>
                         </div>
-                        <div>
-
-                            <button onClick={() => setSelectedOption('option2')}>다음으로</button>
+                        <div className={styles.containerbtn}>
+                            <button className={styles.nextbtn} onClick={() => setSelectedOption('option2')}>다음으로</button>
                         </div>
 
                         </div>
                     )}
                     {selectedOption === 'option2' && (
                         <div>
-                            <div>나와 어울리는 태그를 선택해 주세요 (최대 5개)</div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                {tagOptions.map((tag, index) => (
-                                    <label key={index} style={{ marginRight: '10px' }}>
-                                        <input
-                                            type="checkbox"
-                                            value={tag}
-                                            onChange={handleTagChange}
-                                            checked={selectedTags.includes(tag)}
-                                        />
-                                        {tag}
-                                    </label>
-                                ))}
-                            </div>
-                            <div>나를 한줄로 소개해 보세요</div>
+                            <div className={styles.tagtext}>
+                            <p>나와 어울리는 태그 5가지를 선택해 주세요</p>
+                            <div className={styles.tagtag} style={{ display: 'flex', flexWrap: 'wrap' }}>
+    {tagOptions.map((tag, index) => (
+        <div className={styles.tagbox} key={index} >
+            <input
+                type="checkbox"
+                id={`tag${index}`}
+                value={tag}
+                onChange={handleTagChange}
+                checked={selectedTags.includes(tag)}
+                className={styles.hiddenCheckbox}
+            />
+            <label
+                htmlFor={`tag${index}`}
+                className={`${styles.labeltag} ${selectedTags.includes(tag) ? styles.checked : ''}`}
+            >
+                {tag}
+            </label>
+        </div>
+    ))}
+</div>
+                            <p>나를 한줄로 소개해 보세요</p>
                             <textarea
-                                value={introduction}
-                                onChange={handleIntroductionChange}
-                                maxLength={100}
-                                placeholder="100자 제한"
-                                rows={3}
-                                style={{ width: '100%', resize: 'none' }}
-                            />
-                            <div>{charCount}/100</div> 
-                            <button type="submit">저장하기</button>
+    value={introduction}
+    onChange={handleIntroductionChange}
+    maxLength={100}
+    rows={3}
+    className={styles.textareaCustom}
+/>
+<div className={styles.charCount}>{charCount}/100</div>
+                            </div>
+                            <div className={styles.containerbtn}>
+                            <button className={styles.nextbtn} type="submit">저장하기</button>
+                            </div>
                         </div>
                     )}
                 </form>
