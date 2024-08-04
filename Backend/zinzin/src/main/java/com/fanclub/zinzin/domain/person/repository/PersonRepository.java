@@ -14,7 +14,10 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
     void updateMatchingMode(Long memberId, boolean matchingMode);
 
     @Query("MATCH (me:Person{member_id: $memberId})-[:FOLLOW]->(mate:Person)-[:FOLLOW]->(matching:Person) " +
-            "WHERE me.gender <> matching.gender AND NOT (matching)-[:FOLLOW]->(me) AND matching.card_id IS NOT NULL " +
+            "WHERE me.gender <> matching.gender " +
+            "AND NOT (matching)-[:FOLLOW]->(me) " +
+            "AND matching.card_id IS NOT NULL " +
+            "AND NOT (me)-[:INTEREST|BLOCKED|FOLLOW]->(matching) " +
             "RETURN DISTINCT matching")
     List<MatchingPartner> getMatchingPartners(Long memberId);
 
