@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.domain.mathcing.dto;
+package com.fanclub.zinzin.domain.matching.dto;
 
 import com.fanclub.zinzin.domain.member.entity.Gender;
 import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 public class Matching {
-    private final int order;
+    private final int position;
     private final boolean checked;
     private final Long memberId;
     private final String nickname;
@@ -20,8 +20,8 @@ public class Matching {
     private final List<Mate> mates;
 
     @Builder
-    private Matching(Long memberId, Gender gender, CardInfo card, List<Mate> mates, String nickname, int order, boolean checked) {
-        this.order = order;
+    private Matching(Long memberId, Gender gender, CardInfo card, List<Mate> mates, String nickname, int position, boolean checked) {
+        this.position = position;
         this.checked = checked;
         this.memberId = memberId;
         this.nickname = nickname;
@@ -30,14 +30,14 @@ public class Matching {
         this.mates = mates;
     }
 
-    public static Matching of(MatchingPartner matchingPartner, CardInfo card, List<Mate> mates, int order, boolean checked){
+    public static Matching of(MatchingPartner matchingPartner, CardInfo card, List<Mate> mates, int position, boolean checked){
         return Matching.builder()
                 .memberId(matchingPartner.getMemberId())
                 .gender(matchingPartner.getGender())
                 .card(card)
                 .mates(mates)
                 .nickname(matchingPartner.getNickname())
-                .order(order)
+                .position(position)
                 .checked(checked)
                 .build();
     }

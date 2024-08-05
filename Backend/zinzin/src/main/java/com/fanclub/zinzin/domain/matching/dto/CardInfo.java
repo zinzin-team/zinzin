@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.domain.mathcing.dto;
+package com.fanclub.zinzin.domain.matching.dto;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.entity.CardImage;
@@ -8,12 +8,14 @@ import lombok.Getter;
 
 @Getter
 public class CardInfo {
+    private final Long cardId;
     private final String info;
     private final List<String> images;
     private final List<String> tags;
 
     @Builder
-    private CardInfo(String info, List<String> images, List<String> tags) {
+    private CardInfo(Long cardId, String info, List<String> images, List<String> tags) {
+        this.cardId = cardId;
         this.info = info;
         this.images = images;
         this.tags = tags;
@@ -29,6 +31,7 @@ public class CardInfo {
                 .toList();
 
         return CardInfo.builder()
+                .cardId(card.getId())
                 .info(card.getInfo())
                 .images(images)
                 .tags(tags)

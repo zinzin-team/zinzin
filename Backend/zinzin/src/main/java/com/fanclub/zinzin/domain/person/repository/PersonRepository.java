@@ -23,5 +23,7 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     @Query("MATCH (me:Person{member_id: $memberId})-[:FOLLOW]->(mate:Person)-[:FOLLOW]->(matching:Person{member_id: $matchingPartnerId}) " +
             "RETURN DISTINCT mate")
-    List<Mate> getMates(Long memberId, Long matchingPartnerId);
+    List<Mate> getMatesByMatchingPartnerId(Long memberId, Long matchingPartnerId);
+
+    MatchingPartner getPersonByCardId(Long cardId);
 }

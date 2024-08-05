@@ -1,7 +1,7 @@
-package com.fanclub.zinzin.domain.mathcing.controller;
+package com.fanclub.zinzin.domain.matching.controller;
 
-import com.fanclub.zinzin.domain.mathcing.dto.MatchingResponse;
-import com.fanclub.zinzin.domain.mathcing.service.MatchingService;
+import com.fanclub.zinzin.domain.matching.dto.MatchingResponse;
+import com.fanclub.zinzin.domain.matching.service.MatchingService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

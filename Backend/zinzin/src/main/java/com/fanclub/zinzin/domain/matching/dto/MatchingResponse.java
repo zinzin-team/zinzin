@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.domain.mathcing.dto;
+package com.fanclub.zinzin.domain.matching.dto;
 
 import java.util.List;
 import lombok.Builder;
