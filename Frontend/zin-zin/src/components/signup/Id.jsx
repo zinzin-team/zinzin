@@ -15,10 +15,12 @@ const Id = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>김윤지 님, 환영해요!</h2>
-      <p className={styles.description}>지인의 지인을 소개받고</p>
-      <p className={styles.dot}>·</p>
-      <p className={styles.description}>지인과 지인을 맺어줘요!</p>
+      <div>
+        <h2 className={styles.title}>김윤지 님, 환영해요!</h2>
+        <p className={styles.description}>지인의 지인을 소개받고</p>
+        <p className={styles.dot}>·</p>
+        <p className={styles.description}>지인과 지인을 맺어줘요!</p>
+      </div>
       <div className={styles.idContainer}>
         <div className={styles.inputGroup}>
           <label className={styles.inputTitle}>ID</label>
