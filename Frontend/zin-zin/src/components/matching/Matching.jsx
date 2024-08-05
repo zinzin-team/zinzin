@@ -270,7 +270,7 @@ const Matching = () => {
     );
 
     const getContent = () => {
-        return renderMatchingModeOffContent(); // 나중에 지우기
+        return renderViewOtherCardsContent(); // 나중에 지우기
         if (!cardData) {
             return null;
         }
