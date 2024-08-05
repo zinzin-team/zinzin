@@ -30,6 +30,7 @@ public class CardService {
     private final CardTagRepository cardTagRepository;
     private final TagRepository tagRepository;
     private final MemberRepository memberRepository;
+    private final ImageStorageService imageStorageService;
 
     @Transactional
     public Card createCard(CardRequest cardRequest, Long memberId) {
@@ -57,7 +58,10 @@ public class CardService {
         Card newCard = cardRepository.save(card);
 
         List<CardImage> images = cardRequest.getImages().stream()
-                .map(image -> CardImage.createCard(newCard, image))
+                .map(image -> {
+                    String imagePath = imageStorageService.storeFile(image);
+                    return CardImage.createCard(newCard, imagePath);
+                })
                 .collect(Collectors.toList());
         cardImageRepository.saveAll(images);
 
@@ -101,7 +105,10 @@ public class CardService {
         card.setInfo(cardRequest.getInfo());
 
         List<CardImage> newImages = cardRequest.getImages().stream()
-                .map(image -> CardImage.createCard(card, image))
+                .map(image -> {
+                    String imagePath = imageStorageService.storeFile(image);
+                    return CardImage.createCard(card, imagePath);
+                })
                 .collect(Collectors.toList());
         cardImageRepository.deleteByCard(card);
         cardImageRepository.saveAll(newImages);
