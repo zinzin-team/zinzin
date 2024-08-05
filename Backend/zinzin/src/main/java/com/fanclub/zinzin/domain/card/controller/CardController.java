@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.card.controller;
 
 import com.fanclub.zinzin.domain.card.dto.CardRequest;
+import com.fanclub.zinzin.domain.card.dto.CardResponse;
 import com.fanclub.zinzin.domain.card.service.CardService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,12 @@ public class CardController {
                                         @RequestPart(required = false) List<MultipartFile> images) {
         cardService.createCard(new CardRequest(cardRequest.getInfo(), images, cardRequest.getTags()), (Long) request.getAttribute("memberId"));
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> readCard(HttpServletRequest request) {
+        CardResponse cardResponse = cardService.readCard((Long) request.getAttribute("memberId"));
+        return ResponseEntity.ok(cardResponse);
     }
 
     @PutMapping("/{cardId}")
