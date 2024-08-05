@@ -1,16 +1,30 @@
 import React from "react";
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const CLIENT_ID = process.env.REACT_APP_KAKAO_REST_API_KEY;
-const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-const KakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const handleKakaoLogin = () => {
-    window.location.href = KakaoURL;
-    navigate('/callback');
+  const handleKakaoLogin = async () => {
+    try {
+      const response = await axios.get('/api/oauth2/authorize');
+      const { accessToken, refreshToken, isUser, sub, role } = response.data;
+  
+      if (isUser) {
+        console.log('로그인 성공');
+        navigate('/match')
+        console.log('AccessToken:', accessToken);
+        console.log('RefreshToken:', refreshToken);
+      } else {
+        console.log('회원 가입 필요');
+        navigate('/signup')
+        console.log('Sub:', sub);
+        console.log('Role:', role);
+      }
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
   };
 
   return (

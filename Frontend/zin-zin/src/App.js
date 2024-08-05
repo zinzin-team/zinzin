@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./components/signup/LoginPage";
-import CallbackPage from "./components/signup/CallbackPage";
+// import CallbackPage from "./components/signup/CallbackPage";
 import SignupView from "./views/SignupView";
 import HomeView from "./views/HomeView";
 import ChatView from "./components/chating/Chat";
@@ -40,7 +40,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/api/oauth2/kakao/callback" element={<CallbackPage />} />
+        {/* <Route path="/api/oauth2/kakao/callback" element={<CallbackPage />} /> */}
         <Route path="/signup/*" element={<SignupView />} />
         <Route path="/chat" element={<ChatView />} />
         <Route path="/leave" element={<LeaveView />} />
