@@ -72,4 +72,50 @@ public class CardService {
 
         return newCard;
     }
+
+    @Transactional
+    public void updateCard(Long cardId, CardRequest cardRequest, Long memberId) {
+
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new BaseException(CardErrorCode.CARD_NOT_FOUND));
+
+        if (!card.getMember().equals(member)) {
+            throw new BaseException(CardErrorCode.AUTHOR_MISMATCH);
+        }
+
+        if (cardRequest.getImages().size() != 3) {
+            throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_IMAGES);
+        }
+
+        if (cardRequest.getTags().size() != 5) {
+            throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
+        }
+
+        card.setInfo(cardRequest.getInfo());
+
+        List<CardImage> newImages = cardRequest.getImages().stream()
+                .map(image -> CardImage.createCard(card, image))
+                .collect(Collectors.toList());
+        cardImageRepository.deleteByCard(card);
+        cardImageRepository.saveAll(newImages);
+
+        List<CardTag> newCardTags = cardRequest.getTags().stream()
+                .map(tagContent -> {
+                    Tag tag = tagRepository.findByContent(tagContent)
+                            .orElseThrow(() -> new BaseException(CardErrorCode.TAG_NOT_FOUND));
+                    return CardTag.createCard(card, tag);
+                })
+                .collect(Collectors.toList());
+        cardTagRepository.deleteByCard(card);
+        cardTagRepository.saveAll(newCardTags);
+
+        cardRepository.save(card);
+    }
 }

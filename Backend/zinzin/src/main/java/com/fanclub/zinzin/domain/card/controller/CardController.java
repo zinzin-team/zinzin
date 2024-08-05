@@ -20,4 +20,10 @@ public class CardController {
         cardService.createCard(cardRequest, (Long) request.getAttribute("memberId"));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/{cardId}")
+    public ResponseEntity<?> updateCard(HttpServletRequest request, @PathVariable("cardId") Long cardId, @RequestBody CardRequest cardRequest) {
+        cardService.updateCard(cardId, cardRequest, (Long) request.getAttribute("memberId"));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
