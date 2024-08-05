@@ -62,4 +62,7 @@ public class MemberInfo {
     public Long getMemberId() {
         return member != null ? member.getId() : null;
     }
+
+    @Transient
+    public String getMemberName() {return member != null ? member.getName() : null;}
 }

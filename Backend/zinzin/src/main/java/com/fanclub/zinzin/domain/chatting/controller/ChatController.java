@@ -1,22 +1,23 @@
 package com.fanclub.zinzin.domain.chatting.controller;
 
-import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.fanclub.zinzin.domain.chatting.dto.RequestMessageDto;
+import com.fanclub.zinzin.domain.chatting.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/chat")
 @RequiredArgsConstructor
 public class ChatController {
+    private final SimpMessagingTemplate messagingTemplate;
+    private final ChatService chatService;
 
-    private final ChatRoomService chatService;
+    @MessageMapping("/{roomId}")
+    public void receiveMessage(@DestinationVariable Long roomId, RequestMessageDto chat) {
+        chatService.saveChatMessage(chat);
 
-    @GetMapping("/rooms")
-    public ResponseEntity<?> getRooms(HttpServletRequest request) {
-        return ResponseEntity.ok(chatService.getChatRoomsByMemberId((Long) request.getAttribute("memberId")));
+        messagingTemplate.convertAndSend("/sub/chatroom/" + chat.getRoomId());
     }
 }
