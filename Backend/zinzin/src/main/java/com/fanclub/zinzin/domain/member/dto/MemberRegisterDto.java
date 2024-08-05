@@ -14,7 +14,7 @@ public class MemberRegisterDto {
     private final String sub;
     private final LocalDate birth;
     private final Gender gender;
-    private final String nickname;
+    private String nickname;
     private final String searchId;
     private final MatchingVisibility matchingVisibility;
     private final boolean matchingMode;
@@ -29,7 +29,7 @@ public class MemberRegisterDto {
                 .build();
     }
 
-    public MemberInfo toMemberInfoEntity(Member member) {
+    public MemberInfo toMemberInfoEntity(Member member, String nickname) {
         return MemberInfo.builder()
                 .nickname(nickname)
                 .searchId(searchId)
@@ -39,7 +39,7 @@ public class MemberRegisterDto {
                 .build();
     }
 
-    public Person toPersonEntity(Member member, MemberInfo memberInfo){
+    public Person toPersonEntity(Member member, MemberInfo memberInfo) {
         return Person.builder()
                 .memberId(member.getId())
                 .name(name)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FriendtabNavbar from './FriendtabNavbar';
 import KakaoFriendsList from './KakaoFriendsList';
 import AcquaintancesList from './AcquaintancesList';
+import Searchfriend from './Searchfriend';
 import RequestBox from './RequestBox';
 import styles from './Friends.module.css';
 
@@ -26,7 +27,7 @@ const Friends = () => {
   return (
     <div className={styles.friendsContainer}>
       <FriendtabNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 'friends' ? (
+      {activeTab === 'friends' && (
         <>
           <div className={styles.requestSection}>
             <p className={styles.requestText}>지인 요청을 수락할까요?</p>
@@ -34,9 +35,9 @@ const Friends = () => {
           </div>
           <KakaoFriendsList friends={friends} />
         </>
-      ) : (
-        <AcquaintancesList acquaintances={acquaintances} />
       )}
+      {activeTab === 'acquaintances' && <AcquaintancesList acquaintances={acquaintances} />}
+      {activeTab === 'search' && <Searchfriend />}
     </div>
   );
 };

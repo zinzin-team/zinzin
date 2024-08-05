@@ -13,13 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class TokenAuthenticationFilter implements Filter {
     private final JwtUtil jwtUtil;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final List<String> EXCLUDE_URLS = Arrays.asList(
+            "/api/oauth2",
+            "/api/login",
+            "/api/mates/kakao"
+    );
 
     @Autowired
     public TokenAuthenticationFilter(JwtUtil jwtUtil) {
@@ -31,6 +38,12 @@ public class TokenAuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+        String path = ((HttpServletRequest) request).getRequestURI();
+        if(EXCLUDE_URLS.stream().anyMatch(path::startsWith)){
+            chain.doFilter(request, response);
+            return;
+        }
 
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
@@ -89,4 +102,3 @@ public class TokenAuthenticationFilter implements Filter {
         response.getWriter().write(jsonResponse);
     }
 }
-

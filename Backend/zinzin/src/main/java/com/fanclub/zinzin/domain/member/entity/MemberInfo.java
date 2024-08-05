@@ -1,10 +1,7 @@
 package com.fanclub.zinzin.domain.member.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,9 +22,11 @@ public class MemberInfo {
     @Getter
     private String profileImage;
 
+    @Getter
     @Column(length = 30, nullable = false)
     private String nickname;
 
+    @Getter
     @Column(length = 15, nullable = false)
     private String searchId;
 
@@ -35,13 +34,16 @@ public class MemberInfo {
     @ColumnDefault("'PRIVATE'")
     private MatchingVisibility matchingVisibility;
 
+    @Getter
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean matchingMode;
 
+    @Getter
     @LastModifiedDate
     private LocalDateTime matchingModeLog;
 
-    @OneToOne
+    @Getter
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
@@ -53,5 +55,6 @@ public class MemberInfo {
         this.matchingVisibility = matchingVisibility;
         this.matchingMode = matchingMode;
         this.member = member;
+
     }
 }

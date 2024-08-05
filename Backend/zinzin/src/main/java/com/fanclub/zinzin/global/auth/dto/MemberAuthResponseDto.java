@@ -8,25 +8,43 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class MemberAuthResponseDto {
     private String accessToken;
     private String refreshToken;
     private boolean isUser;
+    private String email;
     private String sub;
     private Role role;
 
-    @Builder(builderMethodName = "tokenBuilder")
+    @Builder(builderClassName = "tokenBuilder", builderMethodName = "tokenBuilder")
     public MemberAuthResponseDto(String accessToken, String refreshToken, boolean isUser) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.isUser = isUser;
     }
 
-    @Builder(builderMethodName = "registerBuilder")
-    public MemberAuthResponseDto(String sub, Role role, boolean isUser) {
+    @Builder(builderClassName = "registerBuilder", builderMethodName = "registerBuilder")
+    public MemberAuthResponseDto(String sub, Role role, boolean isUser, String email) {
         this.sub = sub;
         this.role = role;
         this.isUser = isUser;
+        this.email = email;
+    }
+
+    public static MemberAuthResponseDto createTokenResponse(String accessToken, String refreshToken) {
+        return tokenBuilder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .isUser(true)
+                .build();
+    }
+
+    public static MemberAuthResponseDto createRegisterResponse(String sub, String email) {
+        return registerBuilder()
+                .sub(sub)
+                .role(Role.USER)
+                .isUser(false)
+                .email(email)
+                .build();
     }
 }
