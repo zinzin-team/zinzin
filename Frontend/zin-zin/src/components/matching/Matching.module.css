@@ -62,7 +62,7 @@ letter-spacing: -0.4px;
       }
 
   .offModeContent {
-    margin-top: 43px;
+    margin-top: 23px;
     width: 290px;
 height: 193px;
     background-color: white;
@@ -107,20 +107,6 @@ line-height: 90%;
 letter-spacing: -0.4px;
 }
 
-.exhaustcard{
-  margin-top: 40px;
-  width: 290px;
-height: 443px;
-  background-color: white;
-  border-radius: 16px;
-  text-align: center;
-}
-
-.exhaustcard img{
-  margin-top: 40px;
-  width: 232px;
-  height: 232px;
-}
 
 /* 여기 밑에는 수정하기 */
 
@@ -163,4 +149,59 @@ height: 443px;
 
 .buttons {
   margin-top: 20px;
+}
+
+/*    */
+
+.title {
+  font-family: 'Pretendard', sans-serif;
+  margin-top: 36px;
+  font-size: 28px;
+  font-style: normal;
+font-weight: 1000; 
+}
+
+.exhaustcard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 290px;
+height: 483px;
+  background-color: white;
+  border-radius: 16px;
+  text-align: center;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+
+.exhaustcard img{
+  margin-top: 28px;
+  margin-bottom: 35px;
+  width: 232px;
+  height: 232px;
+}
+
+.subtitle {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.inviteButton {
+  font-family: 'Pretendard', sans-serif;
+  width: 248px;
+  height: 40px;
+  background-color: #ff9494;
+  color: white;
+  border: none;
+  border-radius: 200px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }

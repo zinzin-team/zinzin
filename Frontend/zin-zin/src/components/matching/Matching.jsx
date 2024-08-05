@@ -184,13 +184,14 @@ const Matching = () => {
             if (!matchingCardData || matchingCardData.length < 3) {
                 return (
                     <div className={styles.match}>
-                        <div className={styles.exhaustcard}>
-                            <p>지인이 부족해요...</p>
-                            <img src="/assets/Nomorecard.png" alt="No More Card" />
-                            <p>더 많은 카드를 받기 위해서</p>
-                            <button onClick={() => navigate('/friend')}>지인 초대하기</button>
-                        </div>
+                    <div className={styles.exhaustcard}>
+                        <p className={styles.title}>지인이 부족해요...</p>
+                        <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                        <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                        <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
                     </div>
+                </div>
+                
                 );
             } else {
                 return (
@@ -269,7 +270,7 @@ const Matching = () => {
     );
 
     const getContent = () => {
-        return renderCreateCardContent(); // 나중에 지우기
+        return renderMatchingModeOffContent(); // 나중에 지우기
         if (!cardData) {
             return null;
         }
