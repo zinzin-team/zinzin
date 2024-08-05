@@ -9,64 +9,104 @@
     display: flex;
     flex-direction: column;
     align-items: center; 
-    /* justify-content: center; */
-    /* height: 100vh;  */
     text-align: center;
   }
 
   .makecard{
-width: 290px;
-height: 229px;
+    width: 290px;
+    height: 229px;
     background-color: white;
     border-radius: 16px;
     text-align: center;
-
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
+  .makecard p:first-child {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6B7280;
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.makecard p:nth-child(2) {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0;
+    margin-bottom: 24px;
+}
+
+
+  .makecard button{
+    width: 248px;
+height: 40px; 
+    border-radius: 200px;
+background: #FF9494;
+border: none  ;
+color: #FFF;
+text-align: center;
+font-family: Pretendard; 
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 90%; 
+letter-spacing: -0.4px;
+      }
+
   .offModeContent {
-    margin-top: 20px;
+    margin-top: 23px;
     width: 290px;
 height: 193px;
     background-color: white;
     border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+.matchoff img{
+  margin-top: 20px;
+  width:   290px;
+  height: auto;
+  border-radius: 20px;
 }
 
 .offModeContent p {
-    font-size: 20px;
-    font-weight: bold;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  margin-bottom: 35px;
 }
 
 
   .offModeContent button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    width: 248px;
+height: 40px; 
+    border-radius: 200px;
+background: #FF9494;
+border: none  ;
+color: #FFF;
+text-align: center;
+font-family: Pretendard; 
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 90%; 
+letter-spacing: -0.4px;
 }
 
-.offModeContent button:hover {
-    background-color: #ff5252;
-    text-align: center;
-}
-
-.exhaustcard{
-  margin-top: 40px;
-  width: 290px;
-height: 443px;
-  background-color: white;
-  border-radius: 16px;
-  text-align: center;
-}
-
-.exhaustcard img{
-  margin-top: 40px;
-  width: 232px;
-  height: 232px;
-}
 
 /* 여기 밑에는 수정하기 */
 
@@ -109,4 +149,59 @@ height: 443px;
 
 .buttons {
   margin-top: 20px;
+}
+
+/*    */
+
+.title {
+  font-family: 'Pretendard', sans-serif;
+  margin-top: 36px;
+  font-size: 28px;
+  font-style: normal;
+font-weight: 1000; 
+}
+
+.exhaustcard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 290px;
+height: 483px;
+  background-color: white;
+  border-radius: 16px;
+  text-align: center;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+
+.exhaustcard img{
+  margin-top: 28px;
+  margin-bottom: 35px;
+  width: 232px;
+  height: 232px;
+}
+
+.subtitle {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.inviteButton {
+  font-family: 'Pretendard', sans-serif;
+  width: 248px;
+  height: 40px;
+  background-color: #ff9494;
+  color: white;
+  border: none;
+  border-radius: 200px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }

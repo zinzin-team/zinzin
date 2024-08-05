@@ -25,7 +25,8 @@ public class TokenAuthenticationFilter implements Filter {
     private static final List<String> EXCLUDE_URLS = Arrays.asList(
             "/api/oauth2",
             "/api/login",
-            "/api/mates/kakao"
+            "/api/mates/kakao",
+            "/api/member/register"
     );
 
     @Autowired
