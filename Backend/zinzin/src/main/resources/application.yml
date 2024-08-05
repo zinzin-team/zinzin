@@ -22,8 +22,8 @@ spring:
     init:
       mode: always
       encoding: UTF-8
-#  file:
-#    upload-dir:   # 이미지 저장 경로
+  file:
+    upload-dir: C:/Users/SSAFY/Desktop/ImageStorageTest   # 이미지 저장 경로
 
   neo4j:
     uri: bolt://${neo4j.host}:${neo4j.port}
