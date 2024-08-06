@@ -39,6 +39,7 @@ public class MemberService {
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
 
+    @Transactional
     public void registerNewMember(MemberRegisterDto memberRegisterDto) {
 
         try {

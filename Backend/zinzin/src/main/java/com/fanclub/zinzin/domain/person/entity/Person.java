@@ -16,6 +16,8 @@ public class Person {
     @Property(name = "member_id")
     private Long memberId;
 
+    private String sub;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +35,8 @@ public class Person {
     private String profileImage;
 
     @Builder
-    private Person(Long memberId, String name, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
+    private Person(String sub, Long memberId, String name, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
+        this.sub = sub;
         this.memberId = memberId;
         this.name = name;
         this.gender = gender;
@@ -46,7 +49,8 @@ public class Person {
     @Override
     public String toString() {
         return "Peron{"+
-                "memberId="+memberId+
+                "sub="+sub+
+                ", memberId="+memberId+
                 ", name="+name+
                 ", gender="+gender+
                 ", cardId="+cardId+
