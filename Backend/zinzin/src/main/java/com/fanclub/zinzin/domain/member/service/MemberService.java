@@ -15,6 +15,8 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
+import com.fanclub.zinzin.global.auth.entity.TempFriend;
+import com.fanclub.zinzin.global.auth.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,6 +38,7 @@ public class MemberService {
     private final PersonRepository personRepository;
     private final RandomNicknameRepository randomNicknameRepository;
     private final CardRepository cardRepository;
+    private final TempFriendRepository tempFriendRepository;
 
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
@@ -50,6 +54,13 @@ public class MemberService {
 
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
             personRepository.save(person);
+
+            List<TempFriend> tempFriends = tempFriendRepository.findAllByMySub(memberRegisterDto.getSub());
+            for(TempFriend tempFriend:tempFriends){
+                personRepository.saveKakaoFriends(tempFriend.getMySub(), tempFriend.getFriendSub(), tempFriend.getFriendName());
+            }
+
+            tempFriendRepository.deleteAll(tempFriends);
         } catch (Exception e) {
             throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
         }

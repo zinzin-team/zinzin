@@ -8,7 +8,13 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
-public interface PersonRepository extends Neo4jRepository<Person, Long> {
+public interface PersonRepository extends Neo4jRepository<Person, String> {
+
+    @Query("MATCH (me:Person {sub: $mySub}) " +
+            "MERGE (friend:Person {sub: $friendSub}) " +
+            "MERGE (me)-[r:KAKAO]->(friend) " +
+            "ON CREATE SET r.kakao_name = $nickname")
+    void saveKakaoFriends(String mySub, String friendSub, String nickname);
 
     @Query("MATCH (p:Person {member_id: $memberId}) SET p.matching_mode = $matchingMode")
     void updateMatchingMode(Long memberId, boolean matchingMode);

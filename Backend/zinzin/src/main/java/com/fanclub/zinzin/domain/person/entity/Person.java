@@ -13,10 +13,10 @@ import org.springframework.data.neo4j.core.schema.Property;
 public class Person {
 
     @Id
+    private String sub;
+
     @Property(name = "member_id")
     private Long memberId;
-
-    private String sub;
 
     private String name;
 
