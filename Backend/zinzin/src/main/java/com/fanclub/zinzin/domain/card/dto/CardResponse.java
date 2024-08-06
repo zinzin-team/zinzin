@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 @Getter
 public class CardResponse {
+    private Long cardId;
     private String info;
     private List<String> images;
     private List<String> tags;
 
     public CardResponse(Card card) {
+        this.cardId = card.getId();
         this.info = card.getInfo();
         this.images = card.getCardImages().stream()
                 .map(cardImage -> cardImage.getImage())
