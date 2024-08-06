@@ -26,4 +26,11 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
     List<Mate> getMatesByMatchingPartnerId(Long memberId, Long matchingPartnerId);
 
     MatchingPartner getPersonByCardId(Long cardId);
+
+    @Query("MATCH (me:Person {member_id: $memberId}) " +
+            "MATCH (matching:Person {member_id: $matchingPartnerId}) " +
+            "MERGE (me)-[r:GET_CARD_OF]->(matching) " +
+            "ON CREATE SET r.rejectCnt = 0 " +
+            "RETURN r")
+    void updateRecommendedRelation(Long memberId, Long matchingPartnerId);
 }

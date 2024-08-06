@@ -68,7 +68,11 @@ public class MatchingService {
 
             Card card = cardRepository.getReferenceById(cardInfo.getCardId());
             recommendedCardRepository.save(RecommendedCard.of(position,false,member,card));
-            position++;
+            personRepository.updateRecommendedRelation(memberId, matchingPartner.getMemberId());
+
+            if(++position > 3){
+                break;
+            }
         }
 
         return MatchingResponse.of(matchings);
