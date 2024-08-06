@@ -2,24 +2,23 @@ package com.fanclub.zinzin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        configSource.registerCorsConfiguration("/**", config);
-        return new CorsFilter(configSource);
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")  // 모든 경로에 대해 CORS를 허용
+                        .allowedOrigins("http://localhost:3000")  // 허용할 도메인
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")  // 허용할 HTTP 메서드
+                        .allowedHeaders("*")  // 허용할 헤더
+                        .allowCredentials(true);  // 자격 증명 사용 허용
+            }
+        };
     }
 }
