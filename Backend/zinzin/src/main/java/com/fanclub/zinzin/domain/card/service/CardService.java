@@ -60,7 +60,7 @@ public class CardService {
 
         List<CardImage> images = cardRequest.getImages().stream()
                 .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image);
+                    String imagePath = imageStorageService.storeFile(image, memberId);
                     return CardImage.createCard(newCard, imagePath);
                 })
                 .collect(Collectors.toList());
@@ -119,7 +119,7 @@ public class CardService {
 
         List<CardImage> newImages = cardRequest.getImages().stream()
                 .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image);
+                    String imagePath = imageStorageService.storeFile(image, memberId);
                     return CardImage.createCard(card, imagePath);
                 })
                 .collect(Collectors.toList());
