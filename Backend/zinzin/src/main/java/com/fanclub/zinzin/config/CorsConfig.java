@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.global.config;
+package com.fanclub.zinzin.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
