@@ -26,7 +26,7 @@ public class ReportService {
         Member reportedMember = memberRepository.findById(request.getTargetId())
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Report report = Report.report(request.getContent(), member, reportedMember);
+        Report report = request.toReportEntity(member, reportedMember);
         reportRepository.save(report);
     }
 }
