@@ -26,7 +26,7 @@ public class CardInfo {
                 .map(CardImage::getImage)
                 .toList();
 
-        List<String> tags = card.getTags().stream()
+        List<String> tags = card.getCardTags().stream()
                 .map(cardTag -> cardTag.getTag().getContent())
                 .toList();
 
