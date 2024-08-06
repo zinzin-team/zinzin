@@ -23,4 +23,24 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_member_id", referencedColumnName = "id")
     private Member reportedMember;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setReportedMember(Member reportedMember) {
+        this.reportedMember = reportedMember;
+    }
+
+    public static Report report(String content, Member member, Member reportedMember) {
+        Report report = new Report();
+        report.setContent(content);
+        report.setMember(member);
+        report.setReportedMember(reportedMember);
+        return report;
+    }
 }
