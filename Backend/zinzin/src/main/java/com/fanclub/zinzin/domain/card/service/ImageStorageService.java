@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class ImageStorageService {
@@ -26,10 +27,19 @@ public class ImageStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, Long memberId) {
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFileName != null && originalFileName.contains(".")){
+                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+
+            String newFileName = memberId.toString() + '-' + UUID.randomUUID().toString() + fileExtension;
+
+            Path targetLocation = this.fileStorageLocation.resolve(newFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
             return targetLocation.toString();
         } catch (IOException ex) {
             throw new BaseException(CardErrorCode.IMAGE_UPLOAD_FAILED);

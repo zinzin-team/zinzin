@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.card.service;
 
 import com.fanclub.zinzin.domain.card.dto.CardRequest;
+import com.fanclub.zinzin.domain.card.dto.CardResponse;
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.entity.CardImage;
 import com.fanclub.zinzin.domain.card.entity.CardTag;
@@ -59,7 +60,7 @@ public class CardService {
 
         List<CardImage> images = cardRequest.getImages().stream()
                 .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image);
+                    String imagePath = imageStorageService.storeFile(image, memberId);
                     return CardImage.createCard(newCard, imagePath);
                 })
                 .collect(Collectors.toList());
@@ -75,6 +76,18 @@ public class CardService {
         cardTagRepository.saveAll(cardTags);
 
         return newCard;
+    }
+
+    @Transactional(readOnly = true)
+    public CardResponse readCard(Long memberId) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        Card card = cardRepository.findCardByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(CardErrorCode.CARD_NOT_FOUND));
+
+        return new CardResponse(card);
     }
 
     @Transactional
@@ -106,7 +119,7 @@ public class CardService {
 
         List<CardImage> newImages = cardRequest.getImages().stream()
                 .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image);
+                    String imagePath = imageStorageService.storeFile(image, memberId);
                     return CardImage.createCard(card, imagePath);
                 })
                 .collect(Collectors.toList());
