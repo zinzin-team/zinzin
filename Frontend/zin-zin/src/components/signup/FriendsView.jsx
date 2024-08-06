@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import FriendtabNavbar from './FriendtabNavbar';
+import FriendtabNavbar from '../components/friends/FriendtabNavbar';
 import KakaoFriendsList from './KakaoFriendsList';
 import AcquaintancesList from './AcquaintancesList';
 import Searchfriend from './Searchfriend';
 import RequestBox from './RequestBox';
 import styles from './Friends.module.css';
 
-const Friends = () => {
+const FriendsView = () => {
   const [activeTab, setActiveTab] = useState('friends');
 
   const requests = [
@@ -42,4 +42,4 @@ const Friends = () => {
   );
 };
 
-export default Friends;
+export default FriendsView;
