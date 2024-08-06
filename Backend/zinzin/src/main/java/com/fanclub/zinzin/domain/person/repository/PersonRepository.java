@@ -18,6 +18,7 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
             "AND matching.matching_mode = true " +
             "AND matching.card_id IS NOT NULL " +
             "AND NOT (me)-[:INTEREST|BLOCKED|FOLLOW]->(matching) " +
+            "AND NOT (me)-[:REJECT_FOLLOW|REQUEST_FOLLOW|UNFOLLOW]-(matching)" +
             "OPTIONAL MATCH (me)-[r:GET_CARD_OF]->(matching) " +
             "WITH matching, r " +
             "ORDER BY CASE WHEN r IS NULL THEN 0 ELSE 1 END, r.rejectCnt " +
