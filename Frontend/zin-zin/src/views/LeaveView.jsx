@@ -1,6 +1,6 @@
 import React from "react";
 
-const Leave = () => {
+const LeaveView = () => {
     return (
         <div>
             탈퇴 탭
@@ -8,4 +8,4 @@ const Leave = () => {
     )
 }
 
-export default Leave
+export default LeaveView

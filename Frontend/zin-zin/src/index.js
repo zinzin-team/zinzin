@@ -8,9 +8,9 @@ import axios from 'axios';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 
