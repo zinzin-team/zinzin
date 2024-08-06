@@ -55,11 +55,13 @@ const Matching = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/cards');
+                const response = await axios.get('/api/cards', {
+                    headers: { 'accesstoken': 'token' }
+                });
                 if (response.data) {
-                    const { matchingMode, existed, card } = response.data;
-                    setCardData({ matchingMode, existed, card });
-                    sessionStorage.setItem('cardData', JSON.stringify({ matchingMode, existed, card }));
+                    const { cardId, tags, info, images } = response.data;
+                    setCardData({ cardId, tags, info, images });
+                    sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
                     console.error('Failed to fetch card data');
                 }
@@ -270,7 +272,7 @@ const Matching = () => {
     );
 
     const getContent = () => {
-        return renderViewOtherCardsContent(); // 나중에 지우기
+        // return renderCreateCardContent(); // 나중에 지우기
         if (!cardData) {
             return null;
         }

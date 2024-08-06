@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+console.log(process.env.REACT_APP_BASE_URL)
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 root.render(
   <React.StrictMode>

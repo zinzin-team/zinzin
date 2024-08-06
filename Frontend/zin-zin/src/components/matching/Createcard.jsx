@@ -51,7 +51,7 @@
 
         const handleSubmit = async (e) => {
             e.preventDefault();
-
+        
             // 검증 로직 추가
             if (selectedFiles.filter(file => file !== null).length < 3) {
                 toast.error("사진을 3개 첨부해야 합니다.");
@@ -62,29 +62,35 @@
                 toast.error("태그를 5개 선택해야 합니다.");
                 return;
             }
-
+        
             const formData = new FormData();
             selectedFiles.forEach((file) => {
                 if (file) {
                     formData.append('images', file); // 'images'는 백엔드에서 기대하는 필드 이름입니다.
                 }
             });
-
-            // 추가 데이터
-            formData.append('info', introduction);
-            selectedTags.forEach((tag, index) => {
-                formData.append(`tags[${index}]`, tag);
+        
+            // JSON 데이터 추가
+            const jsonData = JSON.stringify({
+                info: introduction,
+                tags: selectedTags
             });
-
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            formData.append('data', blob);
+        
             // FormData 내용 콘솔 출력
             for (let [key, value] of formData.entries()) {
                 console.log(key, value);
             }
-
+        
             try {
-                const response = await axios.post('/cards', formData, {
+                const token = sessionStorage.getItem('accesstoken');
+                const response = await axios.post('/api/cards', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'accesstoken': token,
+                        // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+                        // 'Access-Control-Allow-Credentials':'true'
                     }
                 });
                 console.log('Server Response:', response.data);
@@ -92,6 +98,7 @@
                 console.error('Error uploading data:', error);
             }
         };
+        
 
         useEffect(() => {
             console.log(selectedFiles); // 상태가 변경될 때마다 출력
