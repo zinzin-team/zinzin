@@ -18,6 +18,7 @@ public class CardTag {
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private Card card;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private Tag tag;
