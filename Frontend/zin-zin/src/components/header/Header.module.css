@@ -1,18 +1,31 @@
-.friends img{
-    background-color: #FFD1D1;
-    padding: 6px;
-    border-radius: 50%;
-    border: solid 1px rgba(255, 255, 255, 0.50);
+.friends img {
+  background-color: #FFD1D1;
+  padding: 6px;
+  border-radius: 50%;
+  border: solid 1px rgba(255, 255, 255, 0.50);
+}
 
-  }
+.icon {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 51px;
+  margin-right: 37px;
+}
 
-  .icon{
-    display: flex;
-    justify-content: flex-end; /* 왼쪽 정렬 */
-    /* width: 100%; 부모 요소의 전체 너비 사용 */
-    /* padding-top: 51px; 
-    padding-right: 37px; */
-    margin-top: 51px;
-    margin-right: 37px;
+.icon2 {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 50px;
+  margin-left: 37px;
+}
 
-  }
+.logo {
+  width: 35px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

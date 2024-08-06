@@ -8,7 +8,12 @@ const Chat = () => {
     useEffect(() => {
         const fetchChatRooms = async () => {
             try {
-                const response = await axios.get('/api/chat/rooms');
+                const token = sessionStorage.getItem('accesstoken');
+                const response = await axios.get('/api/chat/rooms', {
+                    headers: {
+                        'accesstoken': token 
+                    }
+                });
                 if (response.data.code === 200) {
                     setChatRooms(response.data.data);
                 }
@@ -46,9 +51,9 @@ const Chat = () => {
                 ))
             ) : (
                 <div className={styles.nochattingroom}>
-                <img src="/assets/nochattingroom.png" alt="Matching No Mode" />
-                <p className={styles.nochattingroomtext}>채팅방이 존재하지 않습니다</p>
-            </div>
+                    <img src="/assets/nochattingroom.png" alt="Matching No Mode" />
+                    <p className={styles.nochattingroomtext}>채팅방이 존재하지 않습니다</p>
+                </div>
             )}
         </div>
     );
