@@ -19,7 +19,7 @@ const KakaoCallback = () => {
                 console.log("회원 가입 필요:", data);
                 alert("회원 가입 필요");
                 // 회원 가입 페이지로 이동
-                navigate("/signup");
+                navigate("/signup", { state: { email: data.email, sub: data.sub } });
             }
         } catch (error) {
             console.error("로그인 실패:", error.response ? error.response.data : error.message);
