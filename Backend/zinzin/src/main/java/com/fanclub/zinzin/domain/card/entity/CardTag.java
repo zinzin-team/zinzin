@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="card_tag")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CardTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

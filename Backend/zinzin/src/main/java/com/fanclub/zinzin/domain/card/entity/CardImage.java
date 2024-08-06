@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "card_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CardImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
