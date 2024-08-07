@@ -6,7 +6,6 @@ import { useSwipeable } from 'react-swipeable';
 import Modal from 'react-modal';
 import confetti from 'canvas-confetti'; 
 
-
 Modal.setAppElement('#root'); // This is needed for accessibility reasons
 
 const Matching = () => {
@@ -19,9 +18,14 @@ const Matching = () => {
     const [modalMessage, setModalMessage] = useState("");
     const navigate = useNavigate();
 
+    const testtest = () => {
+        firework();
+        setModalIsOpen(true);
+
+    };
 
     function firework() {
-        var duration = 20 * 100;
+        var duration = 20 * 150;
         var animationEnd = Date.now() + duration;
         var defaults = { startVelocity: 25, spread: 360, ticks: 50, zIndex: 0 };
 
@@ -36,7 +40,7 @@ const Matching = () => {
                 return clearInterval(interval);
             }
 
-            var particleCount = 50 * (timeLeft / duration);
+            var particleCount = 150 * (timeLeft / duration);
             confetti(
                 Object.assign({}, defaults, {
                     particleCount,
@@ -52,14 +56,31 @@ const Matching = () => {
         }, 250);
     }
 
+    const fetchMatchingCards = async () => {
+        try {
+            const response = await axios.get('/api/matchings', {
+                headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
+            });
+            if (response.data && Array.isArray(response.data.matchings)) {
+                setMatchingCardData(response.data.matchings);   
+                console.log(response.data.matchings)
+            } else {
+                console.error('Failed to fetch matching card data');
+            }
+        } catch (error) {
+            console.error('Error fetching matching card data:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('/api/cards', {
-                    headers: { 'accesstoken': 'token' }
+                    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
                 });
                 if (response.data) {
                     const { cardId, tags, info, images } = response.data;
+                    
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
@@ -70,69 +91,73 @@ const Matching = () => {
             }
         };
 
-        const fetchMatchingCards = async () => {
-            try {
-                const response = await axios.get('/api/matchings');
-                if (response.data) {
-                    setMatchingCardData(response.data);
-                } else {
-                    console.error('Failed to fetch matching card data');
-                }
-            } catch (error) {
-                console.error('Error fetching matching card data:', error);
-            }
-        };
 
-        const storedCardData = sessionStorage.getItem('cardData');
-        if (storedCardData) {
-            setCardData(JSON.parse(storedCardData));
-        } else {
+        const storedMatchingMode = true;
+
+        if (storedMatchingMode) {
             fetchData();
-        }
+            const storedCardData = sessionStorage.getItem('cardData');
+            console.log(storedCardData)
+            if(storedCardData){
+                setCardData(JSON.parse(storedCardData));
+                fetchMatchingCards();
+            }
+        } 
 
-        fetchMatchingCards();
+        // fetchMatchingCards();
     }, []);
+
+    useEffect(() => {
+        if (matchingCardData && matchingCardData.length > 0) {
+            const firstUncheckedIndex = matchingCardData.findIndex(card => !card.checked);
+            if (firstUncheckedIndex !== -1) {
+                setCurrentIndex(firstUncheckedIndex);
+            }
+        }
+    }, [matchingCardData]);
 
     const handleCreateCard = () => {
         navigate('/create-card');
     };
 
-    const handleNextCard = () => {
-        if (matchingCardData && matchingCardData.length > 0) {
-            let newIndex = currentIndex;
-            do {
-                newIndex = (newIndex + 1) % matchingCardData.length;
-            } while (matchingCardData[newIndex].checked && newIndex !== currentIndex);
-
-            if (newIndex !== currentIndex) {
-                setCurrentIndex(newIndex);
-                setCurrentImageIndex(0);
-                setIsFront(true);
-            }
-        }
-    };
-
     const handleLikeDislike = async (like) => {
         const currentCard = matchingCardData[currentIndex];
+        const token = sessionStorage.getItem('accesstoken');
         try {
-            const response = await axios.post(`/api/matchings/${currentCard.id}/like`, { like });
+            const response = await axios.post('/api/matchings/like', 
+                { 
+                    cardId: currentCard.card.cardId,
+                    like: like 
+                }, 
+                {
+                    headers: {
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'
+                    }
+                }
+            );
+            currentCard.card.checked = true
+            console.log(response.data)
             if (response.data) {
-                if (response.data.chattingRoom) {
+                setCurrentImageIndex(0);
+                setIsFront(true);
+                if (response.data.matchingSuccess) {
                     firework();
                     setModalMessage("양방향 호감! 채팅방이 생성되었습니다.");
                     setModalIsOpen(true);
-                    setTimeout(() => {
-                        setModalIsOpen(false);
-                        handleNextCard();
-                    }, 2000);
+                    // setTimeout(() => {
+                    //     setModalIsOpen(false);
+                    // }, 3000);
+                    fetchMatchingCards();
                 } else {
-                        handleNextCard();
+                    fetchMatchingCards();
+
                 }
             }
         } catch (error) {
             console.error('Error sending like/dislike:', error);
         }
     };
+    
 
     const handleLike = () => {
         handleLikeDislike(true);
@@ -147,7 +172,7 @@ const Matching = () => {
     };
 
     const handleImageSwipe = (direction) => {
-        const images = matchingCardData[currentIndex].images;
+        const images = matchingCardData[currentIndex].card.image;
         if (direction === 'left') {
             setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
         } else if (direction === 'right') {
@@ -158,11 +183,11 @@ const Matching = () => {
     const handleCardFlip = () => {
         setIsFront(!isFront);
     };
-    const  reportbadperson = () => {
-        alert("신고 되었습니다.")
+
+    const reportbadperson = () => {
+        alert("신고 되었습니다.");
     };
     
-
     const handlers = useSwipeable({
         onSwipedLeft: () => handleImageSwipe('left'),
         onSwipedRight: () => handleImageSwipe('right'),
@@ -182,18 +207,33 @@ const Matching = () => {
     );
 
     const renderViewOtherCardsContent = () => {
-        if (!matchingCardData || matchingCardData.length === 0 || matchingCardData.filter(card => !card.checked).length === 0) {
+    
+        if (!Array.isArray(matchingCardData) || matchingCardData.length === 0) {
+                return (
+                    <div className={styles.match}>
+                        <div className={styles.exhaustcard}>
+                            <p className={styles.title}>지인이 부족해요...</p>
+                            <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                            <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                            <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
+                        </div>
+                    </div>
+                );
+        }
+    
+        const visibleCards = matchingCardData.filter(card => card && !card.checked);
+        console.log(matchingCardData)
+        if (visibleCards.length === 0) {
             if (!matchingCardData || matchingCardData.length < 3) {
                 return (
                     <div className={styles.match}>
-                    <div className={styles.exhaustcard}>
-                        <p className={styles.title}>지인이 부족해요...</p>
-                        <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
-                        <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
-                        <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
+                        <div className={styles.exhaustcard}>
+                            <p className={styles.title}>지인이 부족해요...</p>
+                            <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                            <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                            <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
+                        </div>
                     </div>
-                </div>
-                
                 );
             } else {
                 return (
@@ -207,14 +247,21 @@ const Matching = () => {
                 );
             }
         }
-
-        const visibleCards = matchingCardData.filter(card => !card.checked);
-        const currentCard = visibleCards[currentIndex];
-
+    
+        // Ensure currentIndex is within bounds
+        // if (currentIndex >= visibleCards.length) {
+        //     setCurrentIndex(0);
+        // }
+    
+        const currentCard = matchingCardData[currentIndex];
+        const currentCardInfo = currentCard.card;
+        console.log(currentIndex)
+    
+        // Temporary test images
+        currentCardInfo.image = ['/assets/홍창기.png', '/assets/박상우.png', '/assets/김윤지.png'];
+    
         return (
             <div className={styles.match}>
-                <br />
-                <p>다른 사람의 카드를 확인하세요!</p>
                 <div
                     className={`${styles.card} ${isFront ? styles.front : styles.back}`}
                     onClick={handleCardFlip}
@@ -222,26 +269,27 @@ const Matching = () => {
                 >
                     {isFront ? (
                         <div className={styles.frontContent}>
-                            <img src={currentCard.images[currentImageIndex]} alt={`Card ${currentCard.id}`} />
-                            <p>{currentCard.nickname}</p>
-                            <p>{currentCard.age}세, {currentCard.gender}</p>
-                            <button onClick={reportbadperson}>신고</button>
+                            <img src={currentCardInfo.image[currentImageIndex]} alt={`Card ${currentCard.memberId}`} {...handlers} />  
                         </div>
                     ) : (
                         <div className={styles.backContent}>
-                            <p>{currentCard.info}</p>
+                            <p>{currentCardInfo.info}</p>
                             <div>
-                                {currentCard.tags.map((tag, index) => (
+                                {currentCardInfo.tags.map((tag, index) => (
                                     <span key={index} className={styles.tag}>{tag}</span>
                                 ))}
                             </div>
                         </div>
                     )}
                 </div>
+                    <p>{currentCard.nickname}</p>
+                    <p>{currentCard.age}세, {currentCard.gender}</p>
+                    <button onClick={reportbadperson}>신고</button>
                 <div className={styles.buttons}>
                     <button onClick={handleLike}>좋아요</button>
                     <button onClick={handleDislike}>싫어요</button>
                     <button onClick={questiontofriend}>질문하기</button>
+                    <button onClick={testtest}>모달열기</button>
                 </div>
                 <Modal
                     isOpen={modalIsOpen}
@@ -251,18 +299,19 @@ const Matching = () => {
                 >
                     <h1>매칭이 성공했어요~💘</h1>
                     <h2>{modalMessage}</h2>
-                    <img src="Matchingcouple"/>
+                    <img src="assets/Matchingcouple.png" alt="Matching Couple"/>
                     <h1>채팅방으로 바로가기 버튼 수정 예정</h1>
                     <button onClick={() => setModalIsOpen(false)}>닫기</button>
                 </Modal>
             </div>
         );
     };
+    
 
     const renderMatchingModeOffContent = () => (
         <div className={styles.match}>
             <div className={styles.matchoff}>
-            <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
             </div>
             <div className={styles.offModeContent}>
                 <p>매칭 OFF 상태 입니다</p>
@@ -272,18 +321,12 @@ const Matching = () => {
     );
 
     const getContent = () => {
-        // return renderCreateCardContent(); // 나중에 지우기
-        if (!cardData) {
-            return null;
-        }
-
-        const { matchingMode, existed } = cardData;
-
-        if (matchingMode) {
-            if (existed) {
-                return renderViewOtherCardsContent();
-            } else {
+        const matchingMode = true;
+        if (matchingMode === true) {
+            if (!cardData) {
                 return renderCreateCardContent();
+            } else {
+                return renderViewOtherCardsContent();
             }
         } else {
             return renderMatchingModeOffContent();

@@ -5,6 +5,8 @@
     import 'react-toastify/dist/ReactToastify.css';
     import styles from './Createcard.module.css';
     import 'bootstrap-icons/font/bootstrap-icons.css';
+    import { useNavigate } from 'react-router-dom';
+
 
     const Createcard = () => {
         const [selectedOption, setSelectedOption] = useState('option1');
@@ -13,6 +15,8 @@
         const [introduction, setIntroduction] = useState('');
         const [charCount, setCharCount] = useState(0);
         const MAX_TAGS = 5;
+        const navigate = useNavigate();
+
 
         const handleOptionChange = (e) => {
             setSelectedOption(e.target.value);
@@ -76,7 +80,7 @@
                 tags: selectedTags
             });
             const blob = new Blob([jsonData], { type: 'application/json' });
-            formData.append('data', blob);
+            formData.append('cardRequest', blob);
         
             // FormData 내용 콘솔 출력
             for (let [key, value] of formData.entries()) {
@@ -85,15 +89,17 @@
         
             try {
                 const token = sessionStorage.getItem('accesstoken');
+            
                 const response = await axios.post('/api/cards', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'accesstoken': token,
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'
                         // 'Access-Control-Allow-Origin': 'http://localhost:3000',
                         // 'Access-Control-Allow-Credentials':'true'
                     }
                 });
                 console.log('Server Response:', response.data);
+                navigate('/');
             } catch (error) {
                 console.error('Error uploading data:', error);
             }
