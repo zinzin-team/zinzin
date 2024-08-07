@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const KakaoRedirect = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleOAuthKakao = async (code) => {
         try {
@@ -12,6 +14,14 @@ const KakaoRedirect = () => {
             const data = response.data;
             if (data.user) {
                 console.log("로그인 성공");
+                const tokens = {
+                    accessToken: data.accessToken,
+                    refreshToken: data.refreshToken,
+                };
+          
+                // Context API를 사용하여 로그인 상태 업데이트
+                login(tokens);
+          
                 sessionStorage.setItem('accessToken', data.accessToken);
                 sessionStorage.setItem('refreshToken', data.refreshToken);
         
