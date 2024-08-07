@@ -6,15 +6,15 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberChatDto {
+public class ChatMemberDto {
 
-    private Long memberId;
-    private String name;
-    private String nickname;
-    private String profileImage;
+    private final Long memberId;
+    private final String name;
+    private final String nickname;
+    private final String profileImage;
 
-    public static MemberChatDto fromEntity(MemberInfo memberInfo) {
-        return MemberChatDto.builder()
+    public static ChatMemberDto fromEntity(MemberInfo memberInfo) {
+        return ChatMemberDto.builder()
                 .memberId(memberInfo.getMemberId())
                 .nickname(memberInfo.getNickname())
                 .name(memberInfo.getMemberName())

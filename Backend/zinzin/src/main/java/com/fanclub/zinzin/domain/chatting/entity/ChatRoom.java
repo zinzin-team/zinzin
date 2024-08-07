@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.chatting.entity;
 
+import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
 import com.fanclub.zinzin.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -28,7 +30,7 @@ public class ChatRoom extends BaseTimeEntity {
     private ChatRoomStatus status;
 
     @Column(name = "last_message_date")
-    private LocalDate lastMessageDate;
+    private LocalDateTime lastMessageDateTime;
 
     @Column(name = "last_message_id")
     private String lastMessageId;
@@ -36,14 +38,18 @@ public class ChatRoom extends BaseTimeEntity {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomMember> members;
 
-    @Builder
-    public ChatRoom(ChatRoomType roomType) {
+    @Builder(builderClassName = "createRoomBuilder", builderMethodName = "createRoomBuilder")
+    public ChatRoom(ChatRoomType roomType, String lastMessageId) {
         this.roomType = roomType;
         this.status = ChatRoomStatus.ACTIVE;
+        this.lastMessageDateTime = LocalDateTime.now();
+        this.lastMessageId = lastMessageId;
     }
 
-    public void updateLastMessage(String lastMessageId, LocalDate lastMessageDate) {
-        this.lastMessageId = lastMessageId;
-        this.lastMessageDate = lastMessageDate;
+    public static ChatRoom createRoom(CreateChatRoomDto createChatRoomDto, String lastMessageId) {
+        return createRoomBuilder()
+                .roomType(createChatRoomDto.getRoomType())
+                .lastMessageId(lastMessageId)
+                .build();
     }
 }
