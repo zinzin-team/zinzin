@@ -45,4 +45,10 @@ public class MemberController {
         memberService.updateMemberInfo((Long) request.getAttribute("memberId"), new MemberInfoUpdateRequest(profileImage, searchId));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<?> deleteOwnInfo(HttpServletRequest request) {
+        memberService.withdraw((Long) request.getAttribute("memberId"));
+        return ResponseEntity.ok("회원 탈퇴 성공");
+    }
 }

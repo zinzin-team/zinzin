@@ -64,4 +64,9 @@ public class Member extends BaseTimeEntity {
         this.status = Status.ACTIVE;
         this.role = Role.USER;
     }
+
+    public void withdraw() {
+        this.status = Status.DELETED;
+        this.deletedAt = LocalDateTime.now();
+    }
 }

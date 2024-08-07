@@ -128,4 +128,17 @@ public class MemberService {
         memberInfo.updateMemberInfo(profileImagePath, memberInfoUpdateRequest.getSearchId());
         memberInfoRepository.save(memberInfo);
     }
+
+    @Transactional
+    public void withdraw(Long memberId) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        member.withdraw();
+        memberRepository.save(member);
+    }
 }
