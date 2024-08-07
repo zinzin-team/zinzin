@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NameReveal.module.css';
+import axios from 'axios';
 
 const NameReveal = ({ userData, setUserData }) => {
     const navigate = useNavigate();
@@ -38,12 +39,17 @@ const NameReveal = ({ userData, setUserData }) => {
             };
 
             // 사용자 등록을 위한 API 호출
-            const response = await fetch('http://localhost:8080/api/member/register', {
-                method: 'POST',
+            // const response = await fetch('http://localhost:8080/api/member/register', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(requestData)
+            // });
+            const response = await axios.post('http://localhost:8080/api/member/register', requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData)
+                }
             });
 
             if (response.ok) {
