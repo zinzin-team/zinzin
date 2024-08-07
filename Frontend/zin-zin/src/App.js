@@ -4,7 +4,7 @@ import LoginView from "./views/LoginView";
 import SignupView from "./views/SignupView";
 import HomeView from "./views/HomeView";
 import ChatView from "./components/chating/Chat";
-import KakaoCallback from './components/signup/KakaoCallback';
+import KakaoCallback from './components/signup/KakaoRedirect';
 // import FriendsView from "./views/FriendsView";
 import LeaveView from "./views/LeaveView";
 import LikeView from "./components/list/Like";
@@ -31,8 +31,8 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Navbar를 숨기기
-  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card'];
-  const hideNavbarPaths = ['/friend', '/login', '/signup'];
+  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback'];
+  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback'];
 
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isNavbarHidden = hideNavbarPaths.some(path => location.pathname.startsWith(path));
