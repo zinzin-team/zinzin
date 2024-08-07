@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Info from '../components/signup/Info';
 import Id from '../components/signup/Id';
 import MatchingMode from '../components/signup/MatchingMode';
 import NameReveal from '../components/signup/NameReveal';
 
 const SignupView = () => {
-    const location = useLocation();
     const [userData, setUserData] = useState({
         email: '',
         name: '',
@@ -19,15 +18,16 @@ const SignupView = () => {
     });
 
     useEffect(() => {
-        if (location.state) {
-            const { email, sub } = location.state;
+        const storedEmail = sessionStorage.getItem('email');
+        const storedSub = sessionStorage.getItem('sub');
+        if (storedEmail && storedSub) {
             setUserData((prevData) => ({
                 ...prevData,
-                email,
-                sub,
+                email: storedEmail,
+                sub: storedSub,
             }));
         }
-    }, [location.state]);
+    }, []);
 
     return (
       <Routes>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const KakaoCallback = () => {
+const KakaoRedirect = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -12,14 +12,28 @@ const KakaoCallback = () => {
             const data = response.data;
             if (data.user) {
                 alert("로그인 성공");
-                localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('refreshToken', data.refreshToken);
+                console.log(data)
+                sessionStorage.setItem('accessToken', data.accessToken);
+                sessionStorage.setItem('refreshToken', data.refreshToken);
+
+                // matchingMode 저장
+                console.log(data.accessToken)
+                const memberResponse = await axios.get('http://localhost:8080/api/member/me', {
+                    headers: {
+                        "Authorization": `Bearer ${data.accessToken}`
+                    }
+                });
+                const memberData = memberResponse.data;
+                sessionStorage.setItem('matchingMode', memberData.matchingMode);
+
                 navigate("/");
+
             } else {
                 console.log("회원 가입 필요:", data);
                 alert("회원 가입 필요");
-                // 회원 가입 페이지로 이동
-                navigate("/signup", { state: { email: data.email, sub: data.sub } });
+                sessionStorage.setItem('email', data.email);
+                sessionStorage.setItem('sub', data.sub);
+                navigate("/signup");
             }
         } catch (error) {
             console.error("로그인 실패:", error.response ? error.response.data : error.message);
@@ -43,4 +57,4 @@ const KakaoCallback = () => {
     return <div>로그인 처리 중...</div>;
 };
 
-export default KakaoCallback;
+export default KakaoRedirect;

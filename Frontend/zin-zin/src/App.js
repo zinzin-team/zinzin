@@ -4,7 +4,7 @@ import LoginView from "./views/LoginView";
 import SignupView from "./views/SignupView";
 import HomeView from "./views/HomeView";
 import ChatView from "./components/chating/Chat";
-import KakaoCallback from './components/signup/KakaoCallback';
+import KakaoCallback from './components/signup/KakaoRedirect';
 // import FriendsView from "./views/FriendsView";
 import LeaveView from "./views/LeaveView";
 import LikeView from "./components/list/Like";

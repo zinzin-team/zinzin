@@ -1,95 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Signup.module.css';
+import styles from './NameReveal.module.css';
 
-const NameReveal = () => {
-  const [name, setName] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
-  const navigate = useNavigate();
+const NameReveal = ({ userData, setUserData }) => {
+    const navigate = useNavigate();
+    const [matchingVisibility, setMatchingVisibility] = useState('PRIVATE');
 
-  const isFormValid = () => {
+    useEffect(() => {
+        const storedData = JSON.parse(sessionStorage.getItem('userData'));
+        if (storedData) {
+            setUserData(storedData);
+            // setMatchingVisibility(storedData.matchingVisibility || 'PRIVATE');
+        }
+    }, [setUserData]);
+
+    const handleChange = (e) => {
+        setMatchingVisibility(e.target.value);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const updatedData = { ...userData, matchingVisibility };
+            setUserData(updatedData);
+            sessionStorage.setItem('userData', JSON.stringify(updatedData));
+
+            // API 요청에 사용할 데이터 준비
+            const requestData = {
+                email: userData.email,
+                name: userData.name,
+                sub: userData.sub,
+                birth: userData.birth,
+                gender: userData.gender,
+                searchId: userData.searchId,
+                matchingVisibility,
+                matchingMode: userData.matchingMode
+            };
+
+            // 사용자 등록을 위한 API 호출
+            const response = await fetch('http://localhost:8080/api/member/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (response.ok) {
+                console.log('회원가입 성공');
+                navigate('/'); // 실제 보호된 라우트로 대체
+            } else {
+                console.error('회원가입 실패');
+                alert('회원가입에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('회원가입 중 오류 발생:', error);
+            alert('회원가입 중 오류가 발생했습니다.');
+        }
+    };
+
     return (
-      name.trim() !== '' &&
-      gender !== '' &&
-      birthDate.year.length === 4 &&
-      birthDate.month.length === 2 &&
-      birthDate.day.length === 2
+        <div className={styles.container}>
+            <div>
+                <h2 className={styles.title}>{userData.name} 님, 환영해요!</h2>
+                <p className={styles.description}>지인의 지인을 소개받고</p>
+                <p className={styles.description}>·</p>
+                <p className={styles.description}>지인과 지인을 맺어줘요!</p>
+            </div>
+            <form className={styles.toggleContainer} onSubmit={handleSubmit}>
+                <p className={styles.toggleLabel}>매칭 시 실명 공개</p>
+                <div>
+                    <label className={styles.radioLabel}>
+                        <input 
+                            type="radio" 
+                            value="PUBLIC" 
+                            checked={matchingVisibility === 'PUBLIC'} 
+                            onChange={handleChange} 
+                            className={styles.radioInput}
+                        />
+                        공개
+                    </label>
+                    <label className={styles.radioLabel}>
+                        <input 
+                            type="radio" 
+                            value="PRIVATE" 
+                            checked={matchingVisibility === 'PRIVATE'} 
+                            onChange={handleChange} 
+                            className={styles.radioInput}
+                        />
+                        비공개
+                    </label>
+                </div>
+                <button className={styles.nextButton} type="submit">완료</button>
+            </form>
+        </div>
     );
-  };
-
-  const handleSubmit = () => {
-    if (isFormValid()) {
-      navigate('/signup/id');
-    }
-  };
-
-  return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>내 정보</h2>
-      <p className={styles.description}>내 정보는 이후 수정이 불가합니다.</p>
-      <div className={styles.infoContainer}>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>이름</label>
-          <p className={styles.nameDescription}>지인들이 알아볼 수 있도록 정확한 실명을 입력해주세요!</p>
-          <input
-            type="text"
-            placeholder="실명을 입력해주세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>성별</label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              value="남"
-              checked={gender === '남'}
-              onChange={(e) => setGender(e.target.value)}
-              />
-            남
-          </label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              value="여"
-              checked={gender === '여'}
-              onChange={(e) => setGender(e.target.value)}
-              />
-            여
-          </label>
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>생년월일</label>
-          <input
-            type="text"
-            placeholder="YYYY"
-            value={birthDate.year}
-            maxLength={4}
-            onChange={(e) => setBirthDate({ ...birthDate, year: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="MM"
-            value={birthDate.month}
-            maxLength={2}
-            onChange={(e) => setBirthDate({ ...birthDate, month: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="DD"
-            value={birthDate.day}
-            maxLength={2}
-            onChange={(e) => setBirthDate({ ...birthDate, day: e.target.value })}
-          />
-        </div>
-        <button className={styles.submitButton} onClick={handleSubmit} disabled={!isFormValid()}>
-          다음
-        </button>
-      </div>
-    </div>
-  );
 };
 
 export default NameReveal;

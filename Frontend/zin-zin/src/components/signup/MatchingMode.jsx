@@ -1,95 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Signup.module.css';
+import styles from './MatchingMode.module.css';
 
-const MatchingMode = () => {
-  const [name, setName] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
-  const navigate = useNavigate();
+const MatchingMode = ({ userData, setUserData }) => {
+    const navigate = useNavigate();
+    const [matchingMode, setMatchingMode] = useState(false);
 
-  const isFormValid = () => {
+    useEffect(() => {
+        const storedData = JSON.parse(sessionStorage.getItem('userData'));
+        if (storedData) {
+            setUserData(storedData);
+        }
+    }, [setUserData]);
+
+    const handleToggle = () => {
+        setMatchingMode(!matchingMode);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // form의 기본 제출 동작을 막기 위해 사용
+        try {
+            const updatedData = { ...userData, matchingMode };
+            setUserData(updatedData);
+            sessionStorage.setItem('userData', JSON.stringify(updatedData));
+            navigate('/signup/namereveal');
+        } catch (error) {
+            console.error('매칭 모드 설정 중 오류 발생:', error);
+            alert('매칭 모드 설정 중 오류가 발생했습니다.');
+        }
+    };
+
     return (
-      name.trim() !== '' &&
-      gender !== '' &&
-      birthDate.year.length === 4 &&
-      birthDate.month.length === 2 &&
-      birthDate.day.length === 2
+        <div className={styles.container}>
+            <div>
+                <h2 className={styles.title}>{userData.name} 님, 환영해요!</h2>
+                <p className={styles.description}>지인의 지인을 소개받고</p>
+                <p className={styles.description}>·</p>
+                <p className={styles.description}>지인과 지인을 맺어줘요!</p>
+            </div>
+            <form className={styles.toggleContainer} onSubmit={handleSubmit}>
+                <p className={styles.toggleLabel}>매칭 모드를 켤까요?</p>
+                <div className={styles.toggle}>
+                    <span>OFF</span>
+                    <label className={styles.switch}>
+                        <input type="checkbox" checked={matchingMode} onChange={handleToggle} />
+                        <span className={styles.slider}></span>
+                    </label>
+                    <span>ON</span>
+                </div>
+                <button className={styles.nextButton} type="submit">다음</button>
+            </form>
+        </div>
     );
-  };
-
-  const handleSubmit = () => {
-    if (isFormValid()) {
-      navigate('/signup/id');
-    }
-  };
-
-  return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>내 정보</h2>
-      <p className={styles.description}>내 정보는 이후 수정이 불가합니다.</p>
-      <div className={styles.infoContainer}>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>이름</label>
-          <p className={styles.nameDescription}>지인들이 알아볼 수 있도록 정확한 실명을 입력해주세요!</p>
-          <input
-            type="text"
-            placeholder="실명을 입력해주세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>성별</label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              value="남"
-              checked={gender === '남'}
-              onChange={(e) => setGender(e.target.value)}
-              />
-            남
-          </label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              value="여"
-              checked={gender === '여'}
-              onChange={(e) => setGender(e.target.value)}
-              />
-            여
-          </label>
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputTitle}>생년월일</label>
-          <input
-            type="text"
-            placeholder="YYYY"
-            value={birthDate.year}
-            maxLength={4}
-            onChange={(e) => setBirthDate({ ...birthDate, year: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="MM"
-            value={birthDate.month}
-            maxLength={2}
-            onChange={(e) => setBirthDate({ ...birthDate, month: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="DD"
-            value={birthDate.day}
-            maxLength={2}
-            onChange={(e) => setBirthDate({ ...birthDate, day: e.target.value })}
-          />
-        </div>
-        <button className={styles.submitButton} onClick={handleSubmit} disabled={!isFormValid()}>
-          다음
-        </button>
-      </div>
-    </div>
-  );
 };
 
 export default MatchingMode;
