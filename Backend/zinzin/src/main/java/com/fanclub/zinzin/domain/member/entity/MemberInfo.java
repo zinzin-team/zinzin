@@ -57,4 +57,9 @@ public class MemberInfo {
         this.member = member;
 
     }
+
+    public void updateMemberInfo(String profileImage, String searchId) {
+        this.profileImage = profileImage;
+        this.searchId = searchId;
+    }
 }
