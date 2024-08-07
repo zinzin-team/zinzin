@@ -1,6 +1,6 @@
-package com.fanclub.zinzin.global.auth.repository;
+package com.fanclub.zinzin.domain.friend.repository;
 
-import com.fanclub.zinzin.global.auth.entity.TempFriend;
+import com.fanclub.zinzin.domain.friend.entity.TempFriend;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

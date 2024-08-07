@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.global.auth.entity;
+package com.fanclub.zinzin.domain.friend.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
