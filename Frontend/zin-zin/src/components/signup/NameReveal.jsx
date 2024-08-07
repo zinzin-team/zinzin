@@ -46,7 +46,8 @@ const NameReveal = ({ userData, setUserData }) => {
             //     },
             //     body: JSON.stringify(requestData)
             // });
-            const response = await axios.post('http://localhost:8080/api/member/register', requestData, {
+            
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/member/register`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }

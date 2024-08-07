@@ -8,7 +8,7 @@ const KakaoRedirect = () => {
 
     const handleOAuthKakao = async (code) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/oauth2/kakao/callback?code=${code}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/oauth2/kakao/callback?code=${code}`);
             const data = response.data;
             if (data.user) {
                 console.log("로그인 성공");
@@ -16,7 +16,7 @@ const KakaoRedirect = () => {
                 sessionStorage.setItem('refreshToken', data.refreshToken);
         
                 try {
-                    const memberResponse = await axios.get('http://localhost:8080/api/member/me', {
+                    const memberResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/member/me`, {
                         headers: {
                             "Authorization": `Bearer ${data.accessToken}`,
                             "Content-Type": "application/json"
