@@ -118,11 +118,10 @@ public class MatchingService {
             throw new BaseException(MatchingErrorCode.CHECKED_CARD);
         }
 
-        recommendedCardRepository.save(recommendedCard);
+        recommendedCard.checkCard();
 
         if(!checkingRequest.isLike()){
             rejectCard(memberId, cardId);
-            recommendedCard.checkCard();
             return CheckingResponse.of(false);
         }
         
