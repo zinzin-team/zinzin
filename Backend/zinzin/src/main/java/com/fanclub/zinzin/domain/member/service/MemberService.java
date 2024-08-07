@@ -127,6 +127,7 @@ public class MemberService {
 
         memberInfo.updateMemberInfo(profileImagePath, memberInfoUpdateRequest.getSearchId());
         memberInfoRepository.save(memberInfo);
+        personRepository.updateProfilImage(memberId, profileImagePath);
     }
 
     @Transactional
