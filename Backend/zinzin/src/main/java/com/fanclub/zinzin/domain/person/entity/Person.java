@@ -15,6 +15,7 @@ public class Person {
     @Id
     private String sub;
 
+    @Getter
     @Property(name = "member_id")
     private Long memberId;
 
@@ -31,6 +32,7 @@ public class Person {
 
     private String nickname;
 
+    @Getter
     @Property(name = "profile_image")
     private String profileImage;
 
@@ -51,6 +53,7 @@ public class Person {
         return "Peron{"+
                 "sub="+sub+
                 ", memberId="+memberId+
+                ", profileImage="+profileImage+
                 ", name="+name+
                 ", gender="+gender+
                 ", cardId="+cardId+
