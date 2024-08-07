@@ -2,6 +2,9 @@ package com.fanclub.zinzin.domain.follow.service;
 
 import com.fanclub.zinzin.domain.follow.dto.*;
 import com.fanclub.zinzin.domain.follow.repository.FollowRepository;
+import com.fanclub.zinzin.domain.friend.dto.Friend;
+import com.fanclub.zinzin.domain.friend.repository.FriendRepository;
+import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.FollowErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.util.List;
 public class FollowService {
 
     private final FollowRepository followRepository;
+    private final FriendRepository friendRepository;
 
     public List<FollowingResponse> getFollowList(Long memberId) {
         if(memberId == null){
@@ -86,5 +90,14 @@ public class FollowService {
         }
 
         return followRepository.findPeopleByRequestFollowRelation(memberId);
+    }
+
+    public List<KakaoFriendResponse> getSocialFriendList(Long memberId){
+        if(memberId == null){
+            throw new BaseException(CommonErrorCode.BAD_REQUEST);
+        }
+
+        List<Friend> friends = friendRepository.getKakaoRelationships(memberId);
+        return friends.stream().map(Friend::toKakaoFriendResponse).toList();
     }
 }
