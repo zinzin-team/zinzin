@@ -8,6 +8,8 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 
+import java.time.LocalDate;
+
 @Node("Person")
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
 public class Person {
@@ -20,6 +22,8 @@ public class Person {
     private Long memberId;
 
     private String name;
+
+    private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -37,10 +41,11 @@ public class Person {
     private String profileImage;
 
     @Builder
-    private Person(String sub, Long memberId, String name, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
+    private Person(String sub, Long memberId, String name, LocalDate birth, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
         this.sub = sub;
         this.memberId = memberId;
         this.name = name;
+        this.birth = birth;
         this.gender = gender;
         this.cardId = cardId;
         this.matchingMode = matchingMode;
@@ -54,6 +59,7 @@ public class Person {
                 "sub="+sub+
                 ", memberId="+memberId+
                 ", profileImage="+profileImage+
+                ", birth="+birth+
                 ", name="+name+
                 ", gender="+gender+
                 ", cardId="+cardId+

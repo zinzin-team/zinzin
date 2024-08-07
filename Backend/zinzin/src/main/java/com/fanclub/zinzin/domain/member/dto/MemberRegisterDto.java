@@ -44,6 +44,7 @@ public class MemberRegisterDto {
                 .sub(sub)
                 .memberId(member.getId())
                 .name(name)
+                .birth(birth)
                 .gender(gender)
                 .matchingMode(matchingMode)
                 .nickname(memberInfo.getNickname())
