@@ -36,6 +36,7 @@ public class RecommendedCard {
     @Column(nullable = false)
     private Integer position;
 
+    @Getter
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean checked;
 
@@ -69,5 +70,9 @@ public class RecommendedCard {
 
     public Matching toMatching(MatchingPartner matchingPartner, List<Mate> mates){
         return Matching.of(matchingPartner, CardInfo.of(this.card), mates, this.position, this.checked);
+    }
+
+    public void checkCard(){
+        this.checked = true;
     }
 }

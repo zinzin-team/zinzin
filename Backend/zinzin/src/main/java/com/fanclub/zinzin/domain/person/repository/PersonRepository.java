@@ -43,4 +43,18 @@ public interface PersonRepository extends Neo4jRepository<Person, String> {
             "ON CREATE SET r.rejectCnt = 0 " +
             "RETURN r")
     void updateRecommendedRelation(Long memberId, Long matchingPartnerId);
+
+    @Query("MATCH (me:Person {member_id:$memberId})-[r:GET_CARD_OF]->(matchingPartner:Person{card_id:$cardId}) " +
+            "DELETE r " +
+            "CREATE (me)-[:INTEREST]->(matchingPartner) " +
+            "RETURN EXISTS((matchingPartner)-[:INTEREST]->(me))")
+    boolean interestCard(Long memberId, Long cardId);
+
+    @Query("MATCH (me:Person {member_id:$memberId})-[r:GET_CARD_OF]->(matchingPartner:Person{card_id:$cardId}) " +
+            "SET r.rejectCnt = r.rejectCnt + 1 " +
+            "WITH me, r, matchingPartner "+
+            "WHERE r.rejectCnt >= 2 " +
+            "DELETE r " +
+            "CREATE (me)-[:BLOCKED]->(matchingPartner)")
+    void rejectCard(Long memberId, Long cardId);
 }

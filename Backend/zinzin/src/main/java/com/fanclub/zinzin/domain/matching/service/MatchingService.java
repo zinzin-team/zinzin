@@ -2,16 +2,15 @@ package com.fanclub.zinzin.domain.matching.service;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
-import com.fanclub.zinzin.domain.matching.dto.CardInfo;
-import com.fanclub.zinzin.domain.matching.dto.MatchingResponse;
+import com.fanclub.zinzin.domain.matching.dto.*;
 import com.fanclub.zinzin.domain.matching.entity.RecommendedCard;
 import com.fanclub.zinzin.domain.matching.repository.RecommendedCardRepository;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
-import com.fanclub.zinzin.domain.matching.dto.Matching;
 import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
+import com.fanclub.zinzin.global.error.code.MatchingErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -91,5 +91,56 @@ public class MatchingService {
         }
 
         return CardInfo.of(card);
+    }
+
+    @Transactional
+    public CheckingResponse checkCard(HttpServletRequest request, CheckingRequest checkingRequest) {
+        if(request.getAttribute("memberId") == null){
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+
+        Long memberId = (Long) request.getAttribute("memberId");
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Long cardId = checkingRequest.getCardId();
+        List<RecommendedCard> todayRecommendation = findTodayRecommendation(member);
+        RecommendedCard recommendedCard = todayRecommendation.stream()
+                .filter(card -> (long) card.getCard().getId() == cardId)
+                .findFirst()
+                .orElse(null);
+
+        if(recommendedCard == null){
+            throw new BaseException(MatchingErrorCode.INVALID_MATCHING_CARD);
+        }
+
+        if(recommendedCard.getChecked()){
+            throw new BaseException(MatchingErrorCode.CHECKED_CARD);
+        }
+
+        recommendedCardRepository.save(recommendedCard);
+
+        if(!checkingRequest.isLike()){
+            rejectCard(memberId, cardId);
+            recommendedCard.checkCard();
+            return CheckingResponse.of(false);
+        }
+        
+        boolean isTwoWay = interestCard(memberId, cardId);
+
+        if(!isTwoWay){
+            return CheckingResponse.of(false);
+        }
+
+        // 채팅방 생성 로직 필요
+        return CheckingResponse.of(true);
+    }
+
+    private boolean interestCard(Long memberId, Long cardId){
+        return personRepository.interestCard(memberId, cardId);
+    }
+
+    private void rejectCard(Long memberId, Long cardId){
+        personRepository.rejectCard(memberId, cardId);
     }
 }
