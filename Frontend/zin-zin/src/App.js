@@ -31,8 +31,8 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Navbar를 숨기기
-  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback'];
-  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback'];
+  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave'];
+  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave'];
 
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isNavbarHidden = hideNavbarPaths.some(path => location.pathname.startsWith(path));
@@ -46,13 +46,13 @@ const AppContent = () => {
         <Route path="/callback" element={<KakaoCallback />} />
         <Route path="/signup/*" element={<SignupView />} />
         <Route path="/chat" element={<ChatView />} />
-        <Route path="/leave" element={<LeaveView />} />
         {/* <Route path="/friend" element={<FriendsView />} /> */}
         <Route path="/like" element={<LikeView />} />
         <Route path="/match" element={<MatchingView />} />
         <Route path="/mypage" element={<MypageView />} />
         <Route path="/create-card" element={<CreatecardView />} />
         <Route path="/update-card" element={<UpdatecardView />} />
+        <Route path="/leave" element={<LeaveView />} />
       </Routes>
       {!isNavbarHidden && <Navbar />}
     </div>
