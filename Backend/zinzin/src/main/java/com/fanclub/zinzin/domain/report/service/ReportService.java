@@ -19,14 +19,14 @@ public class ReportService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void report(ReportRequest request) {
-        Member member = memberRepository.findById(request.getMemberId())
+    public void report(Long memberId, ReportRequest reportRequest) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Member reportedMember = memberRepository.findById(request.getTargetId())
+        Member reportedMember = memberRepository.findById(reportRequest.getTargetId())
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Report report = request.toReportEntity(member, reportedMember);
+        Report report = reportRequest.toReportEntity(member, reportedMember);
         reportRepository.save(report);
     }
 }
