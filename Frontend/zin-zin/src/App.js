@@ -5,7 +5,7 @@ import SignupView from "./views/SignupView";
 import HomeView from "./views/HomeView";
 import ChatView from "./components/chating/Chat";
 import KakaoCallback from './components/signup/KakaoRedirect';
-// import FriendsView from "./views/FriendsView";
+import FriendsView from "./views/FriendsView";
 import LeaveView from "./views/LeaveView";
 import LikeView from "./components/list/Like";
 import MatchingView from "./components/matching/Matching";
@@ -50,7 +50,7 @@ const AppContent = () => {
         <Route path="/signup/*" element={<SignupView />} />
         <Route path="/chat" element={<ChatView />} />
         <Route path="/chat/:roomId" element={<ChatroomView />} />
-        {/* <Route path="/friend" element={<FriendsView />} /> */}
+        <Route path="/friends/*" element={<FriendsView />} />
         <Route path="/like" element={<LikeView />} />
         <Route path="/match" element={<MatchingView />} />
         <Route path="/mypage" element={<MypageView />} />
