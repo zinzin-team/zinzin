@@ -6,7 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 import Modal from 'react-modal';
 import confetti from 'canvas-confetti'; 
 
-Modal.setAppElement('#root'); // This is needed for accessibility reasons
+Modal.setAppElement('#root'); // 이 설정은 접근성을 위해 필요합니다.
 
 const Matching = () => {
     const [cardData, setCardData] = useState(null);
@@ -15,13 +15,14 @@ const Matching = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isFront, setIsFront] = useState(true);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalIsOpen2, setModalIsOpen2] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
+    const [mates, setMates] = useState([]);
     const navigate = useNavigate();
 
     const testtest = () => {
         firework();
         setModalIsOpen(true);
-
     };
 
     function firework() {
@@ -65,10 +66,10 @@ const Matching = () => {
                 setMatchingCardData(response.data.matchings);   
                 console.log(response.data.matchings)
             } else {
-                console.error('Failed to fetch matching card data');
+                console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
             }
         } catch (error) {
-            console.error('Error fetching matching card data:', error);
+            console.error('매칭 카드 데이터를 가져오는 중 오류 발생:', error);
         }
     };
 
@@ -84,27 +85,27 @@ const Matching = () => {
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
-                    console.error('Failed to fetch card data');
+                    console.error('카드 데이터를 가져오는 데 실패했습니다.');
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('데이터를 가져오는 중 오류 발생:', error);
             }
         };
-
 
         const storedMatchingMode = true;
 
         if (storedMatchingMode) {
-            fetchData();
-            const storedCardData = sessionStorage.getItem('cardData');
-            console.log(storedCardData)
-            if(storedCardData){
-                setCardData(JSON.parse(storedCardData));
-                fetchMatchingCards();
-            }
+            const fetchDataAndSetCardData = async () => {
+                await fetchData();
+                const storedCardData = sessionStorage.getItem('cardData');
+                console.log(storedCardData)
+                if(storedCardData){
+                    setCardData(JSON.parse(storedCardData));
+                    fetchMatchingCards();
+                }
+            };
+            fetchDataAndSetCardData();
         } 
-
-        // fetchMatchingCards();
     }, []);
 
     useEffect(() => {
@@ -144,17 +145,13 @@ const Matching = () => {
                     firework();
                     setModalMessage("양방향 호감! 채팅방이 생성되었습니다.");
                     setModalIsOpen(true);
-                    // setTimeout(() => {
-                    //     setModalIsOpen(false);
-                    // }, 3000);
                     fetchMatchingCards();
                 } else {
                     fetchMatchingCards();
-
                 }
             }
         } catch (error) {
-            console.error('Error sending like/dislike:', error);
+            console.error('좋아요/싫어요 전송 중 오류 발생:', error);
         }
     };
     
@@ -168,7 +165,9 @@ const Matching = () => {
     };
 
     const questiontofriend = () => {
-        
+        const currentCard = matchingCardData[currentIndex];
+        setMates(currentCard.mates || []);
+        setModalIsOpen2(true);
     };
 
     const handleImageSwipe = (direction) => {
@@ -207,20 +206,19 @@ const Matching = () => {
     );
 
     const renderViewOtherCardsContent = () => {
-    
         if (!Array.isArray(matchingCardData) || matchingCardData.length === 0) {
-                return (
-                    <div className={styles.match}>
-                        <div className={styles.exhaustcard}>
-                            <p className={styles.title}>지인이 부족해요...</p>
-                            <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
-                            <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
-                            <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
-                        </div>
+            return (
+                <div className={styles.match}>
+                    <div className={styles.exhaustcard}>
+                        <p className={styles.title}>지인이 부족해요...</p>
+                        <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                        <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                        <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
                     </div>
-                );
+                </div>
+            );
         }
-    
+
         const visibleCards = matchingCardData.filter(card => card && !card.checked);
         console.log(matchingCardData)
         if (visibleCards.length === 0) {
@@ -247,19 +245,13 @@ const Matching = () => {
                 );
             }
         }
-    
-        // Ensure currentIndex is within bounds
-        // if (currentIndex >= visibleCards.length) {
-        //     setCurrentIndex(0);
-        // }
-    
+
         const currentCard = matchingCardData[currentIndex];
         const currentCardInfo = currentCard.card;
         console.log(currentIndex)
-    
-        // Temporary test images
+
         currentCardInfo.image = ['/assets/홍창기.png', '/assets/박상우.png', '/assets/김윤지.png'];
-    
+
         return (
             <div className={styles.match}>
                 <div
@@ -282,15 +274,38 @@ const Matching = () => {
                         </div>
                     )}
                 </div>
-                    <p>{currentCard.nickname}</p>
-                    <p>{currentCard.age}세, {currentCard.gender}</p>
-                    <button onClick={reportbadperson}>신고</button>
+                <p>{currentCard.nickname}</p>
+                <p>{currentCard.age}세, {currentCard.gender}</p>
+                <button onClick={reportbadperson}>신고</button>
                 <div className={styles.buttons}>
                     <button onClick={handleLike}>좋아요</button>
                     <button onClick={handleDislike}>싫어요</button>
                     <button onClick={questiontofriend}>질문하기</button>
                     <button onClick={testtest}>모달열기</button>
                 </div>
+
+                <Modal
+                    isOpen={modalIsOpen2}
+                    onRequestClose={() => setModalIsOpen2(false)}
+                    className={styles.modal2}
+                    overlayClassName={styles.overlay}
+                >
+                    <h1>함께 아는 지인</h1>
+                    <hr/>
+                    {mates.length > 0 ? (
+                        mates.map((mate, index) => (
+                            <div key={index} className={styles.mate}>
+                                {/* <img src={mate.profileImage} alt={mate.name} className={styles.profileImage} /> */}
+                                <img src="/assets/홍창기.png" />
+                                <p>{mate.name}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>함께 아는 지인이 없습니다.</p>
+                    )}
+                    <button onClick={() => setModalIsOpen2(false)}>닫기</button>
+                </Modal>
+
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={() => setModalIsOpen(false)}
@@ -306,7 +321,6 @@ const Matching = () => {
             </div>
         );
     };
-    
 
     const renderMatchingModeOffContent = () => (
         <div className={styles.match}>
