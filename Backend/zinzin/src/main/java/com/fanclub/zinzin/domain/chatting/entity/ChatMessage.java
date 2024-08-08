@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection = "chatting_content")
 @Getter
 @Builder
@@ -19,10 +21,12 @@ public class ChatMessage {
     private Long roomId;
     private String message;
     private Long memberId;
+    private LocalDateTime timestamp;
 
     public ChatMessage(Long roomId, Long memberId, String message) {
         this.roomId = roomId;
         this.message = message;
         this.memberId = memberId;
+        this.timestamp = LocalDateTime.now();
     }
 }

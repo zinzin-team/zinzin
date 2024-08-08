@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    @Query("SELECT cr FROM ChatRoom cr JOIN cr.members m WHERE m.memberInfo.member.id = :memberId AND cr.status = :status ORDER BY cr.lastMessageDateTime DESC")
-    List<ChatRoom> findAllByMemberIdAndStatusOrderByLastMessageDateDesc(Long memberId, ChatRoomStatus status);
+    @Query("SELECT cr FROM ChatRoom cr JOIN cr.members m WHERE m.memberInfo.member.id = :memberId AND cr.status = :status")
+    List<ChatRoom> findAllByMemberIdAndStatus(Long memberId, ChatRoomStatus status);
 }

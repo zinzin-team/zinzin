@@ -8,8 +8,8 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 public class RequestMessageDto {
+
     private final Long memberId;
-    private final Long roomId;
     private final String message;
 
 }

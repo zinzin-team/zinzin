@@ -19,8 +19,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +37,16 @@ public class ChatRoomService {
     private final ChatRoomMemberRepository chatRoomMemberRepository;
 
     public List<ResponseChatRoomDto> getChatRoomsByMemberId(Long memberId) {
-        List<ChatRoom> chatRooms = chatRoomRepository.findAllByMemberIdAndStatusOrderByLastMessageDateDesc(memberId, ChatRoomStatus.ACTIVE);
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllByMemberIdAndStatus(memberId, ChatRoomStatus.ACTIVE);
+        chatRooms.sort(Comparator.comparing((ChatRoom chatRoom) -> {
+            if (chatRoom == null) {
+                return LocalDateTime.MIN;
+            } else {
+                Long chatRoomId = chatRoom.getId();
+                Optional<ChatMessage> lastMessage = chatMessageRepository.findTop1ByRoomIdOrderByTimestampDesc(chatRoomId);
+                return lastMessage.map(ChatMessage::getTimestamp).orElse(LocalDateTime.MIN);
+            }
+        }).reversed());
         return convertToDto(chatRooms, memberId);
     }
 

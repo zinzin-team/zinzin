@@ -37,7 +37,6 @@ public class OAuth2Controller {
         String idToken = tokens.get(2);
 
         String[] claims = jwtUtil.getSubAndEmailFromIdToken(idToken);
-        System.out.println(jwtUtil.generateAccessToken(5L, "36423058", Role.USER));
         String sub = claims[0];
 
         Member member = memberRepository.findBySub(sub);

@@ -29,27 +29,18 @@ public class ChatRoom extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ChatRoomStatus status;
 
-    @Column(name = "last_message_date")
-    private LocalDateTime lastMessageDateTime;
-
-    @Column(name = "last_message_id")
-    private String lastMessageId;
-
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRoomMember> members;
 
     @Builder(builderClassName = "createRoomBuilder", builderMethodName = "createRoomBuilder")
-    public ChatRoom(ChatRoomType roomType, String lastMessageId) {
+    public ChatRoom(ChatRoomType roomType) {
         this.roomType = roomType;
         this.status = ChatRoomStatus.ACTIVE;
-        this.lastMessageDateTime = LocalDateTime.now();
-        this.lastMessageId = lastMessageId;
     }
 
     public static ChatRoom createRoom(CreateChatRoomDto createChatRoomDto) {
         return createRoomBuilder()
                 .roomType(createChatRoomDto.getRoomType())
-                .lastMessageId("")
                 .build();
     }
 }

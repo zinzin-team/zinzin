@@ -19,27 +19,16 @@ import java.util.Optional;
 public class ChatService {
 
     private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomRepository chatRoomRepository;
 
     @Transactional
-    public void saveChatMessage(RequestMessageDto chat) {
-        chatMessageRepository.save(new ChatMessage(chat.getRoomId(), chat.getMemberId(), chat.getMessage()));
+    public void saveChatMessage(Long roomId, RequestMessageDto chat) {
+        chatMessageRepository.save(new ChatMessage(roomId, chat.getMemberId(), chat.getMessage()));
     }
 
     public String getLastMessage(Long roomId) {
-        Optional<ChatRoom> chatRoomOpt = chatRoomRepository.findById(roomId);
+        Optional<ChatMessage> chatMessage = chatMessageRepository.findTop1ByRoomIdOrderByTimestampDesc(roomId);
 
-        if (chatRoomOpt.isPresent()) {
-            ChatRoom chatRoom = chatRoomOpt.get();
-            String lastMessageId = chatRoom.getLastMessageId();
-            if (lastMessageId != null) {
-                Optional<ChatMessage> lastMessageOpt = chatMessageRepository.findById(lastMessageId);
-                if (lastMessageOpt.isPresent()) {
-                    return lastMessageOpt.get().getMessage();
-                }
-            }
-        }
-        return null;
+        return chatMessage.map(ChatMessage::getMessage).orElse(null);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.chatting.controller;
 
 import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
+import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
 import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @GetMapping
-    public ResponseEntity<?> getRooms(HttpServletRequest request) {
+    public ResponseEntity<List<ResponseChatRoomDto>> getRooms(HttpServletRequest request) {
         return ResponseEntity.ok(chatRoomService.getChatRoomsByMemberId((Long) request.getAttribute("memberId")));
     }
 

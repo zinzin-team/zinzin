@@ -13,7 +13,6 @@ public class ResponseChatRoomDto {
 
     private final Long roomId;
     private final ChatRoomType roomType;
-    private final LocalDateTime lastMessageDate;
     private final ChatMemberDto otherMember;
     private final String lastMessage;
     private final boolean heartToggle;
@@ -34,7 +33,6 @@ public class ResponseChatRoomDto {
                 .roomId(chatRoom.getId())
                 .roomType(chatRoom.getRoomType())
                 .lastMessage(lastMessage)
-                .lastMessageDate(chatRoom.getLastMessageDateTime())
                 .otherMember(otherMember)
                 .heartToggle(heartToggle)
                 .build();
