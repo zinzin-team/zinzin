@@ -15,7 +15,6 @@ public class MongoConfig {
     public void initIndexes() {
         mongoTemplate.indexOps("chatting_content").ensureIndex(
                 new org.springframework.data.mongodb.core.index.Index()
-                        .on("roomId", org.springframework.data.domain.Sort.Direction.ASC)
                         .on("timestamp", org.springframework.data.domain.Sort.Direction.DESC)
         );
     }
