@@ -5,6 +5,9 @@ import styles from './Header.module.css';
 const Header = () => {
   return (
     <header className={styles.header}>
+         <Link to="/" className={styles.icon2} >
+              <img className={styles.logo} src="./assets/logo.png" />
+      </Link>
             <div className={styles.icon}>
      <Link to="/friend" className={styles.friends}  >
         <img src="./assets/friend-icon.png" />

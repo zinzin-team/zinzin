@@ -47,6 +47,10 @@ public class MemberInfo {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
+    @Getter
+    @Column(name = "success_cnt")
+    private Integer successCount;
+
     @Builder
     public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
         this.profileImage = (profileImage == null) ? "default.jpg" : profileImage;
@@ -55,7 +59,16 @@ public class MemberInfo {
         this.matchingVisibility = matchingVisibility;
         this.matchingMode = matchingMode;
         this.member = member;
+        this.successCount = 0;
+    }
 
+    public void updateMemberInfo(String profileImage, String searchId) {
+        this.profileImage = profileImage;
+        this.searchId = searchId;
+    }
+
+    public void increaseSuccessCount() {
+        this.successCount += 1;
     }
 
     @Transient

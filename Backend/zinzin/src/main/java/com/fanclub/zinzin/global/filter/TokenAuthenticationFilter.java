@@ -9,7 +9,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Component
 public class TokenAuthenticationFilter implements Filter {
     private final JwtUtil jwtUtil;
@@ -28,7 +26,8 @@ public class TokenAuthenticationFilter implements Filter {
             "/api/oauth2",
             "/api/login",
             "/api/mates/kakao",
-            "/api/ws"
+            "/api/ws",
+            "/api/member/register"
     );
 
     @Autowired
@@ -51,7 +50,7 @@ public class TokenAuthenticationFilter implements Filter {
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
             String refreshTokenHeader = httpRequest.getHeader("RefreshToken");
-            
+
             if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
                 httpResponse.setStatus(HttpServletResponse.SC_OK);
                 httpResponse.setHeader("Access-Control-Allow-Origin", "*");

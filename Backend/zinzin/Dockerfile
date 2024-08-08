@@ -1,20 +1,17 @@
-# Start with a base image containing Java runtime
+# 베이스 이미지 설정
 FROM openjdk:17-jdk-alpine
 
-# Maintainer information and other metadata
+# maintainer 정보
 LABEL maintainer="hckhong@naver.com"
 
-# Add a volume pointing to /tmp
+# 호스트의 /tmp 경로로 컨테이너의 볼륨을 마운트
 VOLUME /tmp
 
-# Make port 8080 available to the world outside this container
+# 컨테이너가 사용하는 포트를 외부에 노출
 EXPOSE 8080
 
-# The application's jar file (assumes that the JAR file is named "app.jar")
-ARG JAR_FILE=build/libs/*.jar
+# jar 파일을 Docker 이미지의 zinzin.jar로 추가
+ADD build/libs/*.jar zinzin.jar
 
-# Add the application's jar to the container
-ADD ${JAR_FILE} zinzin.jar
-
-# Run the jar file
-ENTRYPOINT ["java","-jar","/zinzin.jar"]
+# 컨테이너가 시작될 때 zinzin.jar를 실행
+ENTRYPOINT ["java", "-jar", "/zinzin.jar"]

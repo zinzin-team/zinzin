@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9; /* 배경색 */
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 16px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.dot {
+  font-size: 20px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.toggleContainer {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toggleLabel {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.radioLabel {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.radioInput {
+  margin-right: 10px;
+  accent-color: #3B82F6; /* 선택된 버튼 색상 */
+}
+
+.nextButton {
+  background-color: #3B82F6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.nextButton:hover {
+  background-color: #2563EB;
+}
+
+.nextButton:active {
+  background-color: #1E40AF;
+}

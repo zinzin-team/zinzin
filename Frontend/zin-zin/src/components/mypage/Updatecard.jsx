@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import styles from './Updatecard.module.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Updatecard = () => {
     const [selectedOption, setSelectedOption] = useState('option1');
@@ -11,6 +13,30 @@ const Updatecard = () => {
     const [introduction, setIntroduction] = useState('');
     const [charCount, setCharCount] = useState(0);
     const MAX_TAGS = 5;
+
+    useEffect(() => {
+        const fetchCardData = async () => {
+            try {
+                const token = sessionStorage.getItem('accesstoken');
+                const response = await axios.get('/api/cards', {
+                    headers: {
+                        'accesstoken': token
+                    }
+                });
+
+                if (response.data) {
+                    const { tags, info, images } = response.data;
+                    setSelectedTags(tags);
+                    setIntroduction(info);
+                    setSelectedFiles(images.map(img => URL.createObjectURL(img)));
+                }
+            } catch (error) {
+                console.error('Error fetching card data:', error);
+            }
+        };
+
+        fetchCardData();
+    }, []);
 
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
@@ -55,7 +81,7 @@ const Updatecard = () => {
             toast.error("사진을 3개 첨부해야 합니다.");
             return;
         }
-        
+
         if (selectedTags.length < 5) {
             toast.error("태그를 5개 선택해야 합니다.");
             return;
@@ -80,21 +106,26 @@ const Updatecard = () => {
         }
 
         try {
-            const response = await axios.post('/cards', formData, {
+            const token = sessionStorage.getItem('accesstoken');
+            const response = await axios.put(`/api/cards/{cardId}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'accesstoken': token
                 }
             });
-            console.log('Server Response:', response.data);
+            if (response.data.code === 201) {
+                toast.success("카드 수정 성공");
+            }
         } catch (error) {
             console.error('Error uploading data:', error);
+            toast.error("카드 수정 실패");
         }
     };
 
-    useEffect(() => {
-        console.log(selectedFiles); // 상태가 변경될 때마다 출력
-        console.log(selectedTags);
-    }, [selectedFiles, selectedTags]);
+    const handleIntroductionChange = (e) => {
+        setIntroduction(e.target.value);
+        setCharCount(e.target.value.length);
+    };
 
     const tagOptions = [
         "ENFP", "ENTP", "ENFJ", "ENTJ", "ESTP", "ESFP", "ESTJ", "ESFJ", "INFJ", "INTJ",
@@ -106,20 +137,14 @@ const Updatecard = () => {
         "창의적인", "성실한", "현실적인", "협조적인", "안정적인", "실행력 있는", "통찰력 있는", "독립적인", "온화한", "도전적인",
         "개척적인", "주도적인", "인내심 있는", "논리적인", "감성적인", "즐거움을 찾는", "에너지 있는", "이해심 많은", "인기 있는", "친절한",
         "활발한", "조용한", "외향적인", "내향적인", "모험적인", "이상적인", "대담한", "진취적인", "차분한", "직설적인", "정직한", "긍정적인", "책임감있는"
- ];
-
-    const handleIntroductionChange = (e) => {
-        setIntroduction(e.target.value);
-        setCharCount(e.target.value.length);
-    };
+    ];
 
     return (
-        <div>
-            <Link to="/">뒤로가기</Link>
+        <div className={styles.createcard}>
             <ToastContainer position="top-center" />
-            <h1>새로운 카드 만들기</h1>
+            <Link to="/" className={styles.link}><i className="bi bi-chevron-left"/></Link>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className={styles.optionContainer}>
                     <input 
                         type="radio" 
                         id="option1" 
@@ -127,10 +152,14 @@ const Updatecard = () => {
                         value="option1" 
                         checked={selectedOption === 'option1'}
                         onChange={handleOptionChange} 
+                        className={styles.hiddenInput}
                     />
-                    <label htmlFor="option1">이미지</label>
-                </div>
-                <div>
+                    <label 
+                        htmlFor="option1" 
+                        className={`${styles.optionLabel} ${selectedOption === 'option1' ? styles.active : ''}`}
+                    >
+                        이미지
+                    </label>
                     <input 
                         type="radio" 
                         id="option2" 
@@ -138,72 +167,99 @@ const Updatecard = () => {
                         value="option2" 
                         checked={selectedOption === 'option2'}
                         onChange={handleOptionChange} 
+                        className={styles.hiddenInput}
                     />
-                    <label htmlFor="option2">소개글</label>
+                    <label 
+                        htmlFor="option2" 
+                        className={`${styles.optionLabel} ${selectedOption === 'option2' ? styles.active : ''}`}
+                    >
+                        소개글
+                    </label>
                 </div>
                 {selectedOption === 'option1' && (
                     <div>
-                        {[0, 1, 2].map((index) => (
-                            <div key={index} style={{ marginBottom: '10px' }}>
-                                <input 
-                                    type="file" 
-                                    id={`imageUpload${index}`} 
-                                    name={`imageUpload${index}`} 
-                                    accept="image/*" 
-                                    onChange={(e) => handleFileChange(e, index)} 
-                                    style={{display:"none"}}
-                                />
-                                {!selectedFiles[index] && (
-                                    <img src="/assets/NoPicture.png" alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
-                                )}
-                                {selectedFiles[index] && (
-                                    <div>
-                                        <img 
-                                            src={URL.createObjectURL(selectedFiles[index])} 
-                                            alt={`preview ${index}`} 
-                                            style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }}
+                        <div className={styles.cardcard}>
+                            {[0, 1, 2].map((index) => (
+                                <div className={styles.tmptmp} key={index} style={{ marginBottom: '10px' }} >
+                                    <div className={styles.tmprelative}>
+                                        <input 
+                                            type="file" 
+                                            id={`imageUpload${index}`} 
+                                            name={`imageUpload${index}`} 
+                                            accept="image/*" 
+                                            onChange={(e) => handleFileChange(e, index)} 
+                                            style={{display:"none"}}
                                         />
-                                        <button type="button" onClick={() => handleRemoveFile(index)}>삭제</button>
+                                        {!selectedFiles[index] && (
+                                            <img src="/assets/NoPicture.png" alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
+                                        )}
+                                        {selectedFiles[index] && (
+                                            <div>
+                                                <img 
+                                                    src={URL.createObjectURL(selectedFiles[index])} 
+                                                    alt={`preview ${index}`} 
+                                                    style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }}
+                                                    className={styles.imgimg}
+                                                />
+                                                <div className={styles.labellabel}>
+                                                    <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> <img className={styles.deletepic} src="assets/deletepicture.png"/></button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {!selectedFiles[index] && (
+                                            <label className={styles.labellabel} htmlFor={`imageUpload${index}`} >
+                                                <img className={styles.addpic} src="assets/addpicture.png"/>
+                                            </label>
+                                        )}
                                     </div>
-                                )}
-                                {!selectedFiles[index] && (
-                                    <label className="input-file-button" htmlFor={`imageUpload${index}`} >
-                                        업로드
-                                    </label>
-                                )}
-                            </div>
-                        ))}
+                                </div>
+                            ))}
+                            <div></div>
+                        </div>
+                        <div className={styles.containerbtn}>
+                            <button className={styles.nextbtn} onClick={() => setSelectedOption('option2')}>다음으로</button>
+                        </div>
                     </div>
                 )}
                 {selectedOption === 'option2' && (
                     <div>
-                        <div>나와 어울리는 태그를 선택해 주세요 (최대 5개)</div>
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {tagOptions.map((tag, index) => (
-                                <label key={index} style={{ marginRight: '10px' }}>
-                                    <input
-                                        type="checkbox"
-                                        value={tag}
-                                        onChange={handleTagChange}
-                                        checked={selectedTags.includes(tag)}
-                                    />
-                                    {tag}
-                                </label>
-                            ))}
+                        <div className={styles.tagtext}>
+                            <p>나와 어울리는 태그 5가지를 선택해 주세요</p>
+                            <div className={styles.tagtag} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                {tagOptions.map((tag, index) => (
+                                    <div className={styles.tagbox} key={index} >
+                                        <input
+                                            type="checkbox"
+                                            id={`tag${index}`}
+                                            value={tag}
+                                            onChange={handleTagChange}
+                                            checked={selectedTags.includes(tag)}
+                                            className={styles.hiddenCheckbox}
+                                        />
+                                        <label
+                                            htmlFor={`tag${index}`}
+                                            className={`${styles.labeltag} ${selectedTags.includes(tag) ? styles.checked : ''}`}
+                                        >
+                                            {tag}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                            <p>나를 한줄로 소개해 보세요</p>
+                            <textarea
+                                value={introduction}
+                                onChange={handleIntroductionChange}
+                                maxLength={100}
+                                rows={3}
+                                className={styles.textareaCustom}
+                            />
+                            <div className={styles.charCount}>{charCount}/100</div>
                         </div>
-                        <div>나를 한줄로 소개해 보세요</div>
-                        <textarea
-                            value={introduction}
-                            onChange={handleIntroductionChange}
-                            maxLength={100}
-                            placeholder="100자 제한"
-                            rows={3}
-                            style={{ width: '100%', resize: 'none' }}
-                        />
-                        <div>{charCount}/100</div> 
+                        <div className={styles.containerbtn}>
+                            <button className={styles.nextbtn} type="submit">저장하기</button>
+                        </div>
                     </div>
                 )}
-                <button type="submit">저장하기</button>
             </form>
         </div>
     );
