@@ -205,3 +205,9 @@ height: 483px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+.frontContent, .backContent{
+  width: 350px;
+  height: 300px;
+  background-color: rgb(121, 121, 121);
+}

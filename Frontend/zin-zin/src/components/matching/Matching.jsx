@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import Modal from 'react-modal';
-import confetti from 'canvas-confetti'; 
+import confetti from 'canvas-confetti';
+import ReactCardFlip from 'react-card-flip';
 
 Modal.setAppElement('#root'); // 이 설정은 접근성을 위해 필요합니다.
 
@@ -63,7 +64,7 @@ const Matching = () => {
                 headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
             });
             if (response.data && Array.isArray(response.data.matchings)) {
-                setMatchingCardData(response.data.matchings);   
+                setMatchingCardData(response.data.matchings);
                 console.log(response.data.matchings)
             } else {
                 console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
@@ -81,7 +82,7 @@ const Matching = () => {
                 });
                 if (response.data) {
                     const { cardId, tags, info, images } = response.data;
-                    
+
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
@@ -99,13 +100,13 @@ const Matching = () => {
                 await fetchData();
                 const storedCardData = sessionStorage.getItem('cardData');
                 console.log(storedCardData)
-                if(storedCardData){
+                if (storedCardData) {
                     setCardData(JSON.parse(storedCardData));
                     fetchMatchingCards();
                 }
             };
             fetchDataAndSetCardData();
-        } 
+        }
     }, []);
 
     useEffect(() => {
@@ -125,11 +126,11 @@ const Matching = () => {
         const currentCard = matchingCardData[currentIndex];
         const token = sessionStorage.getItem('accesstoken');
         try {
-            const response = await axios.post('/api/matchings/like', 
-                { 
+            const response = await axios.post('/api/matchings/like',
+                {
                     cardId: currentCard.card.cardId,
-                    like: like 
-                }, 
+                    like: like
+                },
                 {
                     headers: {
                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'
@@ -154,7 +155,7 @@ const Matching = () => {
             console.error('좋아요/싫어요 전송 중 오류 발생:', error);
         }
     };
-    
+
 
     const handleLike = () => {
         handleLikeDislike(true);
@@ -186,7 +187,7 @@ const Matching = () => {
     const reportbadperson = () => {
         alert("신고 되었습니다.");
     };
-    
+
     const handlers = useSwipeable({
         onSwipedLeft: () => handleImageSwipe('left'),
         onSwipedRight: () => handleImageSwipe('right'),
@@ -254,16 +255,22 @@ const Matching = () => {
 
         return (
             <div className={styles.match}>
-                <div
-                    className={`${styles.card} ${isFront ? styles.front : styles.back}`}
-                    onClick={handleCardFlip}
-                    {...handlers}
-                >
-                    {isFront ? (
+                <ReactCardFlip isFlipped={!isFront} flipDirection="horizontal">
+                    <div
+                        className={`${styles.card} ${styles.front}`}
+                        onClick={handleCardFlip}
+                        {...handlers}
+                    >
                         <div className={styles.frontContent}>
-                            <img src={currentCardInfo.image[currentImageIndex]} alt={`Card ${currentCard.memberId}`} {...handlers} />  
+                            <img src={currentCardInfo.image[currentImageIndex]} alt={`Card ${currentCard.memberId}`} {...handlers} />
                         </div>
-                    ) : (
+                    </div>
+
+                    <div
+                        className={`${styles.card} ${styles.back}`}
+                        onClick={handleCardFlip}
+                        {...handlers}
+                    >
                         <div className={styles.backContent}>
                             <p>{currentCardInfo.info}</p>
                             <div>
@@ -272,8 +279,8 @@ const Matching = () => {
                                 ))}
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                </ReactCardFlip>
                 <p>{currentCard.nickname}</p>
                 <p>{currentCard.age}세, {currentCard.gender}</p>
                 <button onClick={reportbadperson}>신고</button>
@@ -295,8 +302,7 @@ const Matching = () => {
                     {mates.length > 0 ? (
                         mates.map((mate, index) => (
                             <div key={index} className={styles.mate}>
-                                {/* <img src={mate.profileImage} alt={mate.name} className={styles.profileImage} /> */}
-                                <img src="/assets/홍창기.png" />
+                                <img src={mate.profileImage} alt={mate.name} className={styles.profileImage} />
                                 <p>{mate.name}</p>
                             </div>
                         ))
