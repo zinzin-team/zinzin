@@ -66,4 +66,8 @@ public class MemberInfo {
         this.profileImage = profileImage;
         this.searchId = searchId;
     }
+
+    public void increaseSuccessCount() {
+        this.successCount += 1;
+    }
 }
