@@ -1,6 +1,9 @@
 package com.fanclub.zinzin.domain.card.dto;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
+import com.fanclub.zinzin.domain.card.entity.CardImage;
+import com.fanclub.zinzin.domain.card.entity.CardTag;
+import com.fanclub.zinzin.domain.card.entity.Tag;
 import lombok.Getter;
 
 import java.util.List;
@@ -17,10 +20,11 @@ public class CardResponse {
         this.cardId = card.getId();
         this.info = card.getInfo();
         this.images = card.getCardImages().stream()
-                .map(cardImage -> cardImage.getImage())
+                .map(CardImage::getImage)
                 .collect(Collectors.toList());
         this.tags = card.getCardTags().stream()
-                .map(ct -> ct.getTag().getContent())
+                .map(CardTag::getTag)
+                .map(Tag::getContent)
                 .collect(Collectors.toList());
     }
 }

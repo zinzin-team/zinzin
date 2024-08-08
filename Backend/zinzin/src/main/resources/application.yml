@@ -31,6 +31,16 @@ spring:
       username: ${neo4j.username}
       password: ${neo4j.password}
 
+cloud:
+  aws:
+    s3:
+      bucket: ${aws.s3.bucket}
+    region.static: ${aws.s3.region}
+    stack.auto: false
+    credentials:
+      accessKey: ${aws.s3.access-key}
+      secretKey: ${aws.s3.secret-key}
+
   data:
     mongodb:
       uri: ${mongodb.uri}
