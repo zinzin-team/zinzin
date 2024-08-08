@@ -1,0 +1,55 @@
+/* AcquaintancesList.module.css */.container {
+  padding: 20px;
+  background-color: #fffaf0;
+}
+
+.friendsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.friendItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.kakaoName {
+  font-size: 14px;
+  color: #333;
+}
+
+.myAcquaintanceButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 20px;
+  color: #808080;
+  cursor: default;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
