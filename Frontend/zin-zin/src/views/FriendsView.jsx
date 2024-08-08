@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import FriendtabNavbar from '../components/friends/FriendtabNavbar';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import KakaoFriendsList from './KakaoFriendsList';
-import AcquaintancesList from './AcquaintancesList';
-import Searchfriend from './Searchfriend';
+import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import FriendsNavbar from '../components/friends/FriendsNavbar';
+import KakaoFriendsList from '../components/friends/KakaoFriendsList';
+import AcquaintancesList from '../components/friends/AcquaintancesList';
+import Searchfriend from '../components/friends/Searchfriend';
+import styles from './FriendsView.module.css';
 
 const FriendsView = () => {
-  const [activeTab, setActiveTab] = useState('friends');
-
-  // return (
-    // <Routes>
-      // <Route path=""
-    // </Routes>
-    // <div className={styles.friendsContainer}>
-    //   <FriendtabNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-    //   {/* {activeTab === 'friends' && (
-    //     <>
-    //       <div className={styles.requestSection}>
-    //         <p className={styles.requestText}>지인 요청을 수락할까요?</p>
-    //         <RequestBox requests={requests} />
-    //       </div>
-    //       <KakaoFriendsList friends={friends} />
-    //     </>
-    //   )}
-    //   {activeTab === 'acquaintances' && <AcquaintancesList acquaintances={acquaintances} />}
-    //   {activeTab === 'search' && <Searchfriend />} */}
-    // </div>
-  // );
+  return (
+    <div className={styles.friendsContainer}>
+      <FriendsNavbar />
+      <div className={styles.content}>
+        <Routes>
+          <Route path="/" element={<KakaoFriendsList />} />
+          <Route path="/z-in" element={<AcquaintancesList />} />
+          <Route path="/search" element={<Searchfriend />} />
+        </Routes>
+      </div>
+    </div>
+  );
 };
 
 export default FriendsView;

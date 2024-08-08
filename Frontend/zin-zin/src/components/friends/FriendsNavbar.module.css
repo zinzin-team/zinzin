@@ -1,0 +1,39 @@
+/* FriendsNavbar.module.css */
+.tabNavigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%; /* 화면 전체 너비에 맞추기 위해 추가 */
+}
+
+.tabButton {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  background: none;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  color: #b0b0b0;
+  position: relative;
+  outline: none;
+}
+
+.tabButton.active {
+  color: #FF9494;
+}
+
+.tabButton::after {
+  content: '';
+  display: block;
+  margin: 10px auto 0 auto;
+  height: 3px;
+  width: 0%;
+  background: transparent;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.tabButton.active::after {
+  width: 100%;
+  background: #FF9494;
+}

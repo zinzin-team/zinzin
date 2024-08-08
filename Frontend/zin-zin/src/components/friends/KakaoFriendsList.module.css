@@ -1,0 +1,89 @@
+/* KakaoFriendsList.module.css */
+.container {
+  padding: 20px;
+  background-color: #fffaf0;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff9494;
+  margin-bottom: 10px;
+}
+
+.subHeader {
+  font-size: 16px;
+  color: #808080;
+  margin-bottom: 20px;
+}
+
+.requestContainer {
+  background-color: #ff9494;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.requestItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.requestButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #ff9494;
+  border-radius: 20px;
+  color: #ff9494;
+  cursor: pointer;
+}
+
+.friendsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.friendItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inviteButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #d3d3d3;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.myAcquaintanceButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 20px;
+  color: #808080;
+  cursor: default;
+}
+
+.requestButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #ff9494;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
