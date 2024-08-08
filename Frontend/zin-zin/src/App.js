@@ -17,6 +17,7 @@ import Header from './components/header/Header';
 import LogoutButton from './components/mypage/LogoutButton';
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
+import ChatroomView from './components/chating/Chattingroom'
 
 const App = () => {
   return (
@@ -32,11 +33,12 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Navbar를 숨기기
-  const hideHeaderPaths = ['/friends', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave'];
-  const hideNavbarPaths = ['/friends', '/login', '/signup', '/callback',  '/leave'];
+  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave'];
+  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave'];
+  const isChatRoom = location.pathname.startsWith('/chat/') && location.pathname.split('/').length === 3;
 
-  const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
-  const isNavbarHidden = hideNavbarPaths.some(path => location.pathname.startsWith(path));
+  const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path)) || isChatRoom;
+  const isNavbarHidden = hideNavbarPaths.some(path => location.pathname.startsWith(path)) || isChatRoom;
 
   return (
     <div className="App">
@@ -47,6 +49,7 @@ const AppContent = () => {
         <Route path="/callback" element={<KakaoCallback />} />
         <Route path="/signup/*" element={<SignupView />} />
         <Route path="/chat" element={<ChatView />} />
+        <Route path="/chat/:roomId" element={<ChatroomView />} />
         <Route path="/friends/*" element={<FriendsView />} />
         <Route path="/like" element={<LikeView />} />
         <Route path="/match" element={<MatchingView />} />
