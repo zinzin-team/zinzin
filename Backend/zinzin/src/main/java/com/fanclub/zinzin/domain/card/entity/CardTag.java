@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.card.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,18 +24,16 @@ public class CardTag {
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private Tag tag;
 
-    public void setCard(Card card) {
+    @Builder
+    private CardTag(Card card, Tag tag) {
         this.card = card;
-    }
-
-    public void setTag(Tag tag) {
         this.tag = tag;
     }
 
-    public static CardTag createCard(Card card, Tag tag) {
-        CardTag cardTag = new CardTag();
-        cardTag.setCard(card);
-        cardTag.setTag(tag);
-        return cardTag;
+    public static CardTag toCardTagEntity(Card card, Tag tag) {
+        return CardTag.builder()
+                .card(card)
+                .tag(tag)
+                .build();
     }
 }

@@ -29,18 +29,20 @@ public class Card extends BaseTimeEntity {
     @OneToMany(mappedBy = "card")
     private List<CardTag> cardTags;
 
-    public void setInfo(String info) {
+    @Builder
+    private Card(Member member, String info) {
+        this.member = member;
         this.info = info;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public static Card toCardEntity(Member member, String info) {
+        return Card.builder()
+                .member(member)
+                .info(info)
+                .build();
     }
 
-    public static Card createCard(String info, Member member) {
-        Card card = new Card();
-        card.setMember(member);
-        card.setInfo(info);
-        return card;
+    public void updateInfo(String info) {
+        this.info = info;
     }
 }
