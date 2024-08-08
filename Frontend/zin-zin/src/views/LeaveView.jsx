@@ -18,7 +18,8 @@ const LeaveView = () => {
         const accessToken = sessionStorage.getItem("accessToken");
 
         try {
-            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/member/me`, {
+            // const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/member/me`, {
+            const response = await axios.delete('/api/member/me', {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'

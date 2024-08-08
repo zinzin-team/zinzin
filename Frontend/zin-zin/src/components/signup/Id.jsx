@@ -34,7 +34,8 @@ const Id = ({ userData, setUserData }) => {
         if (id.trim() && isValid) {
             try {
                 const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/member/search-id/${id}`, {
+                // const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/member/search-id/${id}`, {
+                const response = await axios.get(`/api/member/search-id/${id}`, {
                     headers: { accesstoken: token }
                 });
 
