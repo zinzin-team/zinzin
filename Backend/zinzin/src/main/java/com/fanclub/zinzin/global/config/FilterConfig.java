@@ -14,6 +14,7 @@ public class FilterConfig {
     @Autowired
     public FilterConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+
     }
 
     @Bean

@@ -6,7 +6,6 @@ import com.fanclub.zinzin.domain.chatting.entity.ChatRoomType;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

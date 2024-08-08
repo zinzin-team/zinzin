@@ -23,9 +23,8 @@ public class ChatRoomController {
     }
 
     @GetMapping("/{roomId}/messages")
-    public ResponseEntity<List<ResponseMessageDto>> getRoomMessages(@PathVariable Long roomId) {
-        //  유효성 검증 필요
-        List<ResponseMessageDto> messages = chatRoomService.getRoomMessages(roomId);
+    public ResponseEntity<List<ResponseMessageDto>> getRoomMessages(HttpServletRequest request, @PathVariable Long roomId) {
+        List<ResponseMessageDto> messages = chatRoomService.getRoomMessages(roomId, (Long) request.getAttribute("memberId"));
         return ResponseEntity.ok(messages);
     }
 

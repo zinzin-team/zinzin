@@ -39,13 +39,11 @@ public class TokenAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        log.info("필터 들어옴");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = ((HttpServletRequest) request).getRequestURI();
-        if(EXCLUDE_URLS.stream().anyMatch(path::startsWith)){
-            log.info("필터 들어옴");
+        if (EXCLUDE_URLS.stream().anyMatch(path::startsWith)) {
             chain.doFilter(request, response);
             return;
         }
@@ -54,12 +52,20 @@ public class TokenAuthenticationFilter implements Filter {
             String authorizationHeader = httpRequest.getHeader("Authorization");
             String refreshTokenHeader = httpRequest.getHeader("RefreshToken");
 
+            if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+                httpResponse.setStatus(HttpServletResponse.SC_OK);
+                httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+                return;
+            }
+
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 String accessToken = authorizationHeader.substring(7);
 
                 if (jwtUtil.validateToken(accessToken)) {
                     Claims claims = jwtUtil.getClaims(accessToken);
-                    request.setAttribute("memberId",claims.get("memberId", Long.class));
+                    request.setAttribute("memberId", claims.get("memberId", Long.class));
                     chain.doFilter(request, response);
                     return;
                 }
@@ -79,7 +85,7 @@ public class TokenAuthenticationFilter implements Filter {
                     httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
                     httpResponse.setHeader("RefreshToken", "Bearer " + newRefreshToken);
 
-                    request.setAttribute("memberId",memberId);
+                    request.setAttribute("memberId", memberId);
                     chain.doFilter(request, response);
                     return;
                 } else {

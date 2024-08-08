@@ -44,7 +44,10 @@ public class ChatRoomService {
                 .collect(Collectors.toList());
     }
 
-    public List<ResponseMessageDto> getRoomMessages(Long roomId) {
+    public List<ResponseMessageDto> getRoomMessages(Long roomId, Long memberId) {
+        if (!chatRoomMemberRepository.existsByChatRoomIdAndMemberId(roomId, memberId)) {
+            throw new BaseException(ChatRoomErrorCode.CANNOT_GET_MESSAGES);
+        }
         List<ChatMessage> chatMessages = chatMessageRepository.findAllByRoomId(roomId);
         List<ResponseMessageDto> result = new ArrayList<>();
         for (ChatMessage chatMessage : chatMessages) {
