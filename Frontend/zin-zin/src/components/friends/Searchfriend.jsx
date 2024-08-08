@@ -1,11 +1,11 @@
+// Searchfriend.jsx
 import React from 'react';
-import styles from './Friends.module.css';
 
 const Searchfriend = () => {
   return (
-    <div className={styles.searchFriendContainer}>
-      <p>아이디로 친구를 찾을 수 있어요!</p>
-      <input type="text" placeholder="검색" className={styles.searchInput} />
+    <div>
+      <h2>친구 검색</h2>
+      {/* 친구 검색 기능 또는 다른 내용을 여기에 추가 */}
     </div>
   );
 };

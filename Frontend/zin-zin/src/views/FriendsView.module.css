@@ -1,0 +1,12 @@
+/* FriendsView.module.css */
+.friendsContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 전체 높이를 차지하도록 설정 */
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto; /* 컨텐츠가 넘칠 경우 스크롤 가능하도록 설정 */
+  padding: 20px;
+}
