@@ -23,17 +23,10 @@ public class ChatService {
 
     @Transactional
     public void saveChatMessage(RequestMessageDto chat) {
-        log.info("ChatService.saveChatMessage() is called.");
-        log.info("ChatRequest={}", chat.toString());
         chatMessageRepository.save(new ChatMessage(chat.getRoomId(), chat.getMemberId(), chat.getMessage()));
-        List<ChatMessage> chatMessages = chatMessageRepository.findAllByRoomId(chat.getRoomId());
-        for (ChatMessage chatMessage : chatMessages) {
-            System.out.println("roomId: " + chatMessage.getRoomId() + "memberId: " + chatMessage.getMemberId() + "message: " + chatMessage.getMessage());
-        }
     }
 
     public String getLastMessage(Long roomId) {
-        log.info("getLastMessage() is called.");
         Optional<ChatRoom> chatRoomOpt = chatRoomRepository.findById(roomId);
 
         if (chatRoomOpt.isPresent()) {

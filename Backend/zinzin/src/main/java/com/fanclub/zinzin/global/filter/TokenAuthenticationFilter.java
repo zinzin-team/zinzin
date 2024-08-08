@@ -43,7 +43,7 @@ public class TokenAuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = ((HttpServletRequest) request).getRequestURI();
-        if (EXCLUDE_URLS.stream().anyMatch(path::startsWith)) {
+        if(EXCLUDE_URLS.stream().anyMatch(path::startsWith)){
             chain.doFilter(request, response);
             return;
         }
@@ -51,7 +51,7 @@ public class TokenAuthenticationFilter implements Filter {
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
             String refreshTokenHeader = httpRequest.getHeader("RefreshToken");
-
+            
             if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
                 httpResponse.setStatus(HttpServletResponse.SC_OK);
                 httpResponse.setHeader("Access-Control-Allow-Origin", "*");
@@ -65,7 +65,7 @@ public class TokenAuthenticationFilter implements Filter {
 
                 if (jwtUtil.validateToken(accessToken)) {
                     Claims claims = jwtUtil.getClaims(accessToken);
-                    request.setAttribute("memberId", claims.get("memberId", Long.class));
+                    request.setAttribute("memberId",claims.get("memberId", Long.class));
                     chain.doFilter(request, response);
                     return;
                 }
@@ -85,7 +85,7 @@ public class TokenAuthenticationFilter implements Filter {
                     httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
                     httpResponse.setHeader("RefreshToken", "Bearer " + newRefreshToken);
 
-                    request.setAttribute("memberId", memberId);
+                    request.setAttribute("memberId",memberId);
                     chain.doFilter(request, response);
                     return;
                 } else {
