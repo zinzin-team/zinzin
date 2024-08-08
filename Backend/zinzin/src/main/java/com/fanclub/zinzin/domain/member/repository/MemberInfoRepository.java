@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface MemberInfoRepository extends JpaRepository<MemberInfo, Long> {
+    @Query("SELECT mi FROM MemberInfo mi WHERE mi.member.id = :memberId")
     Optional<MemberInfo> findMemberInfoByMemberId(Long memberId);
 
     @Query("SELECT new com.fanclub.zinzin.domain.searcher.dto.SearchedMemberDto(m.id, m.name, mi.profileImage) " +

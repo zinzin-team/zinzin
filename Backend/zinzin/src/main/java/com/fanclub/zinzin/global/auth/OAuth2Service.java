@@ -76,9 +76,19 @@ public class OAuth2Service {
 
             Map<String, String> response = restTemplate.postForObject(tokenRequestUrl, null, Map.class);
             ArrayList<String> tokens = new ArrayList<>();
-            tokens.add(response.get("access_token"));
-            tokens.add(response.get("refresh_token"));
-            tokens.add(response.get("id_token"));
+            if (response != null) {
+                if (response.containsKey("access_token")) {
+                    tokens.add(response.get("access_token"));
+                } else {
+                    throw new BaseException(AuthErrorCode.OAUTH2_AUTHENTICATION_FAILED);
+                }
+
+                tokens.add(response.getOrDefault("refresh_token", ""));
+                tokens.add(response.getOrDefault("id_token", ""));
+            } else {
+                throw new BaseException(AuthErrorCode.OAUTH2_AUTHENTICATION_FAILED);
+            }
+
             return tokens;
         } catch (Exception e) {
             throw new BaseException(AuthErrorCode.OAUTH2_AUTHENTICATION_FAILED);

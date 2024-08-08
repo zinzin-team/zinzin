@@ -1,9 +1,11 @@
 package com.fanclub.zinzin.global.auth;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
+import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.global.util.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
@@ -23,8 +26,8 @@ public class OAuth2Controller {
     private final MemberRepository memberRepository;
 
     @GetMapping("/authorize")
-    public ResponseEntity<String> getKakaoAuthorizeUrl() {
-        return ResponseEntity.ok(oAuth2Service.getKakaoAuthorizeUrl());
+    public void getKakaoAuthorizeUrl(HttpServletResponse response) throws IOException {
+        response.sendRedirect(oAuth2Service.getKakaoAuthorizeUrl());
     }
 
     @GetMapping("/kakao/callback")

@@ -30,6 +30,9 @@ spring:
     authentication:
       username: ${neo4j.username}
       password: ${neo4j.password}
+  data:
+    mongodb:
+      uri: ${mongodb.uri}
 
 cloud:
   aws:
