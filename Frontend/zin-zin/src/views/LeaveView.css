@@ -1,0 +1,45 @@
+.leave-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.leave-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.leave-message {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.leave-reason {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.leave-warning {
+    font-size: 0.9em;
+    color: red;
+    margin-bottom: 30px;
+}
+
+.leave-form {
+    display: flex;
+    justify-content: center;
+}
+
+.leave-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+}
