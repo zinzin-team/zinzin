@@ -34,7 +34,7 @@ public class CardService {
     private final ImageStorageService imageStorageService;
 
     @Transactional
-    public Card createCard(CardRequest cardRequest, Long memberId) {
+    public void createCard(CardRequest cardRequest, Long memberId) {
 
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
@@ -47,11 +47,11 @@ public class CardService {
             throw new BaseException(CardErrorCode.CARD_ALREADY_EXISTS);
         });
 
-        if (cardRequest.getImages().size() != 3) {
+        if (cardRequest.getImages() == null | cardRequest.getImages().size() != 3) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_IMAGES);
         }
 
-        if (cardRequest.getTags().size() != 5) {
+        if (cardRequest.getTags() == null | cardRequest.getTags().size() != 5) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
         }
 
@@ -74,8 +74,6 @@ public class CardService {
                 })
                 .collect(Collectors.toList());
         cardTagRepository.saveAll(cardTags);
-
-        return newCard;
     }
 
     @Transactional(readOnly = true)
