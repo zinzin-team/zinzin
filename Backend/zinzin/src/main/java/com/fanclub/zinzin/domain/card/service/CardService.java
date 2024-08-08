@@ -55,13 +55,13 @@ public class CardService {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
         }
 
-        Card card = Card.createCard(cardRequest.getInfo(), member);
+        Card card = Card.toCardEntity(member, cardRequest.getInfo());
         Card newCard = cardRepository.save(card);
 
         List<CardImage> images = cardRequest.getImages().stream()
                 .map(image -> {
                     String imagePath = imageStorageService.storeFile(image, memberId);
-                    return CardImage.createCard(newCard, imagePath);
+                    return CardImage.toCardImageEntity(newCard, imagePath);
                 })
                 .collect(Collectors.toList());
         cardImageRepository.saveAll(images);
@@ -70,7 +70,7 @@ public class CardService {
                 .map(tagContent -> {
                     Tag tag = tagRepository.findByContent(tagContent)
                             .orElseThrow(() -> new BaseException(CardErrorCode.TAG_NOT_FOUND));
-                    return CardTag.createCard(newCard, tag);
+                    return CardTag.toCardTagEntity(newCard, tag);
                 })
                 .collect(Collectors.toList());
         cardTagRepository.saveAll(cardTags);
@@ -115,12 +115,12 @@ public class CardService {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
         }
 
-        card.setInfo(cardRequest.getInfo());
+        card.updateInfo(cardRequest.getInfo());
 
         List<CardImage> newImages = cardRequest.getImages().stream()
                 .map(image -> {
                     String imagePath = imageStorageService.storeFile(image, memberId);
-                    return CardImage.createCard(card, imagePath);
+                    return CardImage.toCardImageEntity(card, imagePath);
                 })
                 .collect(Collectors.toList());
         cardImageRepository.deleteByCard(card);
@@ -130,7 +130,7 @@ public class CardService {
                 .map(tagContent -> {
                     Tag tag = tagRepository.findByContent(tagContent)
                             .orElseThrow(() -> new BaseException(CardErrorCode.TAG_NOT_FOUND));
-                    return CardTag.createCard(card, tag);
+                    return CardTag.toCardTagEntity(card, tag);
                 })
                 .collect(Collectors.toList());
         cardTagRepository.deleteByCard(card);
