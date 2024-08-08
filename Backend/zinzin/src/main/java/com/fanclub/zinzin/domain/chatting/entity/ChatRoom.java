@@ -35,7 +35,7 @@ public class ChatRoom extends BaseTimeEntity {
     @Column(name = "last_message_id")
     private String lastMessageId;
 
-    @OneToMany(mappedBy = "chatRoom")
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRoomMember> members;
 
     @Builder(builderClassName = "createRoomBuilder", builderMethodName = "createRoomBuilder")
@@ -46,10 +46,10 @@ public class ChatRoom extends BaseTimeEntity {
         this.lastMessageId = lastMessageId;
     }
 
-    public static ChatRoom createRoom(CreateChatRoomDto createChatRoomDto, String lastMessageId) {
+    public static ChatRoom createRoom(CreateChatRoomDto createChatRoomDto) {
         return createRoomBuilder()
                 .roomType(createChatRoomDto.getRoomType())
-                .lastMessageId(lastMessageId)
+                .lastMessageId("")
                 .build();
     }
 }

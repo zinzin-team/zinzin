@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.chatting.controller;
 
+import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
 import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,4 +28,17 @@ public class ChatRoomController {
         List<ResponseMessageDto> messages = chatRoomService.getRoomMessages(roomId);
         return ResponseEntity.ok(messages);
     }
+
+    @PostMapping("/createRoom")
+    public ResponseEntity<String> createChatRoom(@RequestBody CreateChatRoomDto chatRoomDto) {
+        chatRoomService.createChatRoom(chatRoomDto);
+        return ResponseEntity.ok("채팅방 생성 완료");
+    }
+
+    @DeleteMapping("/{roomId}/exit")
+    public ResponseEntity<String> deleteChatRoom(HttpServletRequest request, @PathVariable Long roomId) {
+        chatRoomService.deleteChatRoom(roomId, (Long) request.getAttribute("memberId"));
+        return ResponseEntity.ok("채팅방 삭제 완료");
+    }
+
 }

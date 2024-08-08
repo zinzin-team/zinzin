@@ -12,6 +12,7 @@ import com.fanclub.zinzin.domain.chatting.repository.ChatRoomMemberRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomRepository;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
+import com.fanclub.zinzin.global.error.code.ChatRoomErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.transaction.Transactional;
@@ -54,19 +55,31 @@ public class ChatRoomService {
 
     @Transactional
     public void createChatRoom(CreateChatRoomDto createChatRoomDto) {
-        MemberInfo myMemberInfo = memberInfoRepository.findById(createChatRoomDto.getMyMemberId())
-                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
-        MemberInfo otherMemberInfo = memberInfoRepository.findById(createChatRoomDto.getOtherMemberId())
-                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+        ChatRoom chatRoom = ChatRoom.createRoom(createChatRoomDto);
+        chatRoomRepository.save(chatRoom);
 
-        ChatRoom babyRoom = ChatRoom.createRoom(createChatRoomDto, "");
-        chatRoomRepository.save(babyRoom);
+        List<ChatRoomMember> chatRoomMembers = createChatRoomDto.getMemberIds().stream()
+                .map(memberId -> {
+                    MemberInfo memberInfo = memberInfoRepository.findById(memberId)
+                            .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        ChatRoomMember chatRoomMember1 = new ChatRoomMember(babyRoom, myMemberInfo);
-        ChatRoomMember chatRoomMember2 = new ChatRoomMember(babyRoom, otherMemberInfo);
-//
-//        chatRoomMemberRepository.save(chatRoomMember1);
-//        chatRoomMemberRepository.save(chatRoomMember2);
+                    return ChatRoomMember.builder()
+                            .chatRoom(chatRoom)
+                            .memberInfo(memberInfo)
+                            .build();
+                }).toList();
+        chatRoomMemberRepository.saveAll(chatRoomMembers);
     }
 
+    @Transactional
+    public void deleteChatRoom(Long roomId, Long memberId) {
+        if (!chatRoomMemberRepository.existsByChatRoomIdAndMemberId(roomId, memberId)) {
+            throw new BaseException(ChatRoomErrorCode.CHAT_ROOM_CANNOT_DELETE);
+        }
+
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
+        chatRoomRepository.delete(chatRoom);
+    }
 }
+
