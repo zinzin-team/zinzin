@@ -10,7 +10,7 @@ import com.fanclub.zinzin.domain.reward.repository.RewardRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.code.RewardErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,7 @@ public class RewardService {
     private final MemberRepository memberRepository;
     private final RewardRepository rewardRepository;
 
+    @Transactional(readOnly = true)
     public SuccessCountResponse getSuccessCount(Long memberId) {
 
         if (memberId == null) {
