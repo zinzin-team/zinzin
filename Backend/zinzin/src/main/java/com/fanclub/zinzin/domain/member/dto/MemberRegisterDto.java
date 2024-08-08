@@ -41,11 +41,13 @@ public class MemberRegisterDto {
 
     public Person toPersonEntity(Member member, MemberInfo memberInfo) {
         return Person.builder()
+                .sub(sub)
                 .memberId(member.getId())
                 .name(name)
+                .birth(birth)
                 .gender(gender)
                 .matchingMode(matchingMode)
-                .nickname(nickname)
+                .nickname(memberInfo.getNickname())
                 .profileImage(memberInfo.getProfileImage())
                 .build();
     }

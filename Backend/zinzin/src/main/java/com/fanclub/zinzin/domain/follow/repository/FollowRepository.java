@@ -8,7 +8,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
-public interface FollowRepository extends Neo4jRepository<Person, Long> {
+public interface FollowRepository extends Neo4jRepository<Person, String> {
 
     @Query("MATCH (a:Person {member_id: $memberId})-[:FOLLOW]->(b:Person), (b)-[:FOLLOW]->(a) " +
             "RETURN b.member_id AS id, b.name AS name")

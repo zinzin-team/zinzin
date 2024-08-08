@@ -1,17 +1,15 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
 
-const CLIENT_ID = process.env.REACT_APP_KAKAO_REST_API_KEY;
-const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-const KakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+const LoginView = () => {
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile_nickname,account_email,openid,friends,talk_message`;
 
-const LoginPage = () => {
-  const navigate = useNavigate();
 
   const handleKakaoLogin = () => {
-    window.location.href = KakaoURL;
-    navigate('/callback');
-  };
+      window.location.href = link 
+    };
+
 
   return (
     <div style={styles.container}>
@@ -38,9 +36,9 @@ const styles = {
     cursor: 'pointer',
     width: '80%',
     maxWidth: '300px',
-    minWidth: '200px', // 최소 너비 설정
+    minWidth: '200px',
     height: 'auto',
   },
 };
 
-export default LoginPage;
+export default LoginView;

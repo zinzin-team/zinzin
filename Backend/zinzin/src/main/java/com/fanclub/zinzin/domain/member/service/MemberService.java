@@ -2,10 +2,8 @@ package com.fanclub.zinzin.domain.member.service;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
-import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
-import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
-import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
-import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
+import com.fanclub.zinzin.domain.card.service.ImageStorageService;
+import com.fanclub.zinzin.domain.member.dto.*;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
@@ -15,6 +13,8 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
+import com.fanclub.zinzin.domain.friend.entity.TempFriend;
+import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,10 +36,13 @@ public class MemberService {
     private final PersonRepository personRepository;
     private final RandomNicknameRepository randomNicknameRepository;
     private final CardRepository cardRepository;
+    private final TempFriendRepository tempFriendRepository;
+    private final ImageStorageService imageStorageService;
 
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
 
+    @Transactional
     public void registerNewMember(MemberRegisterDto memberRegisterDto) {
 
         try {
@@ -49,6 +53,13 @@ public class MemberService {
 
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
             personRepository.save(person);
+
+            List<TempFriend> tempFriends = tempFriendRepository.findAllByMySub(memberRegisterDto.getSub());
+            for(TempFriend tempFriend:tempFriends){
+                personRepository.saveKakaoFriends(tempFriend.getMySub(), tempFriend.getFriendSub(), tempFriend.getFriendName());
+            }
+
+            tempFriendRepository.deleteAll(tempFriends);
         } catch (Exception e) {
             throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
         }
@@ -101,5 +112,34 @@ public class MemberService {
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
         Card card = cardRepository.findCardByMemberId((Long) request.getAttribute("memberId")).orElse(null);
         return MemberInfoResponse.of(memberInfo, card);
+    }
+
+    @Transactional
+    public void updateMemberInfo(Long memberId, MemberInfoUpdateRequest memberInfoUpdateRequest) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        String profileImagePath = imageStorageService.storeFile(memberInfoUpdateRequest.getProfileImage(), memberId);
+
+        memberInfo.updateMemberInfo(profileImagePath, memberInfoUpdateRequest.getSearchId());
+        memberInfoRepository.save(memberInfo);
+        personRepository.updateProfilImage(memberId, profileImagePath);
+    }
+
+    @Transactional
+    public void withdraw(Long memberId) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        member.withdraw();
+        memberRepository.save(member);
     }
 }

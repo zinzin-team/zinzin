@@ -3,6 +3,7 @@ package com.fanclub.zinzin.domain.follow.controller;
 import com.fanclub.zinzin.domain.follow.dto.AnswerFollowRequest;
 import com.fanclub.zinzin.domain.follow.dto.FollowRequest;
 import com.fanclub.zinzin.domain.follow.dto.FollowingRequestResponse;
+import com.fanclub.zinzin.domain.follow.dto.KakaoFriendResponse;
 import com.fanclub.zinzin.domain.follow.service.FollowService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,11 @@ public class FollowController {
     public ResponseEntity<List<FollowingRequestResponse>> getFollowRequestList(HttpServletRequest request){
         Long memberId = (Long) request.getAttribute("memberId");
         return ResponseEntity.ok(followService.getFollowRequestList(memberId));
+    }
+
+    @GetMapping("/social-friends")
+    public ResponseEntity<List<KakaoFriendResponse>> getSocialFriendList(HttpServletRequest request){
+        Long memberId = (Long) request.getAttribute("memberId");
+        return ResponseEntity.ok(followService.getSocialFriendList(memberId));
     }
 }
