@@ -22,6 +22,11 @@ public class MemberController {
         return ResponseEntity.ok("회원가입 성공");
     }
 
+    @GetMapping("/register/search-id/{searchId}")
+    public ResponseEntity<CheckSearchIdResponse> checkDuplicatedSearchIdForRegist(@PathVariable(name = "searchId") String searchId){
+        return ResponseEntity.ok(memberService.checkDuplicatedSearchId(searchId));
+    }
+
     @GetMapping("/search-id/{searchId}")
     public ResponseEntity<CheckSearchIdResponse> checkDuplicatedSearchId(@PathVariable(name = "searchId") String searchId){
         return ResponseEntity.ok(memberService.checkDuplicatedSearchId(searchId));
