@@ -101,10 +101,13 @@ public class S3Service {
     }
 
     // S3에서 파일을 삭제한다.
-    private void deleteS3(String pathName) {
+    public void deleteS3(String url) {
+        AmazonS3URI s3URI = new AmazonS3URI(url);
+
         try {
-            amazonS3.deleteObject(bucketName, pathName);
+            amazonS3.deleteObject(bucketName, s3URI.getKey());
         } catch (AmazonServiceException e) {
+            System.out.println("파일 삭제 실패 : " + s3URI.getKey());
             System.out.println(e.toString());
         }
     }
