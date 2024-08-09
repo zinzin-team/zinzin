@@ -19,14 +19,10 @@ const Matching = () => {
     const [modalIsOpen2, setModalIsOpen2] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
     const [mates, setMates] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
     const navigate = useNavigate();
 
-    const testtest = () => {
-        firework();
-        setModalIsOpen(true);
-    };
-
-    function firework() {
+    const firework = () => {
         var duration = 20 * 150;
         var animationEnd = Date.now() + duration;
         var defaults = { startVelocity: 25, spread: 360, ticks: 50, zIndex: 0 };
@@ -56,33 +52,38 @@ const Matching = () => {
                 })
             );
         }, 250);
-    }
+    };
 
     const fetchMatchingCards = async () => {
         try {
+            const token = sessionStorage.getItem('accessToken');
             const response = await axios.get('/api/matchings', {
-                headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
-            });
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }            });
             if (response.data && Array.isArray(response.data.matchings)) {
                 setMatchingCardData(response.data.matchings);
-                console.log(response.data.matchings)
             } else {
                 console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
             }
         } catch (error) {
             console.error('매칭 카드 데이터를 가져오는 중 오류 발생:', error);
+        } finally {
+            setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
         }
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const token = sessionStorage.getItem('accessToken');
                 const response = await axios.get('/api/cards', {
-                    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
-                });
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }                });
                 if (response.data) {
                     const { cardId, tags, info, images } = response.data;
-
+                    console.log(images)
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
@@ -90,6 +91,8 @@ const Matching = () => {
                 }
             } catch (error) {
                 console.error('데이터를 가져오는 중 오류 발생:', error);
+            } finally {
+                setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
             }
         };
 
@@ -99,7 +102,6 @@ const Matching = () => {
             const fetchDataAndSetCardData = async () => {
                 await fetchData();
                 const storedCardData = sessionStorage.getItem('cardData');
-                console.log(storedCardData)
                 if (storedCardData) {
                     setCardData(JSON.parse(storedCardData));
                     fetchMatchingCards();
@@ -124,7 +126,7 @@ const Matching = () => {
 
     const handleLikeDislike = async (like) => {
         const currentCard = matchingCardData[currentIndex];
-        const token = sessionStorage.getItem('accesstoken');
+        const token = sessionStorage.getItem('accessToken');
         try {
             const response = await axios.post('/api/matchings/like',
                 {
@@ -133,12 +135,11 @@ const Matching = () => {
                 },
                 {
                     headers: {
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'
+                        'Authorization': `Bearer ${token}`
                     }
                 }
             );
-            currentCard.card.checked = true
-            console.log(response.data)
+            currentCard.card.checked = true;
             if (response.data) {
                 setCurrentImageIndex(0);
                 setIsFront(true);
@@ -155,7 +156,6 @@ const Matching = () => {
             console.error('좋아요/싫어요 전송 중 오류 발생:', error);
         }
     };
-
 
     const handleLike = () => {
         handleLikeDislike(true);
@@ -207,6 +207,7 @@ const Matching = () => {
     );
 
     const renderViewOtherCardsContent = () => {
+        console.log(cardData.images[0])
         if (!Array.isArray(matchingCardData) || matchingCardData.length === 0) {
             return (
                 <div className={styles.match}>
@@ -221,7 +222,6 @@ const Matching = () => {
         }
 
         const visibleCards = matchingCardData.filter(card => card && !card.checked);
-        console.log(matchingCardData)
         if (visibleCards.length === 0) {
             if (!matchingCardData || matchingCardData.length < 3) {
                 return (
@@ -249,9 +249,8 @@ const Matching = () => {
 
         const currentCard = matchingCardData[currentIndex];
         const currentCardInfo = currentCard.card;
-        console.log(currentIndex)
-
-        currentCardInfo.image = ['/assets/홍창기.png', '/assets/박상우.png', '/assets/김윤지.png'];
+        console.log(currentCardInfo)
+        // currentCardInfo.images = ['/assets/홍창기.png', '/assets/박상우.png', '/assets/김윤지.png'];
 
         return (
             <div className={styles.match}>
@@ -262,7 +261,7 @@ const Matching = () => {
                         {...handlers}
                     >
                         <div className={styles.frontContent}>
-                            <img src={currentCardInfo.image[currentImageIndex]} alt={`Card ${currentCard.memberId}`} {...handlers} />
+                            <img src={currentCardInfo.images[currentImageIndex]} alt={`Card ${currentCard.memberId}`} {...handlers} />
                         </div>
                     </div>
 
@@ -288,7 +287,6 @@ const Matching = () => {
                     <button onClick={handleLike}>좋아요</button>
                     <button onClick={handleDislike}>싫어요</button>
                     <button onClick={questiontofriend}>질문하기</button>
-                    <button onClick={testtest}>모달열기</button>
                 </div>
 
                 <Modal
@@ -321,7 +319,6 @@ const Matching = () => {
                     <h1>매칭이 성공했어요~💘</h1>
                     <h2>{modalMessage}</h2>
                     <img src="assets/Matchingcouple.png" alt="Matching Couple"/>
-                    <h1>채팅방으로 바로가기 버튼 수정 예정</h1>
                     <button onClick={() => setModalIsOpen(false)}>닫기</button>
                 </Modal>
             </div>
@@ -341,6 +338,14 @@ const Matching = () => {
     );
 
     const getContent = () => {
+        if (isLoading) {
+            return (
+                <div className={styles.loading}>
+                    <p>로딩 중...</p>
+                </div>
+            );
+        }
+
         const matchingMode = true;
         if (matchingMode === true) {
             if (!cardData) {
