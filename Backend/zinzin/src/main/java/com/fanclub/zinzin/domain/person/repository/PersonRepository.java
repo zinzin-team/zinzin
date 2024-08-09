@@ -70,4 +70,8 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
             "WHERE type(r) <> 'KAKAO' " +
             "DELETE r ")
     void withdraw(String sub);
+
+    @Query("MATCH (me:Person {member_id:$memberId}) " +
+            "SET me.card_id = $cardId")
+    void saveCard(Long memberId, Long cardId);
 }
