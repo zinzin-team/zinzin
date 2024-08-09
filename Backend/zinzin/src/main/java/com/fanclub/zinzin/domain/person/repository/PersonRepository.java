@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.person.repository;
 
+import com.fanclub.zinzin.domain.matchingstatus.repository.MatchingStatusRepository;
 import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
 import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.entity.Person;
@@ -8,7 +9,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
-public interface PersonRepository extends Neo4jRepository<Person, String> {
+public interface PersonRepository extends Neo4jRepository<Person, String>, MatchingStatusRepository {
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.profile_image = $profileImage")
