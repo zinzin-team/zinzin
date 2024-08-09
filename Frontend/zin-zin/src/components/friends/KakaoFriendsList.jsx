@@ -138,20 +138,24 @@ const KakaoFriendsList = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.subHeader}>지인 요청을 수락할까요?</div>
-      <div className={styles.requestContainer}>
-        {requests.map((request, index) => (
-          <div key={index} className={styles.requestItem}>
-            <img
-              src={request.profileImage ? request.profileImage : 'default-profile.png'}
-              alt={`${request.kakaoName} 프로필`}
-              className={styles.avatar}
-            />
-            <span className={styles.kakaoName}>{request.kakaoName}</span>
-            <button className={styles.requestButton} onClick={() => openModal(request)}>요청 수락 +</button>
+      {requests.length > 0 && (
+        <>
+          <div className={styles.subHeader}>지인 요청을 수락할까요?</div>
+          <div className={styles.requestContainer}>
+            {requests.map((request, index) => (
+              <div key={index} className={styles.requestItem}>
+                <img
+                  src={request.profileImage ? request.profileImage : 'default-profile.png'}
+                  alt={`${request.kakaoName} 프로필`}
+                  className={styles.avatar}
+                />
+                <span className={styles.kakaoName}>{request.kakaoName}</span>
+                <button className={styles.requestButton} onClick={() => openModal(request)}>요청 수락 +</button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
       <div className={styles.friendsList}>
         {friends.map((friend, index) => (
           <div key={index} className={styles.friendItem}>
