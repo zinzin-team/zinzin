@@ -27,6 +27,7 @@ const KakaoFriendsList = () => {
       }
 
       try {
+        // 카카오 친구 목록 조회
         const responseFriends = await axios.get('/api/mates/social-friends', {
             headers: {
               "Authorization": `Bearer ${accessToken}`,
@@ -34,6 +35,8 @@ const KakaoFriendsList = () => {
           },
           credentials: 'include',
         });
+
+        // 지인 요청 목록 조회
         const responseRequests = await axios.get('/api/mates/requests', {
             headers: {
               "Authorization": `Bearer ${accessToken}`,
@@ -106,11 +109,44 @@ const KakaoFriendsList = () => {
   };
 
   const handleUnfriend = async () => {
-    // 친구 끊기 로직 추가
-    // 예: await axios.delete(`/api/mates/${selectedFriend.id}`, { headers: { ... } });
-    setFriends(friends.filter(friend => friend.kakaoName !== selectedFriend.kakaoName));
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userMemberId = sessionStorage.getItem('userMemberId');
+    
+    try {
+        // 친구 끊기 API 호출
+        await axios.delete('/api/mates', {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            },
+            data: {
+                userMemberId: userMemberId,
+                targetMemberId: selectedFriend.id
+            }
+        });
+
+        // 친구 리스트에서 제거
+        setFriends(friends.filter(friend => friend.kakaoName !== selectedFriend.kakaoName));
+    } catch (error) {
+        if (error.response) {
+            const { code } = error.response.data;
+            if (code === 'F001') {
+                console.error('UserMemberId 또는 TargetMemberId가 null입니다.');
+            } else if (code === 'F006') {
+                console.error('두 사용자 사이에 FOLLOW 관계가 정확히 2개가 아닙니다.');
+            } else if (code === 'F007') {
+                console.error('지인 관계를 끊는 과정에서 오류가 발생했습니다.');
+            } else {
+                console.error('예상치 못한 오류:', error);
+            }
+        } else {
+            console.error('오류:', error.message);
+        }
+    }
+
     closeUnfriendModal();
-  };
+};
+
 
   const handleInvite = async () => {
     // const accessToken = sessionStorage.getItem('accessToken');
@@ -138,6 +174,7 @@ const KakaoFriendsList = () => {
 
   return (
     <div className={styles.container}>
+      {/* 지인 요청이 있을 경우에만 출력 */}
       {requests.length > 0 && (
         <>
           <div className={styles.subHeader}>지인 요청을 수락할까요?</div>
