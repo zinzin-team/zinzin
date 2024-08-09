@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import styles from './MypageView.module.css'; // CSS 모듈을 임포트하세요.
 import LogoutButton from './LogoutButton'; // LogoutButton 컴포넌트를 임포트하세요.
 
@@ -7,43 +7,30 @@ const MypageView = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    // const fetchUserData = async () => {
-    //   try {
-    //     const response = await axios.get("/api/member/me", {
-    //       headers: {
-    //         accesstoken: "token"
-    //       }
-    //     });
-    //     setUserData(response.data);
-    //   } catch (error) {
-    //     console.error("Error fetching user data:", error);
-    //   }
-    // };
+    const fetchUserData = async () => {
+      const accessToken = sessionStorage.getItem('accessToken');
+      if (!accessToken) {
+        console.error('No token found in session storage');
+        // navigate("/logout");
+        return;
+      }
 
-    // fetchUserData();
-
-    // 더미 데이터 설정
-    const dummyData = {
-      email: "example@naver.com",
-      name: "홍길동",
-      nickname: "씩씩한 호랑이",
-      birth: "2000-07-04",
-      gender: "FEMALE",
-      profileImage: "default.jpg",
-      searchId: "gildong",
-      matchingMode: true,
-      matchingModeLog: "2024-08-01T17:17:10.398592",
-      hasCard: true,
-      card: {
-        id: 1,
-        info: "안녕하세요 뭐라할지 모르겠네요",
-        images: [
-          "drfeww1.jpg", "a12.jpg", "g214.jpg"
-        ]
+      try {
+        const response = await axios.get("/api/member/me", {
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        },
+        credentials: 'include',
+        });
+        console.log(response)
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
 
-    setUserData(dummyData);
+    fetchUserData();
   }, []);
 
   if (!userData) {
