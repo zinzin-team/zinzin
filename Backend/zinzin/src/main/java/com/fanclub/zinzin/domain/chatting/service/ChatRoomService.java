@@ -96,5 +96,14 @@ public class ChatRoomService {
                 .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
         chatRoomRepository.delete(chatRoom);
     }
+
+    @Transactional
+    public void updateHeartToggle(Long memberId, Long roomId, boolean isHeart) {
+        ChatRoomMember chatRoomMember = chatRoomMemberRepository.findByChatRoomIdAndMemberId(roomId, memberId)
+                .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_CANNOT_DELETE));
+
+        chatRoomMember.updateHeart(isHeart);
+        chatRoomMemberRepository.save(chatRoomMember);
+    }
 }
 

@@ -41,4 +41,9 @@ public class ChatRoomController {
         return ResponseEntity.ok("채팅방 삭제 완료");
     }
 
+    @PutMapping("/{roomId}/heart")
+    public ResponseEntity<?> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestParam boolean isHeart) {
+        chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, isHeart);
+        return ResponseEntity.ok("토글 업데이트 성공");
+    }
 }
