@@ -1,5 +1,8 @@
 package com.fanclub.zinzin.domain.reward.service;
 
+import com.fanclub.zinzin.domain.chatting.entity.ChatRoom;
+import com.fanclub.zinzin.domain.chatting.repository.ChatRoomMemberRepository;
+import com.fanclub.zinzin.domain.chatting.repository.ChatRoomRepository;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
@@ -7,6 +10,7 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.reward.dto.SuccessCountResponse;
 import com.fanclub.zinzin.domain.reward.entity.Reward;
 import com.fanclub.zinzin.domain.reward.repository.RewardRepository;
+import com.fanclub.zinzin.global.error.code.ChatRoomErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.code.RewardErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
@@ -21,6 +25,8 @@ public class RewardService {
     private final MemberInfoRepository memberInfoRepository;
     private final MemberRepository memberRepository;
     private final RewardRepository rewardRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomMemberRepository chatRoomMemberRepository;
 
     @Transactional(readOnly = true)
     public SuccessCountResponse getSuccessCount(Long memberId) {
@@ -45,7 +51,7 @@ public class RewardService {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        if (memberId == targetId) {
+        if (memberId.equals(targetId)) {
             throw new BaseException(RewardErrorCode.SELF_SELECTED);
         }
 
@@ -58,22 +64,29 @@ public class RewardService {
         MemberInfo selectedMemberInfo = memberInfoRepository.findMemberInfoByMemberId(targetId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
+
+        if (!chatRoomMemberRepository.existsByChatRoomIdAndMemberId(roomId, memberId)) {
+            throw new BaseException(RewardErrorCode.NOT_MEMBER_OF_CHATROOM);
+        }
+
         boolean rewardExistsForMemberInChatRoom = rewardRepository.existsByMemberIdAndChatRoomId(memberId, roomId);
+        Long rewardCountForTargetAndChatRoom = rewardRepository.countBySelectedMemberIdAndChatRoomId(targetId, roomId);
 
         if (rewardExistsForMemberInChatRoom) {
             throw new BaseException(RewardErrorCode.ALREADY_SELECTED);
         } else {
-            Reward reward = Reward.toRewardEntity(roomId, member, selectedMember);
+            if (rewardCountForTargetAndChatRoom > 1) {
+                throw new BaseException(RewardErrorCode.DUPLICATED);
+            }
+            Reward reward = Reward.toRewardEntity(chatRoom, member, selectedMember);
             rewardRepository.save(reward);
         }
 
-        Long rewardCountForTargetAndChatRoom = rewardRepository.countBySelectedMemberIdAndChatRoomId(targetId, roomId);
-
-        if (rewardCountForTargetAndChatRoom == 1) {
+        if (rewardCountForTargetAndChatRoom == 0) {
             selectedMemberInfo.increaseSuccessCount();
             memberInfoRepository.save(selectedMemberInfo);
-        } else if (rewardCountForTargetAndChatRoom > 2) {
-            throw new BaseException(RewardErrorCode.DUPLICATED);
         }
     }
 }

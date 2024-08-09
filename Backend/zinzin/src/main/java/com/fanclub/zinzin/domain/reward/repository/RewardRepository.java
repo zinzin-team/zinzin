@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface RewardRepository extends JpaRepository<Reward, Long> {
     boolean existsByMemberIdAndChatRoomId(Long MemberId, Long chatRoomId);
 
-    @Query("SELECT COUNT(r) FROM Reward r WHERE r.selectedMember.id = :selectedMemberId AND r.chatRoomId = :chatRoomId")
+    @Query("SELECT COUNT(r) FROM Reward r WHERE r.selectedMember.id = :selectedMemberId AND r.chatRoom.id = :chatRoomId")
     Long countBySelectedMemberIdAndChatRoomId(@Param("selectedMemberId") Long selectedMemberId,
                                               @Param("chatRoomId") Long chatRoomId);
 }
