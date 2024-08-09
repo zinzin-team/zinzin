@@ -2,6 +2,9 @@ package com.fanclub.zinzin.domain.matching.service;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
+import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
+import com.fanclub.zinzin.domain.chatting.entity.ChatRoomType;
+import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
 import com.fanclub.zinzin.domain.matching.dto.*;
 import com.fanclub.zinzin.domain.matching.entity.RecommendedCard;
 import com.fanclub.zinzin.domain.matching.repository.RecommendedCardRepository;
@@ -30,6 +33,7 @@ public class MatchingService {
     private final PersonRepository personRepository;
     private final CardRepository cardRepository;
     private final RecommendedCardRepository recommendedCardRepository;
+    private final ChatRoomService chatRoomService;
 
     @Transactional
     public MatchingResponse getMatchings(HttpServletRequest request) {
@@ -124,14 +128,18 @@ public class MatchingService {
             rejectCard(memberId, cardId);
             return CheckingResponse.of(false);
         }
-        
+
         boolean isTwoWay = interestCard(memberId, cardId);
 
         if(!isTwoWay){
             return CheckingResponse.of(false);
         }
 
-        // 채팅방 생성 로직 필요
+        Long other = recommendedCard.getCard().getMember().getId();
+        ArrayList<Long> members = new ArrayList<>();
+        members.add(memberId);
+        members.add(other);
+        chatRoomService.createChatRoom(new CreateChatRoomDto(ChatRoomType.Like, members));
         return CheckingResponse.of(true);
     }
 
