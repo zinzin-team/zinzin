@@ -10,9 +10,10 @@ import LeaveView from "./views/LeaveView";
 import LikeView from "./components/list/Like";
 import MatchingView from "./components/matching/Matching";
 import MypageView from "./components/mypage/MypageView";
+import Settings from './components/mypage/Settings'
 import Navbar from "./components/navbar/Navbar"; 
 import CreatecardView from './components/matching/Createcard';
-import UpdatecardView from './components/mypage/Updatecard';
+import UpdateCard from './components/mypage/Updatecard';
 import Header from './components/header/Header';
 import LogoutButton from './components/mypage/LogoutButton';
 import './App.css';
@@ -54,8 +55,9 @@ const AppContent = () => {
         <Route path="/like" element={<LikeView />} />
         <Route path="/match" element={<MatchingView />} />
         <Route path="/mypage" element={<MypageView />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/create-card" element={<CreatecardView />} />
-        <Route path="/update-card" element={<UpdatecardView />} />
+        <Route path="/update-card/:cardId" element={<UpdateCard />} />
         <Route path="/leave" element={<LeaveView />} />
         <Route path="/logout" element={<LogoutButton />} />
       </Routes>
