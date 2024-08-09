@@ -14,7 +14,8 @@ public enum CardErrorCode implements ErrorCode {
     AUTHOR_MISMATCH(HttpStatus.FORBIDDEN, "D004", "해당 카드의 작성자가 아닙니다."),
     INVALID_NUMBER_OF_IMAGES(HttpStatus.BAD_REQUEST, "D005", "업로드한 이미지가 3개보다 많거나 적습니다."),
     INVALID_NUMBER_OF_TAGS(HttpStatus.BAD_REQUEST, "D006", "선택한 태그가 5개보다 많거나 적습니다."),
-    IMAGE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "D007", "이미지 파일을 업로드할 수 없습니다.");
+    IMAGE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "D007", "이미지 파일을 업로드할 수 없습니다."),
+    IMAGE_UPLOAD_NOT_REQUESTED(HttpStatus.BAD_REQUEST, "D008", "업로드하려는 이미지 파일을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;

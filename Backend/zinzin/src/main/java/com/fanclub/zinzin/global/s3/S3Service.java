@@ -117,7 +117,7 @@ public class S3Service {
         try {
             amazonS3.deleteObject(bucketName, s3URI.getKey());
         } catch (AmazonServiceException e) {
-            System.out.println("파일 삭제 실패 : " + s3URI.getKey());
+            System.out.println("[S3Service] 파일 삭제에 실패했습니다 : " + s3URI.getKey());
             System.out.println(e.toString());
         }
     }
