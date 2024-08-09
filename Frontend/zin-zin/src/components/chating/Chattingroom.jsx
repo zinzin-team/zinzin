@@ -5,16 +5,16 @@ import styles from './Chattingroom.module.css';
 import { Stomp } from "@stomp/stompjs"; 
 
 const Chattingroom = () => {
+    const location = useLocation();
+
+    const { roomType, name, nickname, profileImage, memberId, heartToggle } = location.state || {};
     const { roomId } = useParams(); // URL에서 roomId를 가져옴
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [isHeart, setIsHeart] = useState(heartToggle); // 하트 상태를 관리하는 state 추가
     const stompClient = useRef(null);
     const [connected, setConnected] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const { roomType, name, nickname, profileImage,memberId } = location.state || {};
-
 
     // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
     const handleInputChange = (event) => {
@@ -23,7 +23,7 @@ const Chattingroom = () => {
 
     // 웹소켓 연결 설정
     const connect = () => {
-        const socket = new WebSocket("ws://localhost:8080/api/ws");
+        const socket = new WebSocket("ws://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -54,9 +54,11 @@ const Chattingroom = () => {
 
     const goout = async () => {
         try {
-            const token = sessionStorage.getItem('accesstoken');
+            const token = sessionStorage.getItem('accessToken');
             const response = await axios.delete(`/api/chatRoom/${roomId}/exit`, {
-                headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }    
             });
             navigate('/chat');
             console.log(response.data)
@@ -71,11 +73,15 @@ const Chattingroom = () => {
         console.log("Nickname:", nickname);
         console.log("Profile Image:", profileImage);
         console.log("memberId:", memberId);
+        console.log("heartToggle:", heartToggle);
+        
         const fetchMessages = async () => {
             try {
-                const token = sessionStorage.getItem('accesstoken');
+                const token = sessionStorage.getItem('accessToken');
                 const response = await axios.get(`/api/chatRoom/${roomId}/messages`, {
-                    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }    
                 });
                 console.log(response.data);
                 setMessages(response.data);
@@ -84,10 +90,26 @@ const Chattingroom = () => {
             }
         };
 
+        const fetchHeartStatus = async () => {
+            try {
+                const token = sessionStorage.getItem('accessToken');
+                const response = await axios.get(`/api/chatRoom/${roomId}/heart`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setIsHeart(response.data.isHeart); 
+            } catch (error) {
+                console.error('Error fetching heart status:', error);
+            }
+        };
+
         connect();
         fetchMessages();
+        fetchHeartStatus();
+
         return () => disconnect();
-    }, [roomId,roomType, name, nickname, profileImage,memberId]);
+    }, [roomId, roomType, name, nickname, profileImage, memberId, heartToggle]);
 
     const sendMessage = () => {
         if (connected && inputValue) {
@@ -102,25 +124,56 @@ const Chattingroom = () => {
         }
     };
 
+    const handleHeartToggle = async (event) => {
+        const newIsHeart = event.target.checked; // 체크박스의 새로운 상태를 가져옴
+        setIsHeart(newIsHeart); // UI 업데이트
+
+        try {
+            const token = sessionStorage.getItem('accessToken');
+            const response = await axios.put(`/api/chatRoom/${roomId}/heart`, {
+                isHeart: newIsHeart
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            // 서버로부터의 응답을 확인하고 추가적인 처리가 필요하다면 여기에 작성
+            console.log('Heart status updated:', response.data);
+        } catch (error) {
+            console.error('Error toggling heart status:', error);
+        }
+    };
+
     return (
-        <div className={styles.chatContainer}>
+        <div className={styles.chatContainer}>  
+            {roomType !== "Mate" && (
+                <>
+                    <input 
+                        type="checkbox"  
+                        id="heart-check" 
+                        checked={isHeart} // 체크박스 상태를 isHeart 상태와 연동
+                        onChange={handleHeartToggle} // 체크박스 상태 변화시 handleHeartToggle 호출
+                    />
+                    <label htmlFor="heart-check">하트뿅</label>
+                </>
+            )}
             {messages.length > 0 ? (
                 messages.map((message, index) => (
                     <div key={index} className={styles.message}>
-                            <div>
-                        {message.memberId === memberId ? (
-                            roomType === "Mate" ? name : nickname
-                        ) : (
-                            <div>내가 한 채팅입니다.</div>
-                        )}
-                    </div>
+                        <div>
+                            {message.memberId === memberId ? (
+                                roomType === "Mate" ? name : nickname
+                            ) : (
+                                <div>내가 한 채팅입니다.</div>
+                            )}
+                        </div>
                         <div className={styles.text}>{message.message}</div>
                     </div>
                 ))
             ) : (
                 <div className={styles.noMessages}>새로운 채팅을 시작하세요</div>
             )}
-
             <div>
                 <input
                     type="text"
@@ -130,7 +183,7 @@ const Chattingroom = () => {
                 />
                 <button onClick={sendMessage}>입력</button> 
             </div>
-                <button onClick={goout}>채팅 나가기</button> 
+            <button onClick={goout}>채팅 나가기</button> 
         </div>
     );
 }
