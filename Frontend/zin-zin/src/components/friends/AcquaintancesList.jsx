@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-// import axios from 'axios';
+import axios from 'axios';
 import styles from './KakaoFriendsList.module.css';
 
 const AcquaintancesList = () => {
@@ -11,49 +11,27 @@ const AcquaintancesList = () => {
 
   useEffect(() => {
     const fetchAcquaintances = async () => {
-      // const accessToken = sessionStorage.getItem('accessToken');
-      // if (!accessToken) {
-      //   console.error('No token found in session storage');
-      //   setLoading(false);
-      //   // navigate("/logout");
-      //   return;
-      // }
+      const accessToken = sessionStorage.getItem('accessToken');
+      if (!accessToken) {
+        console.error('No token found in session storage');
+        setLoading(false);
+        // navigate("/logout");
+        return;
+      }
 
-      // try {
-      //   const response = await axios.get('/api/mates', {
-      //     headers: {
-      //       "Authorization": `Bearer ${accessToken}`,
-      //       "Content-Type": "application/json"
-      //     }
-      //   });
-      //   setAcquaintances(response.data);
-      //   setLoading(false);
-      // } catch (error) {
-      //   console.error('지인 목록을 가져오는 중 오류 발생:', error);
-      //   setLoading(false);
-      // }
-
-      // 더미 데이터 설정
-      const dummyAcquaintances = [
-        {
-          id: 1,
-          profileImage: 'https://via.placeholder.com/50',
-          name: '홍창기'
-        },
-        {
-          id: 25,
-          profileImage: 'https://via.placeholder.com/50',
-          name: '박상우'
-        },
-        {
-          id: 37,
-          profileImage: 'https://via.placeholder.com/50',
-          name: '김윤지'
-        }
-      ];
-
-      setAcquaintances(dummyAcquaintances);
-      setLoading(false);
+      try {
+        const response = await axios.get('/api/mates', {
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+          }
+        });
+        setAcquaintances(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('지인 목록을 가져오는 중 오류 발생:', error);
+        setLoading(false);
+      }
     };
 
     fetchAcquaintances();
@@ -70,26 +48,26 @@ const AcquaintancesList = () => {
   };
 
   const handleUnfriend = async () => {
-    // const accessToken = sessionStorage.getItem('accessToken');
-    // if (!accessToken) {
-    //   console.error('No token found in session storage');
-    //   closeUnfriendModal();
-    //   return;
-    // }
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (!accessToken) {
+      console.error('No token found in session storage');
+      closeUnfriendModal();
+      return;
+    }
 
-    // try {
-    //   await axios.delete(`/api/mates/${selectedAcquaintance.id}`, {
-    //     headers: {
-    //       "Authorization": `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json"
-    //     }
-    //   });
+    try {
+      await axios.delete(`/api/mates/${selectedAcquaintance.id}`, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        }
+      });
       setAcquaintances(acquaintances.filter(acquaintance => acquaintance.id !== selectedAcquaintance.id));
       closeUnfriendModal();
-    // } catch (error) {
-    //   console.error('지인 해제 중 오류 발생:', error);
-    //   closeUnfriendModal();
-    // }
+    } catch (error) {
+      console.error('지인 해제 중 오류 발생:', error);
+      closeUnfriendModal();
+    }
   };
 
   if (loading) {
