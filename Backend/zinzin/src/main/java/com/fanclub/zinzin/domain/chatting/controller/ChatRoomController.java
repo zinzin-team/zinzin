@@ -42,7 +42,7 @@ public class ChatRoomController {
     }
 
     @PutMapping("/{roomId}/heart")
-    public ResponseEntity<?> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestParam boolean isHeart) {
+    public ResponseEntity<?> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestBody boolean isHeart) {
         chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, isHeart);
         return ResponseEntity.ok("토글 업데이트 성공");
     }

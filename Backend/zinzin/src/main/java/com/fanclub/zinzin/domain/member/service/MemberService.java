@@ -21,6 +21,7 @@ import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ public class MemberService {
             personRepository.save(person);
 
             List<TempFriend> tempFriends = tempFriendRepository.findAllByMySub(memberRegisterDto.getSub());
-            for(TempFriend tempFriend:tempFriends){
+            for (TempFriend tempFriend : tempFriends) {
                 personRepository.saveKakaoFriends(tempFriend.getMySub(), tempFriend.getFriendSub(), tempFriend.getFriendName());
             }
 
@@ -140,6 +141,22 @@ public class MemberService {
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         member.withdraw();
-        memberRepository.save(member);
+        personRepository.withdraw(member.getSub());
+    }
+
+    @Transactional
+    public String updateRandomNickname(Long memberId) {
+        if (memberId == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+        MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        String randomNickname = getRandomNickname().getNickname();
+        memberInfo.updateNickname(randomNickname);
+
+        //Neo4j 추가 필요
+
+        return randomNickname;
     }
 }

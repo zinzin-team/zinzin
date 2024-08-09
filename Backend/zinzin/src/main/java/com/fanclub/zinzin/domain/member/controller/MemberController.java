@@ -4,6 +4,9 @@ import com.fanclub.zinzin.domain.member.dto.*;
 import com.fanclub.zinzin.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,5 +58,10 @@ public class MemberController {
     public ResponseEntity<?> deleteOwnInfo(HttpServletRequest request) {
         memberService.withdraw((Long) request.getAttribute("memberId"));
         return ResponseEntity.ok("회원 탈퇴 성공");
+    }
+
+    @PostMapping("/nickname")
+    public ResponseEntity<String> updateRandomNickname(HttpServletRequest request) {
+        return ResponseEntity.ok(memberService.updateRandomNickname((Long) request.getAttribute("memberId")));
     }
 }
