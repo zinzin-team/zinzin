@@ -62,4 +62,12 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
             "DELETE r " +
             "CREATE (me)-[:BLOCKED]->(matchingPartner)")
     void rejectCard(Long memberId, Long cardId);
+
+    @Query("MATCH (me:Person {sub:$sub}) " +
+            "REMOVE me.member_id, me.name, me.birth, me.gender, me.card_id, me.matching_mode, me.matching_visibility, me.nickname, me.profile_image " +
+            "WITH me " +
+            "MATCH (me)-[r]-() " +
+            "WHERE type(r) <> 'KAKAO' " +
+            "DELETE r ")
+    void withdraw(String sub);
 }
