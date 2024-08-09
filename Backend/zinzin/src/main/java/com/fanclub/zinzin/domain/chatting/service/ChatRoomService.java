@@ -97,6 +97,16 @@ public class ChatRoomService {
         chatRoomRepository.delete(chatRoom);
     }
 
+    public ResponseChatRoomDto getChatRoomBetweenMembers(List<Long> memberIds) {
+        Long myMemberId = memberIds.get(0);
+        Long otherMemberId = memberIds.get(1);
+        Optional<ChatRoom> chatRoom = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
+
+        return chatRoom.map(room ->
+                        ResponseChatRoomDto.fromEntity(room, myMemberId, chatService.getLastMessage(room.getId())))
+                .orElse(null);
+    }
+
     @Transactional
     public void updateHeartToggle(Long memberId, Long roomId, boolean isHeart) {
         ChatRoomMember chatRoomMember = chatRoomMemberRepository.findByChatRoomIdAndMemberId(roomId, memberId)

@@ -3,6 +3,7 @@ package com.fanclub.zinzin.domain.chatting.entity;
 import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
 import com.fanclub.zinzin.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Table(name = "chat_room")
 @NoArgsConstructor
+@AllArgsConstructor
 public class ChatRoom extends BaseTimeEntity {
 
     @Id
