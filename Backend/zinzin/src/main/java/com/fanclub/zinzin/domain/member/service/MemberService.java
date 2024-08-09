@@ -140,6 +140,6 @@ public class MemberService {
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         member.withdraw();
-        memberRepository.save(member);
+
     }
 }
