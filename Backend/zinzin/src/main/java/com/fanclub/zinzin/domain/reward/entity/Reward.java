@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.reward.entity;
 
+import com.fanclub.zinzin.domain.chatting.entity.ChatRoom;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -17,8 +18,9 @@ public class Reward extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "chat_room_id", nullable = false)
-    private Long chatRoomId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
+    private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
@@ -29,15 +31,15 @@ public class Reward extends BaseTimeEntity {
     private Member selectedMember;
 
     @Builder
-    public Reward(Long chatRoomId, Member member, Member selectedMember) {
-        this.chatRoomId = chatRoomId;
+    public Reward(ChatRoom chatRoom, Member member, Member selectedMember) {
+        this.chatRoom = chatRoom;
         this.member = member;
         this.selectedMember = selectedMember;
     }
 
-    public static Reward toRewardEntity(Long chatRoomId, Member member, Member selectedMember) {
+    public static Reward toRewardEntity(ChatRoom chatRoom, Member member, Member selectedMember) {
         return Reward.builder()
-                .chatRoomId(chatRoomId)
+                .chatRoom(chatRoom)
                 .member(member)
                 .selectedMember(selectedMember)
                 .build();

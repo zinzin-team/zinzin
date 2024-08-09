@@ -53,7 +53,7 @@ public class MemberInfo {
 
     @Builder
     public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
-        this.profileImage = (profileImage==null)?"default.jpg":profileImage;
+        this.profileImage = (profileImage == null) ? "default.jpg" : profileImage;
         this.nickname = nickname;
         this.searchId = searchId;
         this.matchingVisibility = matchingVisibility;
@@ -70,4 +70,12 @@ public class MemberInfo {
     public void increaseSuccessCount() {
         this.successCount += 1;
     }
+
+    @Transient
+    public Long getMemberId() {
+        return member != null ? member.getId() : null;
+    }
+
+    @Transient
+    public String getMemberName() {return member != null ? member.getName() : null;}
 }

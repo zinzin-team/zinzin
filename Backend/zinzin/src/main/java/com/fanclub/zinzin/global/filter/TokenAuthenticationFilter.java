@@ -26,6 +26,7 @@ public class TokenAuthenticationFilter implements Filter {
             "/api/oauth2",
             "/api/login",
             "/api/mates/kakao",
+            "/api/ws",
             "/api/member/register"
     );
 
@@ -49,6 +50,14 @@ public class TokenAuthenticationFilter implements Filter {
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
             String refreshTokenHeader = httpRequest.getHeader("RefreshToken");
+
+            if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+                httpResponse.setStatus(HttpServletResponse.SC_OK);
+                httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+                return;
+            }
 
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 String accessToken = authorizationHeader.substring(7);

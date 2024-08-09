@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import FriendsNavbar from '../components/friends/FriendsNavbar';
 import KakaoFriendsList from '../components/friends/KakaoFriendsList';
 import AcquaintancesList from '../components/friends/AcquaintancesList';
@@ -9,6 +9,7 @@ import styles from './FriendsView.module.css';
 const FriendsView = () => {
   return (
     <div className={styles.friendsContainer}>
+      <Link to="/" className={styles.link}><i className="bi bi-chevron-left"/></Link>
       <FriendsNavbar />
       <div className={styles.content}>
         <Routes>

@@ -15,10 +15,13 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.error.code.CardErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import com.fanclub.zinzin.global.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,11 +34,10 @@ public class CardService {
     private final CardTagRepository cardTagRepository;
     private final TagRepository tagRepository;
     private final MemberRepository memberRepository;
-    private final ImageStorageService imageStorageService;
+    private final S3Service s3Service;
 
     @Transactional
     public void createCard(CardRequest cardRequest, Long memberId) {
-
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
@@ -47,25 +49,19 @@ public class CardService {
             throw new BaseException(CardErrorCode.CARD_ALREADY_EXISTS);
         });
 
-        if (cardRequest.getImages() == null | cardRequest.getImages().size() != 3) {
+        if (cardRequest.getImages() == null || cardRequest.getImages().size() != 3) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_IMAGES);
         }
 
-        if (cardRequest.getTags() == null | cardRequest.getTags().size() != 5) {
+        if (cardRequest.getTags() == null || cardRequest.getTags().size() != 5) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
         }
 
+        // card를 저장한다.
         Card card = Card.toCardEntity(member, cardRequest.getInfo());
         Card newCard = cardRepository.save(card);
 
-        List<CardImage> images = cardRequest.getImages().stream()
-                .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image, memberId);
-                    return CardImage.toCardImageEntity(newCard, imagePath);
-                })
-                .collect(Collectors.toList());
-        cardImageRepository.saveAll(images);
-
+        // cardTags를 저장한다.
         List<CardTag> cardTags = cardRequest.getTags().stream()
                 .map(tagContent -> {
                     Tag tag = tagRepository.findByContent(tagContent)
@@ -74,6 +70,21 @@ public class CardService {
                 })
                 .collect(Collectors.toList());
         cardTagRepository.saveAll(cardTags);
+
+        // 요청으로 들어온 카드 이미지를 업로드하고 URL을 저장한다.
+        List<CardImage> images = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            if (cardRequest.getImages().get(i) == null) {
+                throw new BaseException(CardErrorCode.IMAGE_UPLOAD_NOT_REQUESTED);
+            }
+
+            String newImageURL = s3Service.uploadCard(cardRequest.getImages().get(i));
+            images.add(CardImage.toCardImageEntity(card, newImageURL, i));
+        }
+
+        // cardImage를 저장한다.
+        cardImageRepository.saveAll(images);
     }
 
     @Transactional(readOnly = true)
@@ -90,7 +101,6 @@ public class CardService {
 
     @Transactional
     public void updateCard(Long cardId, CardRequest cardRequest, Long memberId) {
-
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
@@ -105,25 +115,18 @@ public class CardService {
             throw new BaseException(CardErrorCode.AUTHOR_MISMATCH);
         }
 
-        if (cardRequest.getImages().size() != 3) {
+        if (cardRequest.getImages() == null || cardRequest.getImages().size() != 3) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_IMAGES);
         }
 
-        if (cardRequest.getTags().size() != 5) {
+        if (cardRequest.getTags() == null || cardRequest.getTags().size() != 5) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_TAGS);
         }
 
+        // card의 info를 업데이트한다.
         card.updateInfo(cardRequest.getInfo());
 
-        List<CardImage> newImages = cardRequest.getImages().stream()
-                .map(image -> {
-                    String imagePath = imageStorageService.storeFile(image, memberId);
-                    return CardImage.toCardImageEntity(card, imagePath);
-                })
-                .collect(Collectors.toList());
-        cardImageRepository.deleteByCard(card);
-        cardImageRepository.saveAll(newImages);
-
+        // cardTags를 업데이트한다.
         List<CardTag> newCardTags = cardRequest.getTags().stream()
                 .map(tagContent -> {
                     Tag tag = tagRepository.findByContent(tagContent)
@@ -134,6 +137,33 @@ public class CardService {
         cardTagRepository.deleteByCard(card);
         cardTagRepository.saveAll(newCardTags);
 
+        // 요청으로 들어온 카드 이미지를 업로드하고 URL을 저장한다.
+        // 요청으로 들어온 카드 이미지가 존재하지 않으면 기존 URL을 저장한다.
+        List<String> imageURLs = card.getCardImages().stream()
+                .sorted(Comparator.comparingInt(CardImage::getImageNum))
+                .map(CardImage::getImage)
+                .toList();
+        List<CardImage> newCardImages = new ArrayList<>();
+
+        for (int i = 0; i < imageURLs.size(); i++) {
+            if (cardRequest.getImages().get(i) == null) {
+                newCardImages.add(CardImage.toCardImageEntity(card, imageURLs.get(i), i));
+            } else {
+                String newImageURL = s3Service.uploadCard(cardRequest.getImages().get(i));
+                newCardImages.add(CardImage.toCardImageEntity(card, newImageURL, i));
+            }
+        }
+
+        // cardImages를 업데이트한다.
+        cardImageRepository.deleteByCard(card);
+        cardImageRepository.saveAll(newCardImages);
+
+        // card를 저장한다.
         cardRepository.save(card);
+
+        // 기존 URL에 해당하는 카드 이미지를 삭제한다.
+        for (String imageURL : imageURLs) {
+            s3Service.deleteS3(imageURL);
+        }
     }
 }

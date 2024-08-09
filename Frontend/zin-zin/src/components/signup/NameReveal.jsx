@@ -37,17 +37,9 @@ const NameReveal = ({ userData, setUserData }) => {
                 matchingVisibility,
                 matchingMode: userData.matchingMode
             };
-
-            // 사용자 등록을 위한 API 호출
-            // const response = await fetch('http://localhost:8080/api/member/register', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(requestData)
-            // });
             
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/member/register`, requestData, {
+            // const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/member/register`, requestData, {
+            const response = await axios.post('/api/member/register', requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
@@ -55,7 +47,7 @@ const NameReveal = ({ userData, setUserData }) => {
 
             if (response.ok) {
                 console.log('회원가입 성공');
-                navigate('/'); // 실제 보호된 라우트로 대체
+                navigate('/');
             } else {
                 console.error('회원가입 실패');
                 alert('회원가입에 실패했습니다.');
