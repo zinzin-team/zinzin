@@ -152,6 +152,11 @@ public class MemberService {
         MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        return memberInfo.updateNickname(getRandomNickname().getNickname());
+        String randomNickname = getRandomNickname().getNickname();
+        memberInfo.updateNickname(randomNickname);
+
+        //Neo4j 추가 필요
+
+        return randomNickname;
     }
 }
