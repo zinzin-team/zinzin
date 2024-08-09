@@ -27,8 +27,16 @@ const Chat = () => {
         console.log(chatRooms)
     }, []);
 
-    const handleRoomClick = (roomId) => {
-        navigate(`/chat/${roomId}`);
+    const handleRoomClick = (room) => {
+        navigate(`/chat/${room.roomId}`, {
+            state: {
+                roomType: room.roomType,
+                name: room.otherMember.name,
+                nickname: room.otherMember.nickname,
+                profileImage: room.otherMember.profileImage,
+                memberId:  room.otherMember.memberId
+            }
+        });
     };
 
     return (
@@ -36,7 +44,7 @@ const Chat = () => {
             {chatRooms && chatRooms.length > 0 ? (
                 chatRooms.map(room => (
                     <div key={room.roomId} className={styles.chatRoom} 
-                    onClick={() => handleRoomClick(room.roomId)}>
+                    onClick={() => handleRoomClick(room)}>
                         <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
                         <div className={styles.roomInfo}>
                             {room.roomType === 'Like' ? (
