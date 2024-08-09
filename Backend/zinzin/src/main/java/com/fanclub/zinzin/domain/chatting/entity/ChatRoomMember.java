@@ -34,4 +34,8 @@ public class ChatRoomMember {
         this.memberInfo = memberInfo;
         this.heartToggle = false;
     }
+
+    public void updateHeart(boolean isHeart) {
+        this.heartToggle = isHeart;
+    }
 }
