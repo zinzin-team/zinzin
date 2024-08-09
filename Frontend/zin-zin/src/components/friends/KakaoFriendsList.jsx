@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 // import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
+import axios from 'axios';
 import styles from './KakaoFriendsList.module.css';
 
 const KakaoFriendsList = () => {
@@ -17,93 +17,40 @@ const KakaoFriendsList = () => {
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
 
   useEffect(() => {
-    // const fetchFriends = async () => {
-    //   const accessToken = sessionStorage.getItem('accessToken');
-    //   if (!accessToken) {
-    //     console.error('No token found in session storage');
-    //     setLoading(false);
-    //     // navigate("/logout");
-    //     return;
-    //   }
-
-    //   try {
-    //     const responseFriends = await axios.get('/api/mates/social-friends', {
-    //         headers: {
-    //           "Authorization": `Bearer ${accessToken}`,
-    //           "Content-Type": "application/json"
-    //       },
-    //       credentials: 'include',
-    //     });
-    //     const responseRequests = await axios.get('/api/mates/requests', {
-    //         headers: {
-    //           "Authorization": `Bearer ${accessToken}`,
-    //           "Content-Type": "application/json"
-    //       },
-    //       credentials: 'include',
-    //     });
-    //     setFriends(responseFriends.data);
-    //     setRequests(responseRequests.data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error('친구 목록을 가져오는 중 오류 발생:', error);
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchFriends();
-
-    // 더미 데이터 설정
-    const dummyFriends = [
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '홍길동',
-        relationship: 'MEMBER',
-        id: 1111
-      },
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '김철수',
-        relationship: 'FOLLOW',
-        id: 1112
-      },
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '이영희',
-        relationship: 'REQUEST_FOLLOW',
-        id: 1113
-      },
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '박민수',
-        relationship: 'RECEIVE_REQUEST',
-        id: 1114
+    const fetchFriends = async () => {
+      const accessToken = sessionStorage.getItem('accessToken');
+      if (!accessToken) {
+        console.error('No token found in session storage');
+        setLoading(false);
+        // navigate("/logout");
+        return;
       }
-    ];
 
-    const dummyRequests = [
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '이순신',
-        relationship: 'RECEIVE_REQUEST',
-        id: 1115
-      },
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '장보고',
-        relationship: 'RECEIVE_REQUEST',
-        id: 1116
-      },
-      {
-        profileImage: 'https://via.placeholder.com/50',
-        kakaoName: '김윤지',
-        relationship: 'RECEIVE_REQUEST',
-        id: 1117
-      },
-    ];
+      try {
+        const responseFriends = await axios.get('/api/mates/social-friends', {
+            headers: {
+              "Authorization": `Bearer ${accessToken}`,
+              "Content-Type": "application/json"
+          },
+          credentials: 'include',
+        });
+        const responseRequests = await axios.get('/api/mates/requests', {
+            headers: {
+              "Authorization": `Bearer ${accessToken}`,
+              "Content-Type": "application/json"
+          },
+          credentials: 'include',
+        });
+        setFriends(responseFriends.data);
+        setRequests(responseRequests.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('친구 목록을 가져오는 중 오류 발생:', error);
+        setLoading(false);
+      }
+    };
 
-    setFriends(dummyFriends);
-    setRequests(dummyRequests);
-    setLoading(false);
+    fetchFriends();
   }, []);
 
   const openModal = (request) => {
@@ -137,24 +84,24 @@ const KakaoFriendsList = () => {
   };
 
   const handleAccept = async (isAccepted) => {
-    // const accessToken = sessionStorage.getItem('accessToken');
-    // const userMemberId = sessionStorage.getItem('userMemberId');
-    // try {
-    //   await axios.put('/api/mates', {
-    //     userMemberId,
-    //     targetMemberId: selectedRequest.id,
-    //     isAccepted
-    //   }, {
-    //     headers: {
-    //       "Authorization": `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json"
-    //     }
-    //   });
-    //   // 요청 수락/거절 후 리스트 갱신 로직 추가
-    //   setRequests(requests.filter(request => request.id !== selectedRequest.id));
-    // } catch (error) {
-    //   console.error('요청 처리 중 오류 발생:', error);
-    // }
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userMemberId = sessionStorage.getItem('userMemberId');
+    try {
+      await axios.put('/api/mates', {
+        userMemberId,
+        targetMemberId: selectedRequest.id,
+        isAccepted
+      }, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        }
+      });
+      // 요청 수락/거절 후 리스트 갱신 로직 추가
+      setRequests(requests.filter(request => request.id !== selectedRequest.id));
+    } catch (error) {
+      console.error('요청 처리 중 오류 발생:', error);
+    }
     closeModal();
   };
 

@@ -33,12 +33,8 @@ const Id = ({ userData, setUserData }) => {
         e.preventDefault();
         if (id.trim() && isValid) {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                // const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/member/search-id/${id}`, {
-                const response = await axios.get(`/api/member/search-id/${id}`, {
-                    headers: { accesstoken: token }
-                });
-
+                const response = await axios.get(`/api/member/search-id/${id}`);
+    
                 if (response.data.duplicated) {
                     setIsDuplicate(true);
                     alert('이미 사용 중인 ID입니다.');
@@ -55,6 +51,7 @@ const Id = ({ userData, setUserData }) => {
             }
         }
     };
+    
 
     return (
         <div className={styles.container}>
