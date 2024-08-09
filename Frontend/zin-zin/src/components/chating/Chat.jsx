@@ -10,10 +10,11 @@ const Chat = () => {
     useEffect(() => {
         const fetchChatRooms = async () => {
             try {
-                const token = sessionStorage.getItem('accesstoken');
+                const token = sessionStorage.getItem('accessToken');
                 const response = await axios.get('/api/chatRoom', {
-                    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'}
-                });
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }                });
                 console.log(response.data)
                 if (response.data) {
                     setChatRooms(response.data);
