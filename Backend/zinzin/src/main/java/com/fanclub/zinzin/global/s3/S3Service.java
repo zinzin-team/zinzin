@@ -2,6 +2,7 @@ package com.fanclub.zinzin.global.s3;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fanclub.zinzin.global.error.code.FileErrorCode;
@@ -30,33 +31,42 @@ public class S3Service {
     private final String PROFILE_IMG_DIR = "profile";
     private final String CARD_IMG_DIR = "card";
 
-    public String insertProfile(MultipartFile multipartFile) {
+    // S3에 프로필 이미지를 업로드하고 URL을 반환한다.
+    public String uploadProfile(MultipartFile multipartFile) {
         return upload(multipartFile, PROFILE_IMG_DIR);
     }
 
-    public String insertCard(MultipartFile multipartFile) {
+    // S3에 카드 이미지를 업로드하고 URL을 반환한다.
+    public String uploadCard(MultipartFile multipartFile) {
         return upload(multipartFile, CARD_IMG_DIR);
     }
 
-    public String updateProfile(MultipartFile multipartFile, String currentPathName) {
-        deleteS3(currentPathName);
-        return upload(multipartFile, PROFILE_IMG_DIR);
+    // 기존 URL에 해당하는 프로필 이미지를 삭제하고, 새로운 프로필 이미지를 업로드하여 URL을 반환한다.
+    public String replaceProfile(MultipartFile multipartFile, String currentURL) {
+        return replace(multipartFile, PROFILE_IMG_DIR, currentURL);
     }
 
-    public String updateCard(MultipartFile multipartFile, String currentPathName) {
-        deleteS3(currentPathName);
-        return upload(multipartFile, CARD_IMG_DIR);
+    // 기존 URL에 해당하는 카드 이미지를 삭제하고, 새로운 카드 이미지를 업로드하여 URL을 반환한다.
+    public String replaceCard(MultipartFile multipartFile, String currentURL) {
+        return replace(multipartFile, CARD_IMG_DIR, currentURL);
     }
 
-    // S3에 파일을 업로드하고 파일의 URL을 반환한다.
+    // S3에 파일을 업로드하고 URL을 반환한다.
     private String upload(MultipartFile multipartFile, String dirName) {
         String uuid = UUID.randomUUID().toString();
         String pathName = dirName + "/" + uuid;
 
         File file = convert(multipartFile);
-        String fileUploadUrl = putS3(file, pathName);
+        String newURL = putS3(file, pathName);
         file.delete(); // 로컬에 임시로 저장한 파일을 삭제한다.
-        return fileUploadUrl;
+        return newURL;
+    }
+
+    // 기존 URL에 해당하는 파일을 삭제하고, 새로운 파일을 업로드하여 URL을 반환한다.
+    private String replace(MultipartFile multipartFile, String dirName, String currentURL) {
+        String newURL = upload(multipartFile, dirName); // 새로운 파일 업로드
+        deleteS3(currentURL); // 기존 파일 삭제
+        return newURL; // 새로운 파일에 해당하는 URL 반환
     }
 
     // multipartFile을 로컬에 임시로 저장한다.
