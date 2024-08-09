@@ -33,7 +33,7 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Navbar를 숨기기
-  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave'];
+  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave', '/mypage'];
   const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave'];
   const isChatRoom = location.pathname.startsWith('/chat/') && location.pathname.split('/').length === 3;
 
