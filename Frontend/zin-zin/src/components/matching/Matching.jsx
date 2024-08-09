@@ -22,6 +22,11 @@ const Matching = () => {
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
     const navigate = useNavigate();
 
+    const testtest = () => {
+        firework();
+        setModalIsOpen(true);
+    };
+
     const firework = () => {
         var duration = 20 * 150;
         var animationEnd = Date.now() + duration;
@@ -287,6 +292,7 @@ const Matching = () => {
                     <button onClick={handleLike}>좋아요</button>
                     <button onClick={handleDislike}>싫어요</button>
                     <button onClick={questiontofriend}>질문하기</button>
+                    <button onClick={testtest}>모달열기</button>
                 </div>
 
                 <Modal
