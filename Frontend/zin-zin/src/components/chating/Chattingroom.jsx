@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import styles from './Chattingroom.module.css';
 import { Stomp } from "@stomp/stompjs"; 
 
@@ -11,6 +11,10 @@ const Chattingroom = () => {
     const stompClient = useRef(null);
     const [connected, setConnected] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const { roomType, name, nickname, profileImage,memberId } = location.state || {};
+
 
     // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
     const handleInputChange = (event) => {
@@ -62,6 +66,11 @@ const Chattingroom = () => {
     };
 
     useEffect(() => {
+        console.log("Room Type:", roomType);
+        console.log("Name:", name);
+        console.log("Nickname:", nickname);
+        console.log("Profile Image:", profileImage);
+        console.log("memberId:", memberId);
         const fetchMessages = async () => {
             try {
                 const token = sessionStorage.getItem('accesstoken');
@@ -78,7 +87,7 @@ const Chattingroom = () => {
         connect();
         fetchMessages();
         return () => disconnect();
-    }, [roomId]);
+    }, [roomId,roomType, name, nickname, profileImage,memberId]);
 
     const sendMessage = () => {
         if (connected && inputValue) {
@@ -98,7 +107,13 @@ const Chattingroom = () => {
             {messages.length > 0 ? (
                 messages.map((message, index) => (
                     <div key={index} className={styles.message}>
-                        <div className={styles.sender}>{message.senderName}</div>
+                            <div>
+                        {message.memberId === memberId ? (
+                            roomType === "Mate" ? name : nickname
+                        ) : (
+                            <div>내가 한 채팅입니다.</div>
+                        )}
+                    </div>
                         <div className={styles.text}>{message.message}</div>
                     </div>
                 ))
