@@ -1,4 +1,3 @@
-/* FriendsNavbar.module.css */
 .tabNavigation {
   display: flex;
   justify-content: space-between;
@@ -17,6 +16,7 @@
   color: #b0b0b0;
   position: relative;
   outline: none;
+  text-decoration: none; /* 기본 텍스트 밑줄 제거 */
 }
 
 .tabButton.active {
