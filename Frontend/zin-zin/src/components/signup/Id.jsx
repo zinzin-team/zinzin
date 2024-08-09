@@ -33,7 +33,7 @@ const Id = ({ userData, setUserData }) => {
         e.preventDefault();
         if (id.trim() && isValid) {
             try {
-                const response = await axios.get(`/api/member/search-id/${id}`);
+                const response = await axios.get(`/api/member/register/search-id/${id}`);
     
                 if (response.data.duplicated) {
                     setIsDuplicate(true);

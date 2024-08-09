@@ -1,42 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styles from './Updatecard.module.css';
+import styles from './Updatecard.module.css';  // 경로를 확인하고 올바르게 수정
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const Updatecard = () => {
+const UpdateCard = () => {
+    const { cardId } = useParams(); // URL 파라미터에서 cardId 가져오기
     const [selectedOption, setSelectedOption] = useState('option1');
     const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [introduction, setIntroduction] = useState('');
     const [charCount, setCharCount] = useState(0);
     const MAX_TAGS = 5;
+    const navigate = useNavigate();
 
+    // 기존 카드 정보를 가져오는 함수
     useEffect(() => {
         const fetchCardData = async () => {
             try {
                 const token = sessionStorage.getItem('accesstoken');
-                const response = await axios.get('/api/cards', {
+                const response = await axios.get(`/api/cards/${cardId}`, {
                     headers: {
-                        'accesstoken': token
-                    }
+                        'Authorization': `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                      },
+                      credentials: 'include',
                 });
 
-                if (response.data) {
-                    const { tags, info, images } = response.data;
-                    setSelectedTags(tags);
-                    setIntroduction(info);
-                    setSelectedFiles(images.map(img => URL.createObjectURL(img)));
-                }
+                const { info, images, tags } = response.data;
+                setIntroduction(info);
+                setSelectedFiles(images.map((image) => URL.createObjectURL(image)));
+                setSelectedTags(tags);
             } catch (error) {
-                console.error('Error fetching card data:', error);
+                console.error('카드 정보를 불러오는 중 오류 발생:', error);
+                toast.error('카드 정보를 불러오는 데 실패했습니다.');
             }
         };
 
         fetchCardData();
-    }, []);
+    }, [cardId]);
 
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
@@ -65,7 +69,7 @@ const Updatecard = () => {
             if (selectedTags.length < MAX_TAGS) {
                 setSelectedTags((prevTags) => [...prevTags, value]);
             } else {
-                e.target.checked = false; // 체크박스를 원래 상태로 되돌림
+                e.target.checked = false;
                 toast.warn(`태그는 최대 ${MAX_TAGS}개까지 선택할 수 있습니다.`);
             }
         } else {
@@ -73,10 +77,14 @@ const Updatecard = () => {
         }
     };
 
+    const handleIntroductionChange = (e) => {
+        setIntroduction(e.target.value);
+        setCharCount(e.target.value.length);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 검증 로직 추가
         if (selectedFiles.filter(file => file !== null).length < 3) {
             toast.error("사진을 3개 첨부해야 합니다.");
             return;
@@ -90,41 +98,34 @@ const Updatecard = () => {
         const formData = new FormData();
         selectedFiles.forEach((file) => {
             if (file) {
-                formData.append('images', file); // 'images'는 백엔드에서 기대하는 필드 이름입니다.
+                formData.append('images', file);
             }
         });
 
-        // 추가 데이터
-        formData.append('info', introduction);
-        selectedTags.forEach((tag, index) => {
-            formData.append(`tags[${index}]`, tag);
+        const jsonData = JSON.stringify({
+            cardId,
+            info: introduction,
+            tags: selectedTags,
         });
-
-        // FormData 내용 콘솔 출력
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        formData.append('cardRequest', blob);
 
         try {
             const token = sessionStorage.getItem('accesstoken');
-            const response = await axios.put(`/api/cards/{cardId}`, formData, {
+
+            const response = await axios.put(`/api/cards/${cardId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'accesstoken': token
-                }
+                    'Authorization': `Bearer ${token}`,
+                },
             });
-            if (response.data.code === 201) {
-                toast.success("카드 수정 성공");
-            }
-        } catch (error) {
-            console.error('Error uploading data:', error);
-            toast.error("카드 수정 실패");
-        }
-    };
 
-    const handleIntroductionChange = (e) => {
-        setIntroduction(e.target.value);
-        setCharCount(e.target.value.length);
+            toast.success('카드 수정 성공');
+            navigate('/');
+        } catch (error) {
+            console.error('카드 수정 중 오류 발생:', error);
+            toast.error('카드 수정에 실패했습니다.');
+        }
     };
 
     const tagOptions = [
@@ -142,7 +143,6 @@ const Updatecard = () => {
     return (
         <div className={styles.createcard}>
             <ToastContainer position="top-center" />
-            <Link to="/" className={styles.link}><i className="bi bi-chevron-left"/></Link>
             <form onSubmit={handleSubmit}>
                 <div className={styles.optionContainer}>
                     <input 
@@ -180,7 +180,7 @@ const Updatecard = () => {
                     <div>
                         <div className={styles.cardcard}>
                             {[0, 1, 2].map((index) => (
-                                <div className={styles.tmptmp} key={index} style={{ marginBottom: '10px' }} >
+                                <div className={styles.tmptmp} key={index} style={{ marginBottom: '10px' }}>
                                     <div className={styles.tmprelative}>
                                         <input 
                                             type="file" 
@@ -202,19 +202,20 @@ const Updatecard = () => {
                                                     className={styles.imgimg}
                                                 />
                                                 <div className={styles.labellabel}>
-                                                    <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> <img className={styles.deletepic} src="assets/deletepicture.png"/></button>
+                                                    <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> 
+                                                        <img className={styles.deletepic} src="assets/deletepicture.png"/>
+                                                    </button>
                                                 </div>
                                             </div>
                                         )}
                                         {!selectedFiles[index] && (
-                                            <label className={styles.labellabel} htmlFor={`imageUpload${index}`} >
+                                            <label className={styles.labellabel} htmlFor={`imageUpload${index}`}>
                                                 <img className={styles.addpic} src="assets/addpicture.png"/>
                                             </label>
                                         )}
                                     </div>
                                 </div>
                             ))}
-                            <div></div>
                         </div>
                         <div className={styles.containerbtn}>
                             <button className={styles.nextbtn} onClick={() => setSelectedOption('option2')}>다음으로</button>
@@ -227,7 +228,7 @@ const Updatecard = () => {
                             <p>나와 어울리는 태그 5가지를 선택해 주세요</p>
                             <div className={styles.tagtag} style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 {tagOptions.map((tag, index) => (
-                                    <div className={styles.tagbox} key={index} >
+                                    <div className={styles.tagbox} key={index}>
                                         <input
                                             type="checkbox"
                                             id={`tag${index}`}
@@ -265,4 +266,4 @@ const Updatecard = () => {
     );
 };
 
-export default Updatecard;
+export default UpdateCard;
