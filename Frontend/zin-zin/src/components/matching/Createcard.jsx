@@ -88,14 +88,12 @@
             }
         
             try {
-                const token = sessionStorage.getItem('accesstoken');
+                const token = sessionStorage.getItem('accessToken');
             
                 const response = await axios.post('/api/cards', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNjQyMzA1OCIsInJvbGUiOiJVU0VSIiwiZXhwIjo2MDAwMDAxNzIyOTMxMjY5LCJpYXQiOjE3MjI5MzEyNjksIm1lbWJlcklkIjo1fQ.2MzZDZcIucUDh0J6x1CjjKajTU_kOI47ijEmKY5AUhU'
-                        // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-                        // 'Access-Control-Allow-Credentials':'true'
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 console.log('Server Response:', response.data);

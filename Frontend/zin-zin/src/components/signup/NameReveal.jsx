@@ -35,7 +35,8 @@ const NameReveal = ({ userData, setUserData }) => {
                 gender: userData.gender,
                 searchId: userData.searchId,
                 matchingVisibility,
-                matchingMode: userData.matchingMode
+                matchingMode: userData.matchingMode,
+                nickName: null
             };
             
             // const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/member/register`, requestData, {

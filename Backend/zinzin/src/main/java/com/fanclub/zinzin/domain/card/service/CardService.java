@@ -12,6 +12,8 @@ import com.fanclub.zinzin.domain.card.repository.CardTagRepository;
 import com.fanclub.zinzin.domain.card.repository.TagRepository;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
+import com.fanclub.zinzin.domain.person.entity.Person;
+import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.CardErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
@@ -35,6 +37,7 @@ public class CardService {
     private final TagRepository tagRepository;
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
+    private final PersonRepository personRepository;
 
     @Transactional
     public void createCard(CardRequest cardRequest, Long memberId) {
@@ -85,6 +88,8 @@ public class CardService {
 
         // cardImage를 저장한다.
         cardImageRepository.saveAll(images);
+
+        personRepository.saveCard(memberId, card.getId());
     }
 
     @Transactional(readOnly = true)
