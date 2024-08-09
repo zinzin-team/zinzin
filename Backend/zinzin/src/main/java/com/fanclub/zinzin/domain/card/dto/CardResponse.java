@@ -6,6 +6,7 @@ import com.fanclub.zinzin.domain.card.entity.CardTag;
 import com.fanclub.zinzin.domain.card.entity.Tag;
 import lombok.Getter;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,7 @@ public class CardResponse {
         this.cardId = card.getId();
         this.info = card.getInfo();
         this.images = card.getCardImages().stream()
+                .sorted(Comparator.comparingInt(CardImage::getImageNum))
                 .map(CardImage::getImage)
                 .toList();
         this.tags = card.getCardTags().stream()
