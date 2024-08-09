@@ -77,5 +77,12 @@ public class MemberInfo {
     }
 
     @Transient
-    public String getMemberName() {return member != null ? member.getName() : null;}
+    public String getMemberName() {
+        return member != null ? member.getName() : null;
+    }
+
+    public String updateNickname(String nickname) {
+        this.nickname = nickname;
+        return nickname;
+    }
 }
