@@ -1,6 +1,8 @@
 package com.fanclub.zinzin.domain.person.entity;
 
+import com.fanclub.zinzin.domain.matchingstatus.dto.MatchingMate;
 import com.fanclub.zinzin.domain.member.entity.Gender;
+import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -34,6 +36,9 @@ public class Person {
     @Property(name = "matching_mode")
     private boolean matchingMode;
 
+    @Property(name = "matching_visibility")
+    private MatchingVisibility matchingVisibility;
+
     private String nickname;
 
     @Getter
@@ -41,7 +46,7 @@ public class Person {
     private String profileImage;
 
     @Builder
-    private Person(String sub, Long memberId, String name, LocalDate birth, Gender gender, Long cardId, boolean matchingMode, String nickname, String profileImage) {
+    private Person(String sub, Long memberId, String name, LocalDate birth, Gender gender, Long cardId, boolean matchingMode, MatchingVisibility matchingVisibility, String nickname, String profileImage) {
         this.sub = sub;
         this.memberId = memberId;
         this.name = name;
@@ -49,8 +54,17 @@ public class Person {
         this.gender = gender;
         this.cardId = cardId;
         this.matchingMode = matchingMode;
+        this.matchingVisibility = matchingVisibility;
         this.nickname = nickname;
         this.profileImage = profileImage;
+    }
+
+    public MatchingMate toMatchingMate(){
+        if(this.matchingVisibility == MatchingVisibility.PRIVATE){
+            return MatchingMate.of(this.nickname, null);
+        }
+
+        return MatchingMate.of(this.name, this.profileImage);
     }
 
     @Override
@@ -64,7 +78,9 @@ public class Person {
                 ", gender="+gender+
                 ", cardId="+cardId+
                 ", matchingMode="+matchingMode+
+                ", matchingVisibility="+matchingVisibility+
                 "}";
     }
+
 }
 
