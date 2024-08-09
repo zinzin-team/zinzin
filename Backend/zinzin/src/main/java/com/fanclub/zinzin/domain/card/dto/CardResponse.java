@@ -6,8 +6,8 @@ import com.fanclub.zinzin.domain.card.entity.CardTag;
 import com.fanclub.zinzin.domain.card.entity.Tag;
 import lombok.Getter;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class CardResponse {
@@ -20,11 +20,12 @@ public class CardResponse {
         this.cardId = card.getId();
         this.info = card.getInfo();
         this.images = card.getCardImages().stream()
+                .sorted(Comparator.comparingInt(CardImage::getImageNum))
                 .map(CardImage::getImage)
-                .collect(Collectors.toList());
+                .toList();
         this.tags = card.getCardTags().stream()
                 .map(CardTag::getTag)
                 .map(Tag::getContent)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
