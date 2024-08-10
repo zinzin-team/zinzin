@@ -18,7 +18,7 @@ const MatchingMode = ({ userData, setUserData }) => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // form의 기본 제출 동작을 막기 위해 사용
+        e.preventDefault();
         try {
             const updatedData = { ...userData, matchingMode };
             setUserData(updatedData);
@@ -35,20 +35,25 @@ const MatchingMode = ({ userData, setUserData }) => {
             <div>
                 <h2 className={styles.title}>{userData.name} 님, 환영해요!</h2>
                 <p className={styles.description}>지인의 지인을 소개받고</p>
-                <p className={styles.description}>·</p>
+                <p className={styles.description}>∙</p>
                 <p className={styles.description}>지인과 지인을 맺어줘요!</p>
             </div>
             <form className={styles.toggleContainer} onSubmit={handleSubmit}>
-                <p className={styles.toggleLabel}>매칭 모드를 켤까요?</p>
-                <div className={styles.toggle}>
-                    <span>OFF</span>
-                    <label className={styles.switch}>
-                        <input type="checkbox" checked={matchingMode} onChange={handleToggle} />
-                        <span className={styles.slider}></span>
-                    </label>
-                    <span>ON</span>
+                <div className={styles.inputGroup}>
+                    <label className={styles.inputTitle}>매칭 모드를 켤까요?</label>
+                    <p className={styles.customParagraph}>매칭 모드를 키면</p>
+                    <p className={styles.customParagraph}>지인의 지인을 소개받을 수 있습니다.</p>
+
+                    <div className={styles.toggle}>
+                        <label className={styles.switch}>
+                            <input type="checkbox" checked={matchingMode} onChange={handleToggle} />
+                            <span className={styles.slider}></span>
+                        </label>
+                    </div>
                 </div>
-                <button className={styles.nextButton} type="submit">다음</button>
+                <button className={styles.nextButton} type="submit">
+                    다음
+                </button>
             </form>
         </div>
     );
