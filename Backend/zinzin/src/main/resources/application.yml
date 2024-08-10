@@ -23,7 +23,7 @@ spring:
       mode: always
       encoding: UTF-8
   file:
-    upload-dir: C:/Users/SSAFY/Desktop/ImageStorageTest   # 이미지 저장 경로
+    upload-dir: C:\1_ssafy11\ImageStorageTest   # 이미지 저장 경로
 
   neo4j:
     uri: bolt://${neo4j.host}:${neo4j.port}

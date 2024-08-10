@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class ChatRoom extends BaseTimeEntity {
     private ChatRoomStatus status;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatRoomMember> members;
+    private List<ChatRoomMember> members = new ArrayList<>();;
 
     @Builder(builderClassName = "createRoomBuilder", builderMethodName = "createRoomBuilder")
     public ChatRoom(ChatRoomType roomType) {
@@ -44,5 +45,13 @@ public class ChatRoom extends BaseTimeEntity {
         return createRoomBuilder()
                 .roomType(createChatRoomDto.getRoomType())
                 .build();
+    }
+
+    public void updateMembers(List<ChatRoomMember> chatRoomMembers) {
+        this.members.addAll(chatRoomMembers);
+    }
+
+    public void initMembers(List<ChatRoomMember> chatRoomMembers) {
+        this.members = chatRoomMembers;
     }
 }

@@ -29,10 +29,9 @@ public class ChatRoomController {
         return ResponseEntity.ok(messages);
     }
 
-    @PostMapping("/create-room")
+    @PostMapping("/create")
     public ResponseEntity<ResponseChatRoomDto> createChatRoom(HttpServletRequest request, @RequestBody CreateChatRoomDto chatRoomDto) {
-        chatRoomService.createChatRoom(chatRoomDto);
-        return ResponseEntity.ok(chatRoomService.getChatRoomBetweenMembers(chatRoomDto.getMemberIds()));
+        return ResponseEntity.ok(chatRoomService.createAndFetchChatRoom(chatRoomDto));
     }
 
     @DeleteMapping("/{roomId}/exit")

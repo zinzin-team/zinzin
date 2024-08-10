@@ -15,8 +15,11 @@ import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.global.error.code.ChatRoomErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -69,7 +72,7 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void createChatRoom(CreateChatRoomDto createChatRoomDto) {
+    public ResponseChatRoomDto createAndFetchChatRoom(CreateChatRoomDto createChatRoomDto) {
         ChatRoom chatRoom = ChatRoom.createRoom(createChatRoomDto);
         chatRoomRepository.save(chatRoom);
 
@@ -83,7 +86,16 @@ public class ChatRoomService {
                             .memberInfo(memberInfo)
                             .build();
                 }).toList();
-        chatRoomMemberRepository.saveAll(chatRoomMembers);
+
+        chatRoom.updateMembers(chatRoomMembers);
+
+        Long myMemberId = createChatRoomDto.getMemberIds().get(0);
+        Long otherMemberId = createChatRoomDto.getMemberIds().get(1);
+        Optional<ChatRoom> fetchedChatRoom = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
+
+        return fetchedChatRoom.map(room ->
+                        ResponseChatRoomDto.fromEntity(room, myMemberId, chatService.getLastMessage(room.getId())))
+                .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
     }
 
     @Transactional
@@ -95,16 +107,6 @@ public class ChatRoomService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
         chatRoomRepository.delete(chatRoom);
-    }
-
-    public ResponseChatRoomDto getChatRoomBetweenMembers(List<Long> memberIds) {
-        Long myMemberId = memberIds.get(0);
-        Long otherMemberId = memberIds.get(1);
-        Optional<ChatRoom> chatRoom = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
-
-        return chatRoom.map(room ->
-                        ResponseChatRoomDto.fromEntity(room, myMemberId, chatService.getLastMessage(room.getId())))
-                .orElse(null);
     }
 
     @Transactional

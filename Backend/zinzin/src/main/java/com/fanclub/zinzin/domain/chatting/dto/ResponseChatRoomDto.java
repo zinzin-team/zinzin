@@ -5,8 +5,12 @@ import com.fanclub.zinzin.domain.chatting.entity.ChatRoomMember;
 import com.fanclub.zinzin.domain.chatting.entity.ChatRoomType;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Slf4j
 @Getter
 @Builder
 public class ResponseChatRoomDto {
@@ -18,7 +22,11 @@ public class ResponseChatRoomDto {
     private final boolean heartToggle;
 
     public static ResponseChatRoomDto fromEntity(ChatRoom chatRoom, Long memberId, String lastMessage) {
-
+        List<ChatRoomMember> members = chatRoom.getMembers();
+        if(members == null || members.size() == 0) {
+            log.info("members가 없습니다.");
+        }
+        log.info("members가 있습니다.");
         ChatMemberDto otherMember = chatRoom.getMembers().stream()
                 .filter(member -> !member.getMemberInfo().getMember().getId().equals(memberId))
                 .map(member -> ChatMemberDto.fromEntity(member.getMemberInfo()))
