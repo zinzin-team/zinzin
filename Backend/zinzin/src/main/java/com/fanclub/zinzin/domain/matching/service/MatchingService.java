@@ -3,6 +3,7 @@ package com.fanclub.zinzin.domain.matching.service;
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
 import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
+import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
 import com.fanclub.zinzin.domain.chatting.entity.ChatRoomType;
 import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
 import com.fanclub.zinzin.domain.matching.dto.*;
@@ -103,7 +104,6 @@ public class MatchingService {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-
         Long memberId = (Long) request.getAttribute("memberId");
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -139,8 +139,8 @@ public class MatchingService {
         ArrayList<Long> members = new ArrayList<>();
         members.add(memberId);
         members.add(other);
-        chatRoomService.createAndFetchChatRoom(new CreateChatRoomDto(ChatRoomType.Like, members));
-        return CheckingResponse.of(true);
+        ResponseChatRoomDto responseChatRoomDto = chatRoomService.createAndFetchChatRoom(new CreateChatRoomDto(ChatRoomType.Like, members));
+        return CheckingResponse.of(responseChatRoomDto,true);
     }
 
     private boolean interestCard(Long memberId, Long cardId){
