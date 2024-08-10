@@ -39,7 +39,6 @@ const NameReveal = ({ userData, setUserData }) => {
                 nickname: null
             };
             
-            // const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/member/register`, requestData, {
             const response = await axios.post('/api/member/register', requestData, {
                 headers: {
                     'Content-Type': 'application/json',
