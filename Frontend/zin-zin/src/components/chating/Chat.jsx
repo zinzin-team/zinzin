@@ -35,7 +35,8 @@ const Chat = () => {
                 name: room.otherMember.name,
                 nickname: room.otherMember.nickname,
                 profileImage: room.otherMember.profileImage,
-                memberId:  room.otherMember.memberId
+                memberId:  room.otherMember.memberId,
+                heartToggle: room.heartToggle
             }
         });
     };
@@ -48,11 +49,11 @@ const Chat = () => {
                     onClick={() => handleRoomClick(room)}>
                         <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
                         <div className={styles.roomInfo}>
-                            {room.roomType === 'Like' ? (
+                            {room.roomType === 'Mate' ? (
                                 <div>
                                     <p>{room.otherMember.nickname}</p>
                                     <img
-                                        src="/assets/heartshape.png"
+                                        src="/assets/starshape.png"
                                         alt="Heart"
                                         className={styles.icon}
                                     />
@@ -61,7 +62,7 @@ const Chat = () => {
                                 <div>
                                     <p>{room.otherMember.name}</p>
                                     <img
-                                        src="/assets/starshape.png"
+                                        src="/assets/heartshape.png"
                                         alt="Star"
                                         className={styles.icon}
                                     />
