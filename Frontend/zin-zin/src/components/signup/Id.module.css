@@ -1,16 +1,6 @@
-/* .container {
-  padding: 20px;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
 .container {
-  min-width: 320px; /* 최소 너비 설정 */
-  min-height: 600px; /* 최소 높이 설정 */
+  min-width: 360px;
+  min-height: 600px;
   width: 100%;
   height: 100vh;
   flex-direction: column;
@@ -20,19 +10,6 @@
   position: relative;
 }
 
-/* .idContainer {
-  border-radius: 40px 40px 0 0;
-  background-color: #FFFFFF;
-  padding: 20px 0 0 0;
-  box-shadow: -6px 0px 47px 27px rgba(217, 217, 217, 0.26);
-  width: 100%;
-  height: 50%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  overflow-y: auto;
-} */
-
 .idContainer {
   border-radius: 40px 40px 0 0;
   background-color: #FFFFFF;
@@ -40,9 +17,9 @@
   box-shadow: -6px 0px 47px 27px rgba(217, 217, 217, 0.26);
   width: 100%;
   max-width: 100%;
-  height: 60%; /* 부모 요소 높이의 80%를 차지 */
-  position: absolute; /* 부모 요소의 바닥에 고정 */
-  bottom: 0; /* 바닥에 붙이기 */
+  height: 60%;
+  position: absolute;
+  bottom: 0;
   left: 0;
   overflow-y: auto;
   box-sizing: border-box;
@@ -53,7 +30,7 @@
   font-weight: bold;
   font-size: 25px;
   color: #505965;
-  margin-top: 100px; /* title을 top으로부터 120픽셀 떨어뜨림 */
+  margin-top: 100px;
   margin-bottom: 60px;
   text-align: center;
 }
@@ -69,49 +46,43 @@
 
 .inputGroup {
   padding-top: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   padding-left: 30px;
-}
-
-.inputGroup input[type="text"] {
-  width: calc(100% - 60px);
-  padding: 10px;
-  border: 1px solid #dedede;
-  border-radius: 5px;
-  font-size: 16px;
-  font-family: 'Pretendard', sans-serif;
-  color: #505965;
-  outline: none;
 }
 
 .inputTitle {
   display: block;
   font-family: 'Pretendard', sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 25px;
   color: #505965;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .idInput {
-  width: calc(100% - 60px);
+  width: calc(100% - 40px);
+  height: 59px;
   padding: 10px;
   border: 1px solid #dedede;
-  border-radius: 5px;
-  font-size: 16px;
+  font-size: 18px;
   font-family: 'Pretendard', sans-serif;
-  color: #505965;
   outline: none;
 }
 
+.submitGroup {
+  padding-bottom: 40px;
+  padding-left: 30px;
+}
+
 .submitButton {
+  width: calc(100% - 40px);
+  height: 59px;
   background-color: #505DB9;
   border: none;
   color: #fff;
   font-family: 'Pretendard', sans-serif;
   font-size: 16px;
   padding: 10px 20px;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -119,4 +90,24 @@
 .submitButton:disabled {
   background-color: #C6CDD5;
   cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-top: 15px;
+  width: calc(100% - 40px);
+}
+
+.success {
+  color: #505DB9;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-top: 15px;
+  width: calc(100% - 40px);
+}
+
+.idInput::placeholder {
+  color: #C8C8C8;
 }

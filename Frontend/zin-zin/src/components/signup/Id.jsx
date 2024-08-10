@@ -85,9 +85,11 @@ const Id = ({ userData, setUserData }) => {
                     {isDuplicate && <p className={styles.error}>이미 사용 중인 ID입니다.</p>}
                     {isAvailable && <p className={styles.success}>사용 가능한 ID 입니다.</p>}
                 </div>
-                <button className={styles.submitButton} type="submit" disabled={!id.trim() || !isValid}>
-                    {buttonText}
-                </button>
+                <div className={styles.submitGroup}>
+                    <button className={styles.submitButton} type="submit" disabled={!id.trim() || !isValid}>
+                        {buttonText}
+                    </button>
+                </div>
             </form>
         </div>
     );
