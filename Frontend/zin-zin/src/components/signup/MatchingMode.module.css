@@ -87,7 +87,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #c0c7d0; /* OFF 상태 배경색 */
+  background-color: #c0c7d0;
   transition: 0.4s;
   border-radius: 100px;
   display: flex;
@@ -110,11 +110,11 @@
 }
 
 input:checked + .slider {
-  background-color: #FF9494; /* ON 상태 배경색 */
+  background-color: #FF9494;
 }
 
 input:checked + .slider:before {
-  transform: translateX(80px); /* 토글 버튼의 이동 거리 */
+  transform: translateX(80px);
 }
 
 .slider::after {
@@ -123,12 +123,12 @@ input:checked + .slider:before {
   font-size: 22px;
   font-weight: bold;
   position: absolute;
-  right: 20px; /* OFF 텍스트를 오른쪽으로 정렬 */
+  right: 20px;
 }
 
 input:checked + .slider::after {
   content: 'ON';
-  right: 120px; /* ON 텍스트를 왼쪽으로 정렬 */
+  right: 120px;
 }
 
 .nextButton {
@@ -147,7 +147,7 @@ input:checked + .slider::after {
 }
 
 .customParagraph {
-  margin-top: 10px; /* 원하는 margin-top 값으로 수정하세요 */
+  margin-top: 10px;
   font-family: 'Pretendard', sans-serif;
   font-size: 16px;
   color: #505965;

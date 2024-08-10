@@ -43,7 +43,6 @@ const MatchingMode = ({ userData, setUserData }) => {
                     <label className={styles.inputTitle}>매칭 모드를 켤까요?</label>
                     <p className={styles.customParagraph}>매칭 모드를 키면</p>
                     <p className={styles.customParagraph}>지인의 지인을 소개받을 수 있습니다.</p>
-
                     <div className={styles.toggle}>
                         <label className={styles.switch}>
                             <input type="checkbox" checked={matchingMode} onChange={handleToggle} />
