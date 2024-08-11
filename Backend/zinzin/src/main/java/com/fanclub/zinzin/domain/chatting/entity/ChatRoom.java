@@ -54,4 +54,8 @@ public class ChatRoom extends BaseTimeEntity {
     public void initMembers(List<ChatRoomMember> chatRoomMembers) {
         this.members = chatRoomMembers;
     }
+
+    public void updateChatRoomType(ChatRoomType chatRoomType) {
+        this.roomType = chatRoomType;
+    }
 }
