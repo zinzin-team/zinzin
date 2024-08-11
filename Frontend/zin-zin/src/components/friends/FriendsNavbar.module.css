@@ -1,4 +1,5 @@
 .tabNavigation {
+  min-width: 320px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
