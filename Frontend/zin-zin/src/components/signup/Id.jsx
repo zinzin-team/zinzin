@@ -9,7 +9,7 @@ const Id = ({ userData, setUserData }) => {
     const [isValid, setIsValid] = useState(true);
     const [isDuplicate, setIsDuplicate] = useState(null);
     const [buttonText, setButtonText] = useState('중복 확인');
-    const [isAvailable, setIsAvailable] = useState(false); // 추가된 상태: 사용 가능한 ID 여부
+    const [isAvailable, setIsAvailable] = useState(false);
 
     useEffect(() => {
         const storedData = JSON.parse(sessionStorage.getItem('userData'));
@@ -25,7 +25,7 @@ const Id = ({ userData, setUserData }) => {
             validateId(newId);
             setIsDuplicate(null);
             setButtonText('중복 확인');
-            setIsAvailable(false); // ID가 변경되면 사용 가능 여부 초기화
+            setIsAvailable(false);
         }
     };
 
@@ -46,7 +46,7 @@ const Id = ({ userData, setUserData }) => {
                         alert('이미 사용 중인 ID입니다.');
                     } else {
                         setIsDuplicate(false);
-                        setIsAvailable(true); // 사용 가능한 ID 상태 업데이트
+                        setIsAvailable(true);
                         setButtonText('완료');
                     }
                 } catch (error) {
@@ -83,11 +83,13 @@ const Id = ({ userData, setUserData }) => {
                     />
                     {!isValid && <p className={styles.error}>ID는 5~15자의 영소문자, 숫자, _, -, .만 사용 가능합니다.</p>}
                     {isDuplicate && <p className={styles.error}>이미 사용 중인 ID입니다.</p>}
-                    {isAvailable && <p className={styles.success}>사용 가능한 ID 입니다.</p>} {/* 추가된 문구 */}
+                    {isAvailable && <p className={styles.success}>사용 가능한 ID 입니다.</p>}
                 </div>
-                <button className={styles.submitButton} type="submit" disabled={!id.trim() || !isValid}>
-                    {buttonText}
-                </button>
+                <div className={styles.submitGroup}>
+                    <button className={styles.submitButton} type="submit" disabled={!id.trim() || !isValid}>
+                        {buttonText}
+                    </button>
+                </div>
             </form>
         </div>
     );

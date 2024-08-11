@@ -11,7 +11,6 @@ const NameReveal = ({ userData, setUserData }) => {
         const storedData = JSON.parse(sessionStorage.getItem('userData'));
         if (storedData) {
             setUserData(storedData);
-            // setMatchingVisibility(storedData.matchingVisibility || 'PRIVATE');
         }
     }, [setUserData]);
 
@@ -26,7 +25,6 @@ const NameReveal = ({ userData, setUserData }) => {
             setUserData(updatedData);
             sessionStorage.setItem('userData', JSON.stringify(updatedData));
 
-            // API 요청에 사용할 데이터 준비
             const requestData = {
                 email: userData.email,
                 name: userData.name,
@@ -58,39 +56,53 @@ const NameReveal = ({ userData, setUserData }) => {
         }
     };
 
+    const handleBack = () => {
+        navigate('/signup/matchingmode');
+    };
+
     return (
         <div className={styles.container}>
             <div>
                 <h2 className={styles.title}>{userData.name} 님, 환영해요!</h2>
                 <p className={styles.description}>지인의 지인을 소개받고</p>
-                <p className={styles.description}>·</p>
+                <p className={styles.description}>∙</p>
                 <p className={styles.description}>지인과 지인을 맺어줘요!</p>
             </div>
             <form className={styles.toggleContainer} onSubmit={handleSubmit}>
-                <p className={styles.toggleLabel}>매칭 시 실명 공개</p>
-                <div>
-                    <label className={styles.radioLabel}>
-                        <input 
-                            type="radio" 
-                            value="PUBLIC" 
-                            checked={matchingVisibility === 'PUBLIC'} 
-                            onChange={handleChange} 
-                            className={styles.radioInput}
-                        />
-                        공개
-                    </label>
-                    <label className={styles.radioLabel}>
-                        <input 
-                            type="radio" 
-                            value="PRIVATE" 
-                            checked={matchingVisibility === 'PRIVATE'} 
-                            onChange={handleChange} 
-                            className={styles.radioInput}
-                        />
-                        비공개
-                    </label>
+                <div className={styles.inputGroup}>
+                    <label className={styles.inputTitle}>매칭 시 실명 공개</label>
+                    <p className={styles.customParagraph}>매칭이 되면 지인에게 실명을 공개할까요?</p>
+                    <div className={styles.nameRevealContainer}>
+                        <div className={styles.radioContainer}>
+                            <input 
+                                type="radio"
+                                id="public"
+                                value="PUBLIC" 
+                                checked={matchingVisibility === 'PUBLIC'} 
+                                onChange={handleChange} 
+                                className={styles.radioInput}
+                            />
+                            <label htmlFor="public" className={styles.radioLabel}>공개</label>
+                        </div>
+                        <div className={styles.radioContainer}>
+                            <input 
+                                type="radio" 
+                                id="private"
+                                value="PRIVATE" 
+                                checked={matchingVisibility === 'PRIVATE'} 
+                                onChange={handleChange} 
+                                className={styles.radioInput}
+                            />
+                            <label htmlFor="private" className={styles.radioLabel}>비공개</label>
+                        </div>
+                    </div>
                 </div>
-                <button className={styles.nextButton} type="submit">완료</button>
+                <button className={styles.backButton} type="button" onClick={handleBack}>
+                    이전
+                </button>
+                <button className={styles.nextButton} type="submit">
+                    완료
+                </button>
             </form>
         </div>
     );
