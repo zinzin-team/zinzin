@@ -1,11 +1,15 @@
 package com.fanclub.zinzin.global.util;
 
 import com.fanclub.zinzin.domain.member.entity.Role;
+import com.fanclub.zinzin.domain.member.repository.MemberRepository;
+import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.code.TokenErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +24,7 @@ public class JwtUtil {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
+    private final MemberRepository memberRepository;
 
     @Value("${jwt.token.secret-key}")
     private String secretKeyString;
@@ -27,6 +32,10 @@ public class JwtUtil {
     private long accessExpiration;
     @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
+
+    public JwtUtil(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     public String generateAccessToken(Long memberId, String sub, Role role) {
         if (sub == null || role == null) {
@@ -52,13 +61,12 @@ public class JwtUtil {
         }
     }
 
-    public String generateRefreshToken(Long memberId, String sub, Role role) {
-        if (sub == null || role == null) {
+    public String generateRefreshToken(Long memberId, String sub) {
+        if (sub == null) {
             throw new BaseException(TokenErrorCode.INVALID_INPUT);
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
         claims.put("memberId", memberId);
 
         Date now = new Date();
@@ -75,6 +83,27 @@ public class JwtUtil {
         } catch (Exception e) {
             throw new BaseException(TokenErrorCode.TOKEN_GENERATION_FAILED);
         }
+    }
+
+    public String reGenerateTokens(String refreshToken, HttpServletResponse response) {
+        Claims claims = getClaims(refreshToken);
+        Long memberId = claims.get("memberId", Long.class);
+        String sub = claims.getSubject();
+        Role role = memberRepository.findRoleByMemberId(memberId);
+        if (role == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND);
+        }
+        addRefreshTokenToCookie(response, generateRefreshToken(memberId, sub));
+        return generateAccessToken(memberId, sub, role);
+    }
+
+    public void addRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true); // XSS 공격 방지를 위해 HttpOnly 설정
+        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
+        refreshTokenCookie.setPath("/"); // 쿠키의 경로 설정
+        refreshTokenCookie.setMaxAge(6 * 60 * 60); // 쿠키의 유효 기간 설정 (6시간)
+        response.addCookie(refreshTokenCookie);
     }
 
     public String resolveToken(HttpServletRequest request) {
