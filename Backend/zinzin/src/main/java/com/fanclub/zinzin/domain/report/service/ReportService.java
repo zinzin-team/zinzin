@@ -45,7 +45,6 @@ public class ReportService {
         RecommendedCard recommendedCard = recommendedCardRepository
                 .findByRecommendedDateAndMemberAndCard(LocalDate.now(), member, card)
                 .orElseThrow(() -> new BaseException(MatchingErrorCode.INVALID_MATCHING_CARD));
-        System.out.println(recommendedCard);
 
         recommendedCard.checkCard();
 
