@@ -1,4 +1,6 @@
 .container {
+  min-width: 320px;
+  min-height: 600px;
   padding: 20px;
   background-color: #fffaf0;
   text-align: center;

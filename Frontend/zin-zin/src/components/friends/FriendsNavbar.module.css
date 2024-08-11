@@ -1,8 +1,9 @@
 .tabNavigation {
+  min-width: 320px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  width: 100%; /* 화면 전체 너비에 맞추기 위해 추가 */
+  width: 100%;
 }
 
 .tabButton {
@@ -11,12 +12,14 @@
   text-align: center;
   background: none;
   border: none;
-  font-size: 17px;
+  font-size: 20px;
+  font-weight: 500;
   cursor: pointer;
   color: #b0b0b0;
   position: relative;
   outline: none;
-  text-decoration: none; /* 기본 텍스트 밑줄 제거 */
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 .tabButton.active {
@@ -34,6 +37,6 @@
 }
 
 .tabButton.active::after {
-  width: 100%;
+  width: 120px;
   background: #FF9494;
 }
