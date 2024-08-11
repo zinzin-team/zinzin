@@ -47,6 +47,8 @@ const Chat = () => {
                 chatRooms.map(room => (
                     <div key={room.roomId} className={styles.chatRoom} 
                     onClick={() => handleRoomClick(room)}>
+                         <div key={room.roomId} className={styles.chatRoom} 
+                    onClick={() => handleRoomClick(room)}>
                         <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
                         <div className={styles.roomInfo}>
                             {room.roomType === 'Mate' ? (
@@ -72,6 +74,32 @@ const Chat = () => {
                         <div className={styles.lastMessage}>
                             {room.lastMessage}
                         </div>
+                    </div>
+                        {/* <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
+                        <div className={styles.roomInfo}>
+                            {room.roomType === 'Mate' ? (
+                                <div>
+                                    <p>{room.otherMember.nickname}</p>
+                                    <img
+                                        src="/assets/starshape.png"
+                                        alt="Heart"
+                                        className={styles.icon}
+                                    />
+                                </div>
+                            ) : (
+                                <div>
+                                    <p>{room.otherMember.name}</p>
+                                    <img
+                                        src="/assets/heartshape.png"
+                                        alt="Star"
+                                        className={styles.icon}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div className={styles.lastMessage}>
+                            {room.lastMessage}
+                        </div> */}
                     </div>
                 ))
             ) : (

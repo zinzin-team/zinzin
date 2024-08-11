@@ -23,7 +23,8 @@ const Chattingroom = () => {
 
     // 웹소켓 연결 설정
     const connect = () => {
-        const socket = new WebSocket("ws://zin-zin.site/api/ws");
+        const socket = new WebSocket("ws://localhost:8080/api/ws");
+        // const socket = new WebSocket("ws://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
