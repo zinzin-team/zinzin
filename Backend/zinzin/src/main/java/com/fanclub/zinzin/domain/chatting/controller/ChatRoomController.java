@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.chatting.controller;
 
 import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
+import com.fanclub.zinzin.domain.chatting.dto.HeartToggleDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
 import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
@@ -41,8 +42,7 @@ public class ChatRoomController {
     }
 
     @PutMapping("/{roomId}/heart")
-    public ResponseEntity<?> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestBody boolean isHeart) {
-        chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, isHeart);
-        return ResponseEntity.ok("토글 업데이트 성공");
+    public ResponseEntity<HeartToggleDto> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestBody HeartToggleDto heartToggleDto) {
+        return ResponseEntity.ok(chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, heartToggleDto.getIsHeart()));
     }
 }

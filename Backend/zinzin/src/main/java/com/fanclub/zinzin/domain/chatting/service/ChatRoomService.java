@@ -1,12 +1,10 @@
 package com.fanclub.zinzin.domain.chatting.service;
 
 import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
+import com.fanclub.zinzin.domain.chatting.dto.HeartToggleDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
 import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
-import com.fanclub.zinzin.domain.chatting.entity.ChatMessage;
-import com.fanclub.zinzin.domain.chatting.entity.ChatRoom;
-import com.fanclub.zinzin.domain.chatting.entity.ChatRoomMember;
-import com.fanclub.zinzin.domain.chatting.entity.ChatRoomStatus;
+import com.fanclub.zinzin.domain.chatting.entity.*;
 import com.fanclub.zinzin.domain.chatting.repository.ChatMessageRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomMemberRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomRepository;
@@ -110,12 +108,30 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void updateHeartToggle(Long memberId, Long roomId, boolean isHeart) {
-        ChatRoomMember chatRoomMember = chatRoomMemberRepository.findByChatRoomIdAndMemberId(roomId, memberId)
-                .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_CANNOT_DELETE));
+    public HeartToggleDto updateHeartToggle(Long memberId, Long roomId, boolean isHeart) {
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(()-> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
 
-        chatRoomMember.updateHeart(isHeart);
-        chatRoomMemberRepository.save(chatRoomMember);
+        ChatRoomMember myMember = null;
+        ChatRoomMember otherMember = null;
+
+        for (ChatRoomMember member : chatRoom.getMembers()) {
+            if (member.getMemberInfo().getMember().getId().equals(memberId)) {
+                myMember = member;
+            } else {
+                otherMember = member;
+            }
+        }
+        if (myMember == null || otherMember == null) {
+            throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        myMember.updateHeart(isHeart);
+        if(isHeart && otherMember.getHeartToggle()) {
+            chatRoom.updateChatRoomType(ChatRoomType.Love);
+            return new HeartToggleDto(true);
+        }
+        return new HeartToggleDto(false);
     }
 }
 
