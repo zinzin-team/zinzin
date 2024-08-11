@@ -10,16 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberAuthResponseDto {
     private String accessToken;
-    private String refreshToken;
     private boolean isUser;
     private String email;
     private String sub;
     private Role role;
 
     @Builder(builderClassName = "tokenBuilder", builderMethodName = "tokenBuilder")
-    public MemberAuthResponseDto(String accessToken, String refreshToken, boolean isUser) {
+    public MemberAuthResponseDto(String accessToken, boolean isUser) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
         this.isUser = isUser;
     }
 
@@ -31,10 +29,9 @@ public class MemberAuthResponseDto {
         this.email = email;
     }
 
-    public static MemberAuthResponseDto createTokenResponse(String accessToken, String refreshToken) {
+    public static MemberAuthResponseDto createTokenResponse(String accessToken) {
         return tokenBuilder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .isUser(true)
                 .build();
     }

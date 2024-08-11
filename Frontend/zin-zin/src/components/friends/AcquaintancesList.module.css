@@ -1,5 +1,9 @@
-/* AcquaintancesList.module.css */.container {
-  padding: 20px;
+/* KakaoFriendsList.module.css */
+
+.container {
+  min-width: 320px;
+  min-height: 600px;
+  padding: 0px 14px 20px;
   background-color: #fffaf0;
 }
 
@@ -11,19 +15,22 @@
 .friendItem {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 0px 15px 25px;
+}
+
+.friendItem:last-child {
+  margin-bottom: 0;
 }
 
 .profileImage {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
-.kakaoName {
-  font-size: 14px;
-  color: #333;
+.friendItem .profileImage {
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
 }
 
 .myAcquaintanceButton {
@@ -31,9 +38,17 @@
   padding: 5px 10px;
   background-color: #e0e0e0;
   border: none;
-  border-radius: 20px;
+  border-radius: 6px;
   color: #808080;
   cursor: default;
+  width: 90px; /* 버튼의 너비 */
+  height: 30px; /* 버튼의 높이 */
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1); /* 버튼에 그림자 추가 */
+}
+
+span {
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .modal {

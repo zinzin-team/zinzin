@@ -7,6 +7,7 @@ import com.fanclub.zinzin.global.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,60 +43,62 @@ public class TokenAuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = ((HttpServletRequest) request).getRequestURI();
-        if(EXCLUDE_URLS.stream().anyMatch(path::startsWith)){
+        if (EXCLUDE_URLS.stream().anyMatch(path::startsWith)) {
             chain.doFilter(request, response);
             return;
         }
 
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
-            String refreshTokenHeader = httpRequest.getHeader("RefreshToken");
+            String refreshToken = getRefreshTokenFromCookies(httpRequest);
 
             if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
-                httpResponse.setStatus(HttpServletResponse.SC_OK);
-                httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+                setCorsHeaders(httpResponse);
                 return;
             }
 
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                String accessToken = authorizationHeader.substring(7);
+                String accessToken = extractToken(authorizationHeader);
 
                 if (jwtUtil.validateToken(accessToken)) {
                     Claims claims = jwtUtil.getClaims(accessToken);
-                    request.setAttribute("memberId",claims.get("memberId", Long.class));
+                    request.setAttribute("memberId", claims.get("memberId", Long.class));
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
-            if (refreshTokenHeader != null && refreshTokenHeader.startsWith("Bearer ")) {
-                String refreshToken = refreshTokenHeader.substring(7);
+            if (refreshToken != null && jwtUtil.validateRefreshToken(refreshToken)) {
+                String newAccessToken = jwtUtil.reGenerateTokens(refreshToken, httpResponse);
 
-                if (jwtUtil.validateRefreshToken(refreshToken)) {
-                    Claims claims = jwtUtil.getClaims(refreshToken);
-                    Long memberId = claims.get("memberId", Long.class);
-                    String email = claims.getSubject();
-                    Role role = Role.valueOf((String) claims.get("role"));
+                httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
+                Claims claims = jwtUtil.getClaims(newAccessToken);
 
-                    String newAccessToken = jwtUtil.generateAccessToken(memberId, email, role);
-                    String newRefreshToken = jwtUtil.generateRefreshToken(memberId, email, role);
-                    httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
-                    httpResponse.setHeader("RefreshToken", "Bearer " + newRefreshToken);
-
-                    request.setAttribute("memberId",memberId);
-                    chain.doFilter(request, response);
-                    return;
-                } else {
-                    throw new BaseException(TokenErrorCode.TOKEN_NOT_FOUND);
-                }
+                request.setAttribute("memberId", claims.get("memberId", Long.class));
+                chain.doFilter(request, response);
+                return;
             }
             throw new BaseException(TokenErrorCode.TOKEN_NOT_FOUND);
 
         } catch (BaseException ex) {
             sendErrorResponse(httpResponse, ex);
         }
+    }
+
+    private String extractToken(String header) {
+        return header.substring(7);
+    }
+
+    private String getRefreshTokenFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("refreshToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     private void sendErrorResponse(HttpServletResponse response, BaseException ex) throws IOException {
@@ -110,5 +113,12 @@ public class TokenAuthenticationFilter implements Filter {
 
         String jsonResponse = objectMapper.writeValueAsString(errorResponse);
         response.getWriter().write(jsonResponse);
+    }
+
+    private void setCorsHeaders(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
     }
 }
