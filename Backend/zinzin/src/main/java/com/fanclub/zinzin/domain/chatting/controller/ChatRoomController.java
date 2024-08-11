@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chatRoom")
+@RequestMapping("/chatroom")
 @RequiredArgsConstructor
 public class ChatRoomController {
 
@@ -29,10 +29,9 @@ public class ChatRoomController {
         return ResponseEntity.ok(messages);
     }
 
-    @PostMapping("/createRoom")
-    public ResponseEntity<String> createChatRoom(@RequestBody CreateChatRoomDto chatRoomDto) {
-        chatRoomService.createChatRoom(chatRoomDto);
-        return ResponseEntity.ok("채팅방 생성 완료");
+    @PostMapping("/create")
+    public ResponseEntity<ResponseChatRoomDto> createChatRoom(HttpServletRequest request, @RequestBody CreateChatRoomDto chatRoomDto) {
+        return ResponseEntity.ok(chatRoomService.createAndFetchChatRoom(chatRoomDto));
     }
 
     @DeleteMapping("/{roomId}/exit")

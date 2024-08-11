@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
-import styles from './KakaoFriendsList.module.css';
+import styles from './AcquaintancesList.module.css';
 
 const AcquaintancesList = () => {
   const [acquaintances, setAcquaintances] = useState([]);
@@ -80,7 +80,7 @@ const AcquaintancesList = () => {
         {acquaintances.map((acquaintance, index) => (
           <div key={index} className={styles.friendItem}>
             <img
-              src={acquaintance.profileImage ? acquaintance.profileImage : 'default-profile.png'}
+              src={acquaintance.profileImage ? acquaintance.profileImage : '/assets/default-profile.png'}
               alt={`${acquaintance.name} 프로필`}
               className={styles.profileImage}
             />
