@@ -12,6 +12,10 @@ import java.util.List;
 public interface PersonRepository extends Neo4jRepository<Person, String>, MatchingStatusRepository {
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
+            "SET me.nickname = $randomNickname")
+    void updateNicknameByMemberId(Long memberId, String randomNickname);
+
+    @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.profile_image = $profileImage")
     void updateProfilImage(Long memberId, String profileImage);
 
@@ -74,4 +78,9 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.card_id = $cardId")
     void saveCard(Long memberId, Long cardId);
+
+    @Query("MATCH (me:Person {member_id:$memberId})-[r:INTEREST|GET_CARD_OF]-(target:Person {member_id:$target}) " +
+            "DELETE r " +
+            "MERGE (me)-[:BLOCKED]->(target)")
+    void report(Long memberId, Long target);
 }
