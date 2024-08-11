@@ -74,4 +74,9 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.card_id = $cardId")
     void saveCard(Long memberId, Long cardId);
+
+    @Query("MATCH (me:Person {member_id:$memberId})-[r:INTEREST|GET_CARD_OF]-(target:Person {member_id:$target}) " +
+            "DELETE r " +
+            "MERGE (me)-[:BLOCKED]->(target)")
+    void report(Long memberId, Long target);
 }
