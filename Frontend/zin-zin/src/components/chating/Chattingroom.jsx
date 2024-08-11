@@ -24,8 +24,8 @@ const Chattingroom = () => {
     // 웹소켓 연결 설정
     const connect = () => {
         const socket = new WebSocket("wss://zin-zin.site:443/api/ws");
-        stompClient.current = Stomp.over(socket);
-        // stompClient.current = Stomp.client("wss://zin-zin.site/api/ws");
+        // stompClient.current = Stomp.over(socket);
+        stompClient.current = Stomp.client("wss://zin-zin.site/api/ws");
         stompClient.current.connect({}, () => {
             setConnected(true);
             stompClient.current.subscribe(`/queue/chatroom/${roomId}`, (message) => {
