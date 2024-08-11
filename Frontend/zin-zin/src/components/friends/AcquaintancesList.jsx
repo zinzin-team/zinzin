@@ -15,7 +15,6 @@ const AcquaintancesList = () => {
       if (!accessToken) {
         console.error('No token found in session storage');
         setLoading(false);
-        // navigate("/logout");
         return;
       }
 
@@ -49,25 +48,30 @@ const AcquaintancesList = () => {
 
   const handleUnfriend = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
-    if (!accessToken) {
-      console.error('No token found in session storage');
-      closeUnfriendModal();
-      return;
-    }
-
+    const userMemberId = sessionStorage.getItem('userMemberId');
+  
     try {
-      await axios.delete(`/api/mates/${selectedAcquaintance.id}`, {
+      const response = await axios.delete('/api/mates', {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
+        },
+        data: {
+          userMemberId: userMemberId,
+          targetMemberId: selectedAcquaintance.id
         }
       });
+  
+      if (response.status === 200) { // 성공적으로 요청이 완료된 경우
+        alert(`${selectedAcquaintance.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
+      }
+
       setAcquaintances(acquaintances.filter(acquaintance => acquaintance.id !== selectedAcquaintance.id));
-      closeUnfriendModal();
     } catch (error) {
-      console.error('지인 해제 중 오류 발생:', error);
-      closeUnfriendModal();
+      console.error('오류:', error.message);
     }
+  
+    closeUnfriendModal();
   };
 
   if (loading) {
@@ -101,9 +105,9 @@ const AcquaintancesList = () => {
       >
         {selectedAcquaintance && (
           <div>
-            <h2>{selectedAcquaintance.name}님과 지인을 끊을까요?</h2>
-            <button onClick={handleUnfriend}>네</button>
-            <button onClick={closeUnfriendModal}>아니오</button>
+            <h2>{selectedAcquaintance.name}님과<br />지인관계를 해제할까요?</h2>
+            <button onClick={closeUnfriendModal}>유지하기</button>
+            <button onClick={handleUnfriend}>해제하기</button>
           </div>
         )}
       </Modal>

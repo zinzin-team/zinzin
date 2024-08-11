@@ -55,16 +55,61 @@ span {
   position: absolute;
   top: 50%;
   left: 50%;
-  right: auto;
-  bottom: auto;
-  margin-right: -50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: #ffffff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px; /* 모달 박스 너비 */
+  height: 170px; /* 모달 박스 높이 */
+  text-align: center;
+  z-index: 1001; /* 오버레이보다 높은 z-index 설정 */
+  pointer-events: auto; /* 모달 내부에 클릭 이벤트 허용 */
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7); /* 어두운 오버레이 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000; /* 모달보다 낮은 z-index */
+  pointer-events: auto; /* 오버레이에 클릭 이벤트 허용 */
+}
+
+.modal h2 {
+  font-size: 20px;
+  font-weight: 300;
+  color: #4a4a4a;
+  margin-bottom: 30px; /* h2 아래의 여백을 30px로 설정 */
+  line-height: 1.5; /* 줄 간격을 설정하여 읽기 쉽게 만듦 */
+  word-break: keep-all; /* 긴 단어가 줄바꿈될 때 전체 단어가 잘리지 않도록 설정 */
+  white-space: normal; /* 자동으로 줄바꿈되도록 설정 */
+}
+
+
+.modal button {
+  width: 100px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.modal button:first-of-type {
+  background-color: #e0e0e0;
+  color: #808080;
+  margin-right: 30px; /* 두 버튼 사이의 간격 */
+}
+
+.modal button:last-of-type {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.modal button:hover {
+  opacity: 0.9;
 }
