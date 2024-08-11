@@ -12,6 +12,10 @@ import java.util.List;
 public interface PersonRepository extends Neo4jRepository<Person, String>, MatchingStatusRepository {
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
+            "SET me.nickname = $randomNickname")
+    void updateNicknameByMemberId(Long memberId, String randomNickname);
+
+    @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.profile_image = $profileImage")
     void updateProfilImage(Long memberId, String profileImage);
 
