@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './KakaoFriendsList.module.css';
 
 const KakaoFriendsList = () => {
@@ -13,7 +15,7 @@ const KakaoFriendsList = () => {
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
 
-  Modal.setAppElement('#root'); // 이 설정은 접근성을 위해 필요합니다.
+  Modal.setAppElement('#root');
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -50,8 +52,7 @@ const KakaoFriendsList = () => {
       }
     };
 
-    fetchFriends(); // 실제 API 호출
-
+    fetchFriends();
   }, []);
 
   const openModal = (request) => {
@@ -102,12 +103,13 @@ const KakaoFriendsList = () => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (isAccepted) {
-        alert(`${selectedRequest.kakaoName}님과 지인이 되어따`);
+        toast.success(`${selectedRequest.kakaoName}님과 지인이 되어따`);
       } else {
-        alert(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
+        toast.info(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
+      toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
   };
@@ -128,7 +130,6 @@ const KakaoFriendsList = () => {
         }
       });
   
-      // 친구 관계 해제 후, 버튼을 '지인 요청 +'으로 변경
       setFriends(prevFriends =>
         prevFriends.map(friend =>
           friend.id === selectedFriend.id
@@ -137,10 +138,10 @@ const KakaoFriendsList = () => {
         )
       );
   
-      // 친구 관계 해제 후 알림 추가
-      alert(`${selectedFriend.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
+      toast.success(`${selectedFriend.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
       console.error('오류:', error.message);
+      toast.error('지인 해제 중 오류가 발생했습니다.');
     }
   
     closeUnfriendModal();
@@ -151,7 +152,6 @@ const KakaoFriendsList = () => {
     const userMemberId = sessionStorage.getItem('userMemberId');
   
     try {
-      // API 호출
       await axios.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.id
@@ -162,7 +162,6 @@ const KakaoFriendsList = () => {
         }
       });
   
-      // 요청 성공 시, relationship을 "REQUEST_FOLLOW"로 업데이트
       setFriends(prevFriends =>
         prevFriends.map(friend =>
           friend.id === selectedFriend.id
@@ -171,33 +170,33 @@ const KakaoFriendsList = () => {
         )
       );
   
-      alert(`${selectedFriend.kakaoName}님에게 지인 요청을 보냈습니당 :)`);
+      toast.success(`${selectedFriend.kakaoName}님에게 지인 요청을 보냈습니당 :)`);
     } catch (error) {
       if (error.response && error.response.data) {
         const errorCode = error.response.data.code;
         if (errorCode === 'F001') {
-          alert('잘못된 요청입니다. 다시 시도해주세요.');
+          toast.error('잘못된 요청입니다. 다시 시도해주세요.');
         } else if (errorCode === 'F002') {
-          alert('이미 지인 관계이거나 요청 중입니다.');
+          toast.info('이미 지인 관계이거나 요청 중입니다.');
         } else {
-          alert('지인 요청 중 오류가 발생했습니다.');
+          toast.error('지인 요청 중 오류가 발생했습니다.');
         }
       } else {
         console.error('지인 요청 중 오류 발생:', error);
-        alert('지인 요청 중 오류가 발생했습니다.');
+        toast.error('지인 요청 중 오류가 발생했습니다.');
       }
     }
   
     closeInviteModal();
   };
-  
 
   const handleNullButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
     navigator.clipboard.writeText(loginUrl).then(() => {
-      alert("초대링크를 클립보드에 저장했어요! :)");
+      toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
+      toast.error('링크 복사 중 오류가 발생했습니다.');
     });
   };
 
@@ -207,6 +206,7 @@ const KakaoFriendsList = () => {
 
   return (
     <div className={styles.container}>
+      <ToastContainer />
       {requests.length > 0 && (
         <>
           <div className={styles.subHeader}>지인 요청을 수락할까요?</div>
