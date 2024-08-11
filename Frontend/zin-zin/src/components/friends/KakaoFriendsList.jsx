@@ -134,14 +134,14 @@ const KakaoFriendsList = () => {
     closeInviteModal();
   };
 
-  // const handleNullButtonClick = () => {
-  //   const loginUrl = "https://zin-zin.site/login";
-  //   navigator.clipboard.writeText(loginUrl).then(() => {
-  //     alert("초대링크를 클립보드에 저장했어요!");
-  //   }).catch(err => {
-  //     console.error('링크 복사 중 오류 발생:', err);
-  //   });
-  // };
+  const handleNullButtonClick = () => {
+    const loginUrl = "https://zin-zin.site/login";
+    navigator.clipboard.writeText(loginUrl).then(() => {
+      alert("초대링크를 클립보드에 저장했어요!");
+    }).catch(err => {
+      console.error('링크 복사 중 오류 발생:', err);
+    });
+  };
 
   if (loading) {
     return <div>로딩 중...</div>;
@@ -192,7 +192,7 @@ const KakaoFriendsList = () => {
               } else if (friend.relationship === 'MEMBER') {
                 openInviteModal(friend);
               } else if (friend.relationship === null) {
-                // handleNullButtonClick();
+                handleNullButtonClick();
               }
             }}>
               {friend.relationship === null && '초대 보내기'}
