@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { MdOutlineChangeCircle, MdEdit } from "react-icons/md"; // 아이콘 추가
+import { MdOutlineChangeCircle, MdEdit } from "react-icons/md";
 import { useAuth } from '../../context/AuthContext';
+import Modal from 'react-modal'; // 모달 추가
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './MypageView.module.css'; 
 
 const MypageView = () => {
   const [userData, setUserData] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // 로그아웃 모달 상태 추가
 
   const navigate = useNavigate(); 
   const { logout } = useAuth();
@@ -43,7 +45,7 @@ const MypageView = () => {
 
   useEffect(() => {
     if (userData) {
-      console.log("User Data:", userData); // userData 출력
+      console.log("User Data:", userData);
     }
   }, [userData]);
 
@@ -145,12 +147,18 @@ const MypageView = () => {
     });
   };
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // 로그아웃 모달 표시
+  };
+
+  const handleLogoutConfirm = () => {
     sessionStorage.clear();
     logout();
-
-    // 로그인 페이지로 리디렉션
     window.location.href = '/login';
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false); // 로그아웃 모달 숨기기
   };
 
   return (
@@ -169,7 +177,7 @@ const MypageView = () => {
               alt="프로필" 
               className={styles.profileImage} 
               onClick={handleProfileImageClick} 
-              onError={(e) => { e.target.src = '/assets/default-profile.png'; }} // 이미지 로드 실패 시 대체 이미지 사용
+              onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
             />
             <button 
               className={styles.imageEditButton}
@@ -182,7 +190,7 @@ const MypageView = () => {
               id="fileInput" 
               style={{ display: 'none' }} 
               onChange={handleFileChange} 
-              accept="image/*"  // 모든 이미지 파일 허용
+              accept="image/*"
             />
           </div>
           <div className={styles.userInfoRight}>
@@ -226,7 +234,6 @@ const MypageView = () => {
           <p>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
         </div>
         <div className={styles.matchingModeBottom}>
-          {/* 매칭 모드와 카드 유무에 따라 내용을 조건부 렌더링 */}
           {userData.matchingMode && userData.hasCard ? (
             <div className={styles.matchingContent}>
               <div className={styles.matchingProfileImageContainer}>
@@ -260,10 +267,25 @@ const MypageView = () => {
       </div>
       <button 
         className={styles.logoutButton}
-        onClick={handleLogout}
+        onClick={handleLogoutClick}
       >
         로그아웃
       </button>
+
+      <Modal
+        isOpen={showLogoutModal}
+        onRequestClose={handleLogoutCancel}
+        shouldCloseOnOverlayClick={false}
+        contentLabel="로그아웃 확인"
+        className={styles.modal}
+        overlayClassName={styles.overlay}
+      >
+        <div>
+          <h2>로그아웃 하시겠습니까?</h2>
+          <button onClick={handleLogoutCancel}>취소</button>
+          <button onClick={handleLogoutConfirm}>확인</button>
+        </div>
+      </Modal>
     </div>
   );
 };
