@@ -7,7 +7,6 @@ import { useAuth } from '../../context/AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './MypageView.module.css'; 
 
-
 const MypageView = () => {
   const [userData, setUserData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null); 
@@ -51,6 +50,8 @@ const MypageView = () => {
   if (!userData) {
     return <div>로딩 중...</div>;
   }
+
+  const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
 
   const handleProfileImageClick = () => {
     document.getElementById('fileInput').click();
@@ -118,7 +119,7 @@ const MypageView = () => {
       const response = await axios.post("/api/member/nickname", {}, {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
-          // "Content-Type": "application/json"
+          "Content-Type": "application/json"
         },
         credentials: 'include',
       });
@@ -133,9 +134,6 @@ const MypageView = () => {
       console.error("닉네임 변경 중 오류 발생:", error);
     }
   };
-
-
-  const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
 
   const handleInviteButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
@@ -224,31 +222,47 @@ const MypageView = () => {
       </div>
       <div className={styles.matchingModeBox}>
         <div className={styles.matchingModeTop}>
-          <h3>매칭 모드 {userData.matchingMode ? "ON" : "OFF"}</h3>
+          <h3 className={styles.matchingModeText}>매칭 모드 {userData.matchingMode ? "ON" : "OFF"}</h3>
           <p>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
         </div>
         <div className={styles.matchingModeBottom}>
-          <div className={styles.matchingProfileImageContainer}>
-            <img 
-              src={matchingProfileImage ? matchingProfileImage : '/assets/default-profile.png'} 
-              alt="프로필" 
-              className={styles.profileImageSmall} 
-            />
-          </div>
-          <div className={styles.matchingUserInfo}>
-            <p>{userData.card ? userData.card.info : "소개말을 입력해 주세요."}</p>
-            <button 
-              className={styles.introButton} 
-              onClick={() => navigate(`/update-card/${userData.card?.id}`)}
-            >
-              수정 하기
-            </button>
-          </div>
+          {/* 매칭 모드와 카드 유무에 따라 내용을 조건부 렌더링 */}
+          {userData.matchingMode && userData.hasCard ? (
+            <div className={styles.matchingContent}>
+              <div className={styles.matchingProfileImageContainer}>
+                <img 
+                  src={matchingProfileImage ? matchingProfileImage : '/assets/default-profile.png'} 
+                  alt="프로필" 
+                  className={styles.profileImageSmall} 
+                />
+              </div>
+              <div className={styles.matchingUserInfo}>
+                <p>{userData.card ? userData.card.info : "소개말을 입력해 주세요."}</p>
+                {/* <button 
+                  className={styles.logoutButton}
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </button> */}
+                
+                <button 
+                  className={styles.cardEditButton} 
+                  onClick={() => navigate(`/update-card/${userData.card?.id}`)}
+                >
+                  수정 하기
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.noCardMessage}>
+              <p>생성 된 카드가 없습니다</p>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.settingsBox}>
         <button onClick={() => navigate('/settings')}>설정</button>
-        <button>사용자 가이드</button>
+        <button onClick={() => navigate('/userguide')}>사용자 가이드</button>
       </div>
       <button 
         className={styles.logoutButton}
@@ -258,8 +272,6 @@ const MypageView = () => {
       </button>
     </div>
   );
-  
-  
 };
 
 export default MypageView;
