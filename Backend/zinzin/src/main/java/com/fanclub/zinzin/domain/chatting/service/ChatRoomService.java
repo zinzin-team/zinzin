@@ -128,7 +128,7 @@ public class ChatRoomService {
 
         myMember.updateHeart(isHeart);
         if(isHeart && otherMember.getHeartToggle()) {
-            chatRoom.updateChatRoomType(ChatRoomType.Love);
+            chatRoom.updateChatRoomType(ChatRoomType.LOVE);
             return new HeartToggleDto(true);
         }
         return new HeartToggleDto(false);
