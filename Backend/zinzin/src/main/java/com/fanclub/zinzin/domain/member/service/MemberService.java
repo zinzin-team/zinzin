@@ -73,14 +73,14 @@ public class MemberService {
 
     private MemberAuthResponseDto generateRegisterTokens(HttpServletResponse response, Member member) {
         if (member != null) {
-            Long memberId = member.getId();
-            Map<String, String> tokensMap = oAuth2Service.generateTokens(memberId, member.getSub(), Role.USER);
-            String accessToken = tokensMap.get("accessToken");
-            jwtUtil.addRefreshTokenToCookie(response, tokensMap.get("refreshToken"));
-
-            return MemberAuthResponseDto.createTokenResponse(accessToken);
+            throw new BaseException (MemberErrorCode.MEMBER_REGIST_FAILED);
         }
-        throw new BaseException (MemberErrorCode.MEMBER_REGIST_FAILED);
+        Long memberId = member.getId();
+        Map<String, String> tokensMap = oAuth2Service.generateTokens(memberId, member.getSub(), Role.USER);
+        String accessToken = tokensMap.get("accessToken");
+        jwtUtil.addRefreshTokenToCookie(response, tokensMap.get("refreshToken"));
+
+        return MemberAuthResponseDto.createTokenResponse(accessToken);
     }
 
     public CheckSearchIdResponse checkDuplicatedSearchId(String searchId) {
