@@ -1,10 +1,6 @@
 package com.fanclub.zinzin.domain.member.controller;
 
-import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
-import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
-import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
-import com.fanclub.zinzin.domain.member.dto.MemberInfoUpdateRequest;
-import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
+import com.fanclub.zinzin.domain.member.dto.*;
 import com.fanclub.zinzin.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +66,7 @@ public class MemberController {
     }
 
     @PostMapping("/nickname")
-    public ResponseEntity<String> updateRandomNickname(HttpServletRequest request) {
+    public ResponseEntity<RandomNicknameResponse> updateRandomNickname(HttpServletRequest request) {
         return ResponseEntity.ok(memberService.updateRandomNickname((Long) request.getAttribute("memberId")));
     }
 }
