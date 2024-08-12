@@ -110,7 +110,30 @@ const MypageView = () => {
       }
     }
   };
-  
+
+  const handleNicknameChange = async () => {
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    try {
+      const response = await axios.post("/api/member/nickname", {}, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          // "Content-Type": "application/json"
+        },
+        credentials: 'include',
+      });
+
+      console.log('닉네임 변경 성공:', response.data);
+      setUserData(prevData => ({
+        ...prevData,
+        nickname: response.data.nickname,
+      }));
+      toast.success("닉네임이 변경되었습니다!");
+    } catch (error) {
+      console.error("닉네임 변경 중 오류 발생:", error);
+    }
+  };
+
 
   const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
 
@@ -167,7 +190,7 @@ const MypageView = () => {
           <div className={styles.userInfoRight}>
             <div className={styles.nicknameContainer}>
               <h3>{userData.nickname}</h3>
-              <button className={styles.editNicknameButton}>
+              <button className={styles.editNicknameButton} onClick={handleNicknameChange}>
                 <MdOutlineChangeCircle size={24}/>
               </button>
             </div>
