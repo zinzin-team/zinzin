@@ -62,9 +62,16 @@ const MypageView = () => {
 
   const updateProfileImage = async (file) => {
     const accessToken = sessionStorage.getItem('accessToken');
+
     const formData = new FormData();
     formData.append('profileImage', file);
-    formData.append('searchId', userData.searchId);
+
+    const jsonData = JSON.stringify({
+      searchId: userData.searchId,
+    });
+
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    formData.append('memberRequest', blob);
   
     console.log('프로필 이미지 업데이트 준비 중...');
     console.log('AccessToken:', accessToken);
@@ -119,7 +126,7 @@ const MypageView = () => {
         <div className={styles.userInfoTop}>
           <div className={styles.profilesImageContainer}>
             <img 
-              src={userData.profileImage ? userData.profileImage : '/assets/default-profile.png'} 
+              src={userData.profileImage === 'default.jpg' ? 'https://zin-zin.site/assets/default-profile.png' : userData.profileImage}
               alt="프로필" 
               className={styles.profileImage} 
               onClick={handleProfileImageClick} 
