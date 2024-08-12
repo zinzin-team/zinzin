@@ -43,12 +43,11 @@ const NameReveal = ({ userData, setUserData }) => {
                 }
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 console.log('회원가입 성공');
                 navigate('/');
             } else {
-                console.log(response)
-                console.error('회원가입 실패: ');
+                console.error('회원가입 실패');
                 alert('회원가입에 실패했습니다.');
             }
         } catch (error) {
