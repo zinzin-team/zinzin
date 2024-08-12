@@ -91,7 +91,7 @@ const KakaoFriendsList = () => {
     try {
       await axios.put('/api/mates', {
         userMemberId,
-        targetMemberId: selectedRequest.id,
+        targetMemberId: selectedRequest.memberId,
         isAccepted
       }, {
         headers: {
@@ -126,13 +126,13 @@ const KakaoFriendsList = () => {
         },
         data: {
           userMemberId: userMemberId,
-          targetMemberId: selectedFriend.id
+          targetMemberId: selectedFriend.memberId
         }
       });
   
       setFriends(prevFriends =>
         prevFriends.map(friend =>
-          friend.id === selectedFriend.id
+          friend.id === selectedFriend.memberId
             ? { ...friend, relationship: 'MEMBER' }
             : friend
         )
@@ -141,7 +141,7 @@ const KakaoFriendsList = () => {
       toast.success(`${selectedFriend.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
       console.error('오류:', error.message);
-      toast.error('지인 해제 중 오류가 발생했습니다.');
+      // toast.error('지인 해제 중 오류가 발생했습니다.');
     }
   
     closeUnfriendModal();
@@ -150,21 +150,29 @@ const KakaoFriendsList = () => {
   const handleInvite = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('userMemberId');
+    
+    console.log('AccessToken:', accessToken);
+    console.log('UserMemberId:', userMemberId);
+    console.log('SelectedFriend:', selectedFriend);
   
     try {
-      await axios.post('/api/mates', {
+      console.log('Sending invite request...');
+      
+      const response = await axios.post('/api/mates', {
         userMemberId: userMemberId,
-        targetMemberId: selectedFriend.id
+        targetMemberId: selectedFriend.memberId
       }, {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         }
       });
-  
+      
+      console.log('Invite request successful:', response.data);
+      
       setFriends(prevFriends =>
         prevFriends.map(friend =>
-          friend.id === selectedFriend.id
+          friend.id === selectedFriend.memberId
             ? { ...friend, relationship: 'REQUEST_FOLLOW' }
             : friend
         )
@@ -172,23 +180,29 @@ const KakaoFriendsList = () => {
   
       toast.success(`${selectedFriend.kakaoName}님에게 지인 요청을 보냈습니당 :)`);
     } catch (error) {
+      console.error('Error during invite request:', error);
+      
       if (error.response && error.response.data) {
         const errorCode = error.response.data.code;
+        console.log('Error code:', errorCode);
+        
         if (errorCode === 'F001') {
-          toast.error('잘못된 요청입니다. 다시 시도해주세요.');
+          // toast.error('잘못된 요청입니다. 다시 시도해주세요.');
         } else if (errorCode === 'F002') {
-          toast.info('이미 지인 관계이거나 요청 중입니다.');
+          // toast.info('이미 지인 관계이거나 요청 중입니다.');
         } else {
-          toast.error('지인 요청 중 오류가 발생했습니다.');
+          // toast.error('지인 요청 중 오류가 발생했습니다.');
         }
       } else {
-        console.error('지인 요청 중 오류 발생:', error);
-        toast.error('지인 요청 중 오류가 발생했습니다.');
+        console.error('Unknown error occurred during invite request:', error);
+        // toast.error('지인 요청 중 오류가 발생했습니다.');
       }
     }
   
+    console.log('Closing invite modal...');
     closeInviteModal();
   };
+  
 
   const handleNullButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
@@ -196,7 +210,7 @@ const KakaoFriendsList = () => {
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
-      toast.error('링크 복사 중 오류가 발생했습니다.');
+      // toast.error('링크 복사 중 오류가 발생했습니다.');
     });
   };
 

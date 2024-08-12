@@ -15,7 +15,7 @@ import Navbar from "./components/navbar/Navbar";
 import CreatecardView from './components/matching/Createcard';
 import UpdateCard from './components/mypage/Updatecard';
 import Header from './components/header/Header';
-import LogoutButton from './components/mypage/LogoutButton';
+// import LogoutButton from './components/mypage/LogoutButton';
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import ChatroomView from './components/chating/Chattingroom'
@@ -59,7 +59,7 @@ const AppContent = () => {
         <Route path="/create-card" element={<CreatecardView />} />
         <Route path="/update-card/:cardId" element={<UpdateCard />} />
         <Route path="/leave" element={<LeaveView />} />
-        <Route path="/logout" element={<LogoutButton />} />
+        {/* <Route path="/logout" element={<LogoutButton />} /> */}
       </Routes>
       {!isNavbarHidden && <Navbar />}
     </div>
