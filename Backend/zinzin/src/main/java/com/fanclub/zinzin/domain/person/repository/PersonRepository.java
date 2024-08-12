@@ -17,7 +17,7 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.profile_image = $profileImage")
-    void updateProfilImage(Long memberId, String profileImage);
+    void updateProfileImage(Long memberId, String profileImage);
 
     @Query("MATCH (me:Person {sub: $mySub}) " +
             "MERGE (friend:Person {sub: $friendSub}) " +
