@@ -5,6 +5,7 @@ import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
 import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
 import com.fanclub.zinzin.domain.member.dto.MemberInfoUpdateRequest;
 import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
+import com.fanclub.zinzin.domain.member.dto.MemberRequest;
 import com.fanclub.zinzin.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
