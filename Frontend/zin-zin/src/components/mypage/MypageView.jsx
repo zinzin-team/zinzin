@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
-import { toast } from "react-toastify";
-import { FaExchangeAlt } from "react-icons/fa"; // 아이콘 추가
+import { ToastContainer, toast } from "react-toastify";
+import { MdOutlineChangeCircle, MdEdit } from "react-icons/md"; // 아이콘 추가
+import { useAuth } from '../../context/AuthContext';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './MypageView.module.css'; 
-import LogoutButton from './LogoutButton'; 
+
 
 const MypageView = () => {
   const [userData, setUserData] = useState(null);
-  const navigate = useNavigate(); 
   const [selectedFile, setSelectedFile] = useState(null); 
+
+  const navigate = useNavigate(); 
+  const { logout } = useAuth();
 
   const fetchUserData = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
@@ -110,7 +114,7 @@ const MypageView = () => {
 
   const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
 
-  const handleNullButtonClick = () => {
+  const handleInviteButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
@@ -120,35 +124,58 @@ const MypageView = () => {
     });
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    logout();
+
+    // 로그인 페이지로 리디렉션
+    window.location.href = '/login';
+  };
+
   return (
     <div className={styles.mypageContainer}>
+      <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={800}
+        limit={1}
+      />
       <div className={styles.userInfoBox}>
         <div className={styles.userInfoTop}>
-          <div className={styles.profilesImageContainer}>
+          <div className={styles.profileImageContainer}>
             <img 
-              src={userData.profileImage === 'default.jpg' ? 'https://zin-zin.site/assets/default-profile.png' : userData.profileImage}
+              src={userData.profileImage === 'default.jpg' ? 'https://zin-zin.site/assets/default-profile.png' : userData.profileImage} 
               alt="프로필" 
               className={styles.profileImage} 
               onClick={handleProfileImageClick} 
+              onError={(e) => { e.target.src = '/assets/default-profile.png'; }} // 이미지 로드 실패 시 대체 이미지 사용
             />
+            <button 
+              className={styles.imageEditButton}
+              onClick={handleProfileImageClick}
+            >
+              <MdEdit  size={24}/>
+            </button>
             <input 
               type="file" 
               id="fileInput" 
               style={{ display: 'none' }} 
               onChange={handleFileChange} 
+              accept="image/*"  // 모든 이미지 파일 허용
             />
           </div>
           <div className={styles.userInfoRight}>
             <div className={styles.nicknameContainer}>
-              <h2>{userData.nickname}</h2>
+              <h3>{userData.nickname}</h3>
               <button className={styles.editNicknameButton}>
-                <FaExchangeAlt />
+                <MdOutlineChangeCircle size={24}/>
               </button>
             </div>
             <div className={styles.nameContainer}>
-              <p>{userData.name} 님</p>
-              <p>@{userData.searchId}</p>
-            </div>
+              <p className={styles.nameText}>{userData.name} 님</p>
+              <p className={styles.searchIdText}>@{userData.searchId}</p>
+            </div>    
+
             <div className={styles.buttonGroup}>
               <button onClick={() => navigate('/friends')}>카톡 친구</button>
               <button onClick={() => navigate('/friends/z-in')}>나의 지인</button>
@@ -159,13 +186,13 @@ const MypageView = () => {
           <div className={styles.inviteContainer}>
             <input 
               type="text" 
-              placeholder="초대 링크 생성" 
+              placeholder="https://zin-zin.site/login" 
               className={styles.inviteInput} 
               readOnly 
             />
             <button 
               className={styles.inviteButton}
-              onClick={handleNullButtonClick}
+              onClick={handleInviteButtonClick}
             >
               초대하기
             </button>
@@ -200,9 +227,12 @@ const MypageView = () => {
         <button onClick={() => navigate('/settings')}>설정</button>
         <button>사용자 가이드</button>
       </div>
-      <div className={styles.logoutBox}>
-        <LogoutButton />
-      </div>
+      <button 
+        className={styles.logoutButton}
+        onClick={handleLogout}
+      >
+        로그아웃
+      </button>
     </div>
   );
   
