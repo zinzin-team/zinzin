@@ -76,7 +76,7 @@ public class ChatRoomService {
 
         List<ChatRoomMember> chatRoomMembers = createChatRoomDto.getMemberIds().stream()
                 .map(memberId -> {
-                    MemberInfo memberInfo = memberInfoRepository.findById(memberId)
+                    MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
                             .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
                     return ChatRoomMember.builder()
