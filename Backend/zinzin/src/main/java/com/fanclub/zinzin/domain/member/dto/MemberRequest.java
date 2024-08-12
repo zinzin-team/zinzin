@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MemberRequest {
-    private final String searchId;
+    private String searchId;
 }
