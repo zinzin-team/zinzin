@@ -4,11 +4,7 @@ import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
 import com.fanclub.zinzin.domain.friend.entity.TempFriend;
 import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
-import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
-import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
-import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
-import com.fanclub.zinzin.domain.member.dto.MemberInfoUpdateRequest;
-import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
+import com.fanclub.zinzin.domain.member.dto.*;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
@@ -160,7 +156,7 @@ public class MemberService {
     }
 
     @Transactional
-    public String updateRandomNickname(Long memberId) {
+    public RandomNicknameResponse updateRandomNickname(Long memberId) {
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
@@ -172,6 +168,6 @@ public class MemberService {
 
         personRepository.updateNicknameByMemberId(memberId,randomNickname);
 
-        return randomNickname;
+        return new RandomNicknameResponse(randomNickname);
     }
 }
