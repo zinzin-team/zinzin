@@ -1,4 +1,6 @@
 .mypageContainer {
+  min-width: 360px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,21 +16,62 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 상단과 하단으로 구분 */
 .userInfoBox {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+/* 상단 부분 */
+.userInfoTop {
+  display: flex;
+}
+
+/* 왼쪽 이미지 컨테이너 */
+.profileImageContainer {
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+/* 오른쪽 유저 정보 */
+.userInfoRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nicknameContainer, .nameContainer, .buttonGroup {
+  margin-bottom: 10px;
+}
+
+/* 하단 부분 */
+.userInfoBottom {
+  margin-top: 20px;
 }
 
 .profileImage {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-right: 20px;
 }
 
-.userInfo {
+.nicknameContainer {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.editNicknameButton {
+  background: none;
+  border: none;
+  margin-left: 8px;
+  cursor: pointer;
+  color: #FF9494;
+}
+
+.nameContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .buttonGroup {
@@ -37,31 +80,75 @@
   margin-top: 10px;
 }
 
-.inviteInput {
+.inviteContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 10px;
-  padding: 10px;
+}
+
+.inviteInput, .inviteButton {
+  height: 40px; /* 높이를 동일하게 설정 */
+  line-height: 40px; /* 텍스트가 중앙에 오도록 설정 */
+  padding: 0 10px; /* 텍스트와 버튼/입력박스의 경계 사이 여백 */
+}
+
+.inviteInput {
+  flex-grow: 1;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
+.inviteButton {
+  background-color: #FF9494;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* MatchingModeBox */
 .matchingModeBox {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
+}
+
+/* 상단 h3, p를 위한 스타일 */
+.matchingModeTop {
+  margin-bottom: 20px;
+}
+
+.matchingModeBottom {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 요소들 사이의 간격을 20px로 설정 */
+}
+
+
+
+/* 왼쪽 프로필 이미지 */
+.matchingProfileImageContainer {
+  flex-shrink: 0;
 }
 
 .profileImageSmall {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-top: 10px;
-  margin-bottom: 10px;
+}
+
+.matchingUserInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 요소들을 중앙으로 정렬 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-left: 20px;
 }
 
 .introButton {
-  /* background-color: #4CAF50; */
   color: white;
+  background-color: #FF9494;
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -83,8 +170,8 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
+/* 
 .settingsBox button, .logoutBox button {
   background-color: transparent;
   color: black;
-}
+} */
