@@ -50,7 +50,6 @@ public class TokenAuthenticationFilter implements Filter {
 
         try {
             String authorizationHeader = httpRequest.getHeader("Authorization");
-            String refreshToken = getRefreshTokenFromCookies(httpRequest);
 
             if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
                 setCorsHeaders(httpResponse);
@@ -67,17 +66,6 @@ public class TokenAuthenticationFilter implements Filter {
                     return;
                 }
             }
-
-            if (refreshToken != null && jwtUtil.validateRefreshToken(refreshToken)) {
-                String newAccessToken = jwtUtil.reGenerateTokens(refreshToken, httpResponse);
-
-                httpResponse.setHeader("Authorization", "Bearer " + newAccessToken);
-                Claims claims = jwtUtil.getClaims(newAccessToken);
-
-                request.setAttribute("memberId", claims.get("memberId", Long.class));
-                chain.doFilter(request, response);
-                return;
-            }
             throw new BaseException(TokenErrorCode.TOKEN_NOT_FOUND);
 
         } catch (BaseException ex) {
@@ -87,18 +75,6 @@ public class TokenAuthenticationFilter implements Filter {
 
     private String extractToken(String header) {
         return header.substring(7);
-    }
-
-    private String getRefreshTokenFromCookies(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("refreshToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
     }
 
     private void sendErrorResponse(HttpServletResponse response, BaseException ex) throws IOException {
