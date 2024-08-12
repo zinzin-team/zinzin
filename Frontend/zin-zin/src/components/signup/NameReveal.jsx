@@ -43,7 +43,7 @@ const NameReveal = ({ userData, setUserData }) => {
                 }
             });
 
-            if (response.ok) {
+            if (response.status === 201) {
                 console.log('회원가입 성공');
                 navigate('/');
             } else {
