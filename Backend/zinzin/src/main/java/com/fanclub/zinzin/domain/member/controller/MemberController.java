@@ -54,8 +54,9 @@ public class MemberController {
     @PutMapping("/me")
     public ResponseEntity<?> updateOwnInfo(HttpServletRequest request,
                                            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-                                           @RequestPart("searchId") String searchId) {
-        memberService.updateMemberInfo((Long) request.getAttribute("memberId"), new MemberInfoUpdateRequest(profileImage, searchId));
+                                           @RequestPart MemberRequest memberRequest) {
+        memberService.updateMemberInfo((Long) request.getAttribute("memberId"),
+                new MemberInfoUpdateRequest(profileImage, memberRequest.getSearchId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
