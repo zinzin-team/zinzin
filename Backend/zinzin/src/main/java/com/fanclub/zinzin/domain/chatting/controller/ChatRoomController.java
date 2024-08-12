@@ -32,7 +32,7 @@ public class ChatRoomController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseChatRoomDto> createChatRoom(HttpServletRequest request, @RequestBody CreateChatRoomDto chatRoomDto) {
-        return ResponseEntity.ok(chatRoomService.createAndFetchChatRoom(chatRoomDto));
+        return ResponseEntity.ok(chatRoomService.createAndFetchChatRoom(chatRoomDto, (Long) request.getAttribute("memberId")));
     }
 
     @DeleteMapping("/{roomId}/exit")
