@@ -11,11 +11,11 @@ import LikeView from "./components/list/Like";
 import MatchingView from "./components/matching/Matching";
 import MypageView from "./components/mypage/MypageView";
 import Settings from './components/mypage/Settings'
+import UserGuide from './components/mypage/UserGuide'
 import Navbar from "./components/navbar/Navbar"; 
 import CreatecardView from './components/matching/Createcard';
 import UpdateCard from './components/mypage/Updatecard';
 import Header from './components/header/Header';
-// import LogoutButton from './components/mypage/LogoutButton';
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import ChatroomView from './components/chating/Chattingroom'
@@ -34,7 +34,7 @@ const AppContent = () => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Navbar를 숨기기
-  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave', '/mypage'];
+  const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave', '/mypage', '/settings', '/userguide'];
   const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave'];
   const isChatRoom = location.pathname.startsWith('/chat/') && location.pathname.split('/').length === 3;
 
@@ -56,10 +56,10 @@ const AppContent = () => {
         <Route path="/match" element={<MatchingView />} />
         <Route path="/mypage" element={<MypageView />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/userguide" element={<UserGuide />} />
         <Route path="/create-card" element={<CreatecardView />} />
         <Route path="/update-card/:cardId" element={<UpdateCard />} />
         <Route path="/leave" element={<LeaveView />} />
-        {/* <Route path="/logout" element={<LogoutButton />} /> */}
       </Routes>
       {!isNavbarHidden && <Navbar />}
     </div>

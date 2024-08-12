@@ -20,8 +20,8 @@ const UpdateCard = () => {
     useEffect(() => {
         const fetchCardData = async () => {
             try {
-                const token = sessionStorage.getItem('accesstoken');
-                const response = await axios.get(`/api/cards/${cardId}`, {
+                const token = sessionStorage.getItem('accessToken');
+                const response = await axios.get(`/api/cards`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         "Content-Type": "application/json"
@@ -111,7 +111,7 @@ const UpdateCard = () => {
         formData.append('cardRequest', blob);
 
         try {
-            const token = sessionStorage.getItem('accesstoken');
+            const token = sessionStorage.getItem('accessToken');
 
             const response = await axios.put(`/api/cards/${cardId}`, formData, {
                 headers: {
