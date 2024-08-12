@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Info.module.css';
 
 const Info = ({ userData, setUserData }) => {
     const navigate = useNavigate();
+    const [nameIsValid, setNameIsValid] = useState(true);
 
     useEffect(() => {
-        // 컴포넌트가 마운트될 때 로컬 스토리지에서 데이터 불러오기
         const storedData = JSON.parse(sessionStorage.getItem('userData'));
         if (storedData) {
             setUserData(storedData);
@@ -19,6 +19,7 @@ const Info = ({ userData, setUserData }) => {
         const dayIsValid = /^\d{2}$/.test(userData.birthDay) && Number(userData.birthDay) >= 1 && Number(userData.birthDay) <= 31;
         return (
             userData.name.trim() !== '' &&
+            nameIsValid &&
             userData.gender !== '' &&
             yearIsValid &&
             monthIsValid &&
@@ -26,17 +27,29 @@ const Info = ({ userData, setUserData }) => {
         );
     };
 
+    const handleNameChange = (e) => {
+        const name = e.target.value;
+        const namePattern = /^[가-힣]{1,10}$/;
+        setNameIsValid(namePattern.test(name));
+        setUserData({ ...userData, name: name });
+    };
+
+    const handleBirthChange = (e) => {
+        const { name, value } = e.target;
+        if (/^\d*$/.test(value)) { // 숫자만 허용
+            setUserData({ ...userData, [name]: value });
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isFormValid()) {
-            // "YYYY-MM-DD" 형식으로 birth 조합
             const formattedBirth = `${userData.birthYear}-${userData.birthMonth}-${userData.birthDay}`;
             const updatedData = {
                 ...userData,
                 birth: formattedBirth,
             };
             setUserData(updatedData);
-            // 로컬 스토리지에 데이터 저장
             sessionStorage.setItem('userData', JSON.stringify(updatedData));
             navigate('/signup/id');
         }
@@ -56,53 +69,67 @@ const Info = ({ userData, setUserData }) => {
                         type="text"
                         placeholder="실명을 입력해주세요"
                         value={userData.name}
-                        onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                        onChange={handleNameChange}
+                        className={styles.nameInput}
                     />
+                    {!nameIsValid && <p className={styles.error}>이름은 1글자 이상 10글자 이하의 한글로만 입력해주세요.</p>}
                 </div>
                 <div className={styles.inputGroup}>
                     <label className={styles.inputTitle}>성별</label>
-                    <label className={styles.radioLabel}>
-                        <input
-                            type="radio"
-                            value="MALE"
-                            checked={userData.gender === 'MALE'}
-                            onChange={(e) => setUserData({ ...userData, gender: 'MALE' })}
-                        />
-                        남
-                    </label>
-                    <label className={styles.radioLabel}>
-                        <input
-                            type="radio"
-                            value="FEMALE"
-                            checked={userData.gender === 'FEMALE'}
-                            onChange={(e) => setUserData({ ...userData, gender: 'FEMALE' })}
-                        />
-                        여
-                    </label>
+                    <div className={styles.genderContainer}>
+                        <div className={styles.radioContainer}>
+                            <input
+                                type="radio"
+                                id="male"
+                                name="gender"
+                                value="MALE"
+                                checked={userData.gender === 'MALE'}
+                                onChange={(e) => setUserData({ ...userData, gender: 'MALE' })}
+                                />
+                            <label htmlFor="male" className={styles.radioLabel}>남</label>
+                        </div>
+                        <div className={styles.radioContainer}>
+                            <input
+                                type="radio"
+                                id="female"
+                                name="gender"
+                                value="FEMALE"
+                                checked={userData.gender === 'FEMALE'}
+                                onChange={(e) => setUserData({ ...userData, gender: 'FEMALE' })}
+                                />
+                            <label htmlFor="female" className={styles.radioLabel}>여</label>
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.inputGroup}>
                     <label className={styles.inputTitle}>생년월일</label>
                     <div className={styles.birthContainer}>
                         <input
                             type="text"
+                            name="birthYear"
                             placeholder="YYYY"
                             value={userData.birthYear}
                             maxLength={4}
-                            onChange={(e) => setUserData({ ...userData, birthYear: e.target.value })}
+                            onChange={handleBirthChange}
+                            className={styles.birthYear}
                         />
                         <input
                             type="text"
+                            name="birthMonth"
                             placeholder="MM"
                             value={userData.birthMonth}
                             maxLength={2}
-                            onChange={(e) => setUserData({ ...userData, birthMonth: e.target.value })}
+                            onChange={handleBirthChange}
+                            className={styles.birthMonth}
                         />
                         <input
                             type="text"
+                            name="birthDay"
                             placeholder="DD"
                             value={userData.birthDay}
                             maxLength={2}
-                            onChange={(e) => setUserData({ ...userData, birthDay: e.target.value })}
+                            onChange={handleBirthChange}
+                            className={styles.birthDay}
                         />
                     </div>
                 </div>

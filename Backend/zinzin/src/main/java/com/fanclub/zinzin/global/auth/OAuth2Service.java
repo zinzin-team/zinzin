@@ -9,6 +9,7 @@ import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.AuthErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fanclub.zinzin.global.util.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -96,24 +97,24 @@ public class OAuth2Service {
     }
 
     public Map<String, String> generateTokens(Long memberId, String sub, Role role) {
-        String accessToken = jwtUtil.generateAccessToken(memberId, sub, role.USER);
-        String refreshToken = jwtUtil.generateRefreshToken(memberId, sub, role.USER);
+        String accessToken = jwtUtil.generateAccessToken(memberId, sub, role);
+        String refreshToken = jwtUtil.generateRefreshToken(memberId, sub);
         Map<String, String> tokensMap = new HashMap<>();
         tokensMap.put("accessToken", accessToken);
         tokensMap.put("refreshToken", refreshToken);
         return tokensMap;
     }
 
-    public MemberAuthResponseDto loginOrRegister(Member member, String[] claims, String kakaoAccesstoken) {
+    public MemberAuthResponseDto loginOrRegister(Member member, String[] claims, String kakaoAccesstoken, HttpServletResponse response) {
         String sub = claims[0];
         String email = claims[1];
         if (member != null) {
             Long memberId = member.getId();
             Map<String, String> tokensMap = generateTokens(memberId, sub, Role.USER);
             String accessToken = tokensMap.get("accessToken");
-            String refreshToken = tokensMap.get("refreshToken");
+            jwtUtil.addRefreshTokenToCookie(response, tokensMap.get("refreshToken"));
 
-            return MemberAuthResponseDto.createTokenResponse(accessToken, refreshToken);
+            return MemberAuthResponseDto.createTokenResponse(accessToken);
         }
         saveKakaoFriends(sub, getKakaoFriends(kakaoAccesstoken));
         return MemberAuthResponseDto.createRegisterResponse(sub, email);

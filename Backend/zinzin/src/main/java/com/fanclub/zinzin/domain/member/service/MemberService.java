@@ -21,7 +21,6 @@ import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -155,7 +154,7 @@ public class MemberService {
         String randomNickname = getRandomNickname().getNickname();
         memberInfo.updateNickname(randomNickname);
 
-        //Neo4j 추가 필요
+        personRepository.updateNicknameByMemberId(memberId,randomNickname);
 
         return randomNickname;
     }

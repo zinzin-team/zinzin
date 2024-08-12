@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './KakaoFriendsList.module.css';
 
 const KakaoFriendsList = () => {
-  // const navigate = useNavigate();
-
   const [friends, setFriends] = useState([]);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,34 +15,34 @@ const KakaoFriendsList = () => {
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
 
+  Modal.setAppElement('#root');
+
   useEffect(() => {
     const fetchFriends = async () => {
       const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {
         console.error('No token found in session storage');
         setLoading(false);
-        // navigate("/logout");
         return;
       }
 
       try {
-        // 카카오 친구 목록 조회
         const responseFriends = await axios.get('/api/mates/social-friends', {
-            headers: {
-              "Authorization": `Bearer ${accessToken}`,
-              "Content-Type": "application/json"
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
           },
           credentials: 'include',
         });
 
-        // 지인 요청 목록 조회
         const responseRequests = await axios.get('/api/mates/requests', {
-            headers: {
-              "Authorization": `Bearer ${accessToken}`,
-              "Content-Type": "application/json"
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
           },
           credentials: 'include',
         });
+
         setFriends(responseFriends.data);
         setRequests(responseRequests.data);
         setLoading(false);
@@ -100,10 +99,17 @@ const KakaoFriendsList = () => {
           "Content-Type": "application/json"
         }
       });
-      // 요청 수락/거절 후 리스트 갱신 로직 추가
+
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
+      
+      if (isAccepted) {
+        toast.success(`${selectedRequest.kakaoName}님과 지인이 되어따`);
+      } else {
+        toast.info(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
+      }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
+      toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
   };
@@ -111,61 +117,87 @@ const KakaoFriendsList = () => {
   const handleUnfriend = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('userMemberId');
-    
+  
     try {
-        // 친구 끊기 API 호출
-        await axios.delete('/api/mates', {
-            headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Content-Type": "application/json"
-            },
-            data: {
-                userMemberId: userMemberId,
-                targetMemberId: selectedFriend.id
-            }
-        });
-
-        // 친구 리스트에서 제거
-        setFriends(friends.filter(friend => friend.kakaoName !== selectedFriend.kakaoName));
-    } catch (error) {
-        if (error.response) {
-            const { code } = error.response.data;
-            if (code === 'F001') {
-                console.error('UserMemberId 또는 TargetMemberId가 null입니다.');
-            } else if (code === 'F006') {
-                console.error('두 사용자 사이에 FOLLOW 관계가 정확히 2개가 아닙니다.');
-            } else if (code === 'F007') {
-                console.error('지인 관계를 끊는 과정에서 오류가 발생했습니다.');
-            } else {
-                console.error('예상치 못한 오류:', error);
-            }
-        } else {
-            console.error('오류:', error.message);
+      await axios.delete('/api/mates', {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        data: {
+          userMemberId: userMemberId,
+          targetMemberId: selectedFriend.id
         }
+      });
+  
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.id === selectedFriend.id
+            ? { ...friend, relationship: 'MEMBER' }
+            : friend
+        )
+      );
+  
+      toast.success(`${selectedFriend.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
+    } catch (error) {
+      console.error('오류:', error.message);
+      toast.error('지인 해제 중 오류가 발생했습니다.');
     }
-
+  
     closeUnfriendModal();
-};
-
+  };
 
   const handleInvite = async () => {
-    // const accessToken = sessionStorage.getItem('accessToken');
-    // const userMemberId = sessionStorage.getItem('userMemberId');
-    // try {
-    //   await axios.post('/api/mates', {
-    //     userMemberId,
-    //     targetMemberId: selectedFriend.id
-    //   }, {
-    //     headers: {
-    //       "Authorization": `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json"
-    //     }
-    //   });
-    //   // 요청 후 리스트 갱신 로직 추가
-    // } catch (error) {
-    //   console.error('요청 처리 중 오류 발생:', error);
-    // }
+    const accessToken = sessionStorage.getItem('accessToken');
+    const userMemberId = sessionStorage.getItem('userMemberId');
+  
+    try {
+      await axios.post('/api/mates', {
+        userMemberId: userMemberId,
+        targetMemberId: selectedFriend.id
+      }, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        }
+      });
+  
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.id === selectedFriend.id
+            ? { ...friend, relationship: 'REQUEST_FOLLOW' }
+            : friend
+        )
+      );
+  
+      toast.success(`${selectedFriend.kakaoName}님에게 지인 요청을 보냈습니당 :)`);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorCode = error.response.data.code;
+        if (errorCode === 'F001') {
+          toast.error('잘못된 요청입니다. 다시 시도해주세요.');
+        } else if (errorCode === 'F002') {
+          toast.info('이미 지인 관계이거나 요청 중입니다.');
+        } else {
+          toast.error('지인 요청 중 오류가 발생했습니다.');
+        }
+      } else {
+        console.error('지인 요청 중 오류 발생:', error);
+        toast.error('지인 요청 중 오류가 발생했습니다.');
+      }
+    }
+  
     closeInviteModal();
+  };
+
+  const handleNullButtonClick = () => {
+    const loginUrl = "https://zin-zin.site/login";
+    navigator.clipboard.writeText(loginUrl).then(() => {
+      toast.success("초대링크를 클립보드에 저장했어요! :)");
+    }).catch(err => {
+      console.error('링크 복사 중 오류 발생:', err);
+      toast.error('링크 복사 중 오류가 발생했습니다.');
+    });
   };
 
   if (loading) {
@@ -174,7 +206,7 @@ const KakaoFriendsList = () => {
 
   return (
     <div className={styles.container}>
-      {/* 지인 요청이 있을 경우에만 출력 */}
+      <ToastContainer />
       {requests.length > 0 && (
         <>
           <div className={styles.subHeader}>지인 요청을 수락할까요?</div>
@@ -182,12 +214,13 @@ const KakaoFriendsList = () => {
             {requests.map((request, index) => (
               <div key={index} className={styles.requestItem}>
                 <img
-                  src={request.profileImage ? request.profileImage : 'default-profile.png'}
+                  src={request.profileImage ? request.profileImage : '/assets/default-profile.png'}
                   alt={`${request.kakaoName} 프로필`}
                   className={styles.avatar}
+                  onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
                 />
                 <span className={styles.kakaoName}>{request.kakaoName}</span>
-                <button className={styles.requestButton} onClick={() => openModal(request)}>요청 수락 +</button>
+                <button className={styles.receiveRequestButton} onClick={() => openModal(request)}>요청 수락 +</button>
               </div>
             ))}
           </div>
@@ -197,15 +230,18 @@ const KakaoFriendsList = () => {
         {friends.map((friend, index) => (
           <div key={index} className={styles.friendItem}>
             <img
-              src={friend.profileImage ? friend.profileImage : 'default-profile.png'}
+              src={friend.profileImage ? friend.profileImage : '/assets/default-profile.png'}
               alt={`${friend.kakaoName} 프로필`}
               className={styles.profileImage}
+              onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
             />
             <span className={styles.kakaoName}>{friend.kakaoName}</span>
             <button className={
-              friend.relationship === 'FOLLOW' ? styles.myAcquaintanceButton :
-              friend.relationship === 'RECEIVE_REQUEST' ? styles.requestButton :
-              styles.inviteButton
+              friend.relationship === 'FOLLOW' ? styles.followButton :
+                friend.relationship === 'RECEIVE_REQUEST' ? styles.receiveRequestButton :
+                  friend.relationship === 'MEMBER' ? styles.memberButton :
+                    friend.relationship === 'REQUEST_FOLLOW' ? styles.requestFollowButton :
+                      styles.nullButton
             } onClick={() => {
               if (friend.relationship === 'FOLLOW') {
                 openUnfriendModal(friend);
@@ -213,6 +249,8 @@ const KakaoFriendsList = () => {
                 openModal(friend);
               } else if (friend.relationship === 'MEMBER') {
                 openInviteModal(friend);
+              } else if (friend.relationship === null) {
+                handleNullButtonClick();
               }
             }}>
               {friend.relationship === null && '초대 보내기'}
@@ -234,9 +272,9 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.kakaoName}님과 지인을 맺을까요?</h2>
-            <button onClick={() => handleAccept(true)}>네</button>
-            <button onClick={() => handleAccept(false)}>아니오</button>
+            <h2>{selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
+            <button onClick={() => handleAccept(false)}>거절하기</button>
+            <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
         )}
       </Modal>
@@ -250,9 +288,9 @@ const KakaoFriendsList = () => {
       >
         {selectedFriend && (
           <div>
-            <h2>{selectedFriend.kakaoName}님과 지인을 끊을까요?</h2>
-            <button onClick={handleUnfriend}>네</button>
-            <button onClick={closeUnfriendModal}>아니오</button>
+            <h2>{selectedFriend.kakaoName}님과<br />지인관계를 해제할까요?</h2>
+            <button onClick={closeUnfriendModal}>유지하기</button>
+            <button onClick={handleUnfriend}>해제하기</button>
           </div>
         )}
       </Modal>
@@ -266,9 +304,9 @@ const KakaoFriendsList = () => {
       >
         {selectedFriend && (
           <div>
-            <h2>{selectedFriend.kakaoName}님에게 지인을 요청할까요?</h2>
-            <button onClick={handleInvite}>네</button>
-            <button onClick={closeInviteModal}>아니오</button>
+            <h2>{selectedFriend.kakaoName}님에게<br />지인을 요청할까요?</h2>
+            <button onClick={closeInviteModal}>취소</button>
+            <button onClick={handleInvite}>요청하기</button>
           </div>
         )}
       </Modal>

@@ -1,53 +1,109 @@
 .container {
+  min-width: 320px;
+  min-height: 600px;
   padding: 20px;
-  background-color: #fffaf0;
   text-align: center;
 }
 
-h2 {
-  font-size: 16px;
+p {
+  font-size: 18px;
   color: #808080;
   margin-bottom: 20px;
 }
 
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* searchInput과 searchButton 사이의 간격 */
+  margin-bottom: 10px;
+}
+
 .searchInput {
-  width: 80%;
+  width: 70%;
   padding: 10px;
-  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 20px;
+}
+
+.searchButton {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #ff9494;
+  border: 1px solid #ff9494;
 }
 
 .result {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  margin: 30px 15px 25px;
 }
 
-.profileImage {
-  width: 50px;
-  height: 50px;
+.result .profileImage {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 20px;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
 }
 
-.kakaoName {
-  font-size: 14px;
-  color: #333;
+.result .kakaoName {
+  font-size: 17px;
 }
 
-.addButton {
+.result button {
   margin-left: auto;
   padding: 5px 10px;
-  background-color: #ff9494;
-  border: none;
-  border-radius: 20px;
-  color: #fff;
+  width: 90px;
+  height: 30px;
+  border-radius: 6px;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
+/* 버튼 스타일링 */
+.memberButton {
+  background-color: #FF9494;
+  border: none;
+  color: #fff;
+}
+
+.followButton {
+  background-color: #e0e0e0;
+  border: none;
+  color: #808080;
+  cursor: default;
+}
+
+.requestFollowButton {
+  background-color: #e0e0e0;
+  border: none;
+  color: #808080;
+  cursor: default;
+}
+
+.receiveRequestButton {
+  background-color: #fff;
+  border: 1px solid #ff9494;
+  color: #ff9494;
+}
+
+.nullButton {
+  background-color: #b8b8b8;
+  border: none;
+  color: #fff;
+}
+
+.meButton {
+  background-color: #d3d3d3;
+  border: none;
+  color: #fff;
+  cursor: default;
+}
+
 .error {
+  font-size: 14px;
   color: #ff0000;
   margin-top: 20px;
 }
