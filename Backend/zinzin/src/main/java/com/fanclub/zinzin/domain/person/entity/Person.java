@@ -23,6 +23,7 @@ public class Person {
     @Property(name = "member_id")
     private Long memberId;
 
+    @Getter
     private String name;
 
     private LocalDate birth;
@@ -39,6 +40,7 @@ public class Person {
     @Property(name = "matching_visibility")
     private MatchingVisibility matchingVisibility;
 
+    @Getter
     private String nickname;
 
     @Getter

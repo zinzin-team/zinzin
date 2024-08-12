@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.chatting.entity;
 
+import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -22,16 +23,16 @@ public class ChatRoomMember {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private MemberInfo memberInfo;
+    private Member member;
 
     @Getter
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean heartToggle;
 
     @Builder
-    public ChatRoomMember(ChatRoom chatRoom, MemberInfo memberInfo) {
+    public ChatRoomMember(ChatRoom chatRoom, Member member) {
         this.chatRoom = chatRoom;
-        this.memberInfo = memberInfo;
+        this.member = member;
         this.heartToggle = false;
     }
 
