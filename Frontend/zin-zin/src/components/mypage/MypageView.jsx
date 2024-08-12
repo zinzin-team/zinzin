@@ -175,7 +175,7 @@ const MypageView = () => {
               className={styles.imageEditButton}
               onClick={handleProfileImageClick}
             >
-              <MdEdit  size={24}/>
+              <MdEdit  size={18}/>
             </button>
             <input 
               type="file" 
@@ -238,12 +238,6 @@ const MypageView = () => {
               </div>
               <div className={styles.matchingUserInfo}>
                 <p>{userData.card ? userData.card.info : "소개말을 입력해 주세요."}</p>
-                {/* <button 
-                  className={styles.logoutButton}
-                  onClick={handleLogout}
-                >
-                  로그아웃
-                </button> */}
                 
                 <button 
                   className={styles.cardEditButton} 
