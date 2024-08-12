@@ -1,5 +1,5 @@
 // AuthContext.js
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Context 생성
 const AuthContext = createContext();
@@ -11,6 +11,17 @@ export const AuthProvider = ({ children }) => {
     accessToken: null,
     refreshToken: null,
   });
+
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken');
+    
+    if (accessToken) {
+      setAuthState({
+        isAuthenticated: true,
+        accessToken
+      });
+    }
+  }, []);
 
   const login = (tokens) => {
     setAuthState({
@@ -37,5 +48,6 @@ export const AuthProvider = ({ children }) => {
 
 // Custom hook for using the auth context
 export const useAuth = () => {
+  console.log(AuthContext)
   return useContext(AuthContext);
 };
