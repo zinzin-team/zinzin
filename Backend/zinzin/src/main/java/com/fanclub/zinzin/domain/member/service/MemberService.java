@@ -2,8 +2,13 @@ package com.fanclub.zinzin.domain.member.service;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
-import com.fanclub.zinzin.domain.card.service.ImageStorageService;
-import com.fanclub.zinzin.domain.member.dto.*;
+import com.fanclub.zinzin.domain.friend.entity.TempFriend;
+import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
+import com.fanclub.zinzin.domain.member.dto.CheckSearchIdResponse;
+import com.fanclub.zinzin.domain.member.dto.MatchingModeRequest;
+import com.fanclub.zinzin.domain.member.dto.MemberInfoResponse;
+import com.fanclub.zinzin.domain.member.dto.MemberInfoUpdateRequest;
+import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.MemberInfo;
@@ -13,11 +18,10 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
-import com.fanclub.zinzin.domain.friend.entity.TempFriend;
-import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import com.fanclub.zinzin.global.s3.S3Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +41,7 @@ public class MemberService {
     private final RandomNicknameRepository randomNicknameRepository;
     private final CardRepository cardRepository;
     private final TempFriendRepository tempFriendRepository;
-    private final ImageStorageService imageStorageService;
+    private final S3Service s3Service;
 
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
@@ -123,11 +127,23 @@ public class MemberService {
         MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        String profileImagePath = imageStorageService.storeFile(memberInfoUpdateRequest.getProfileImage(), memberId);
+        // 요청으로 들어온 프로필 이미지가 있다면, 새로운 이미지를 업로드하고 URL을 얻는다.
+        String imageURL = memberInfo.getProfileImage();
+        String newImageURL = imageURL;
 
-        memberInfo.updateMemberInfo(profileImagePath, memberInfoUpdateRequest.getSearchId());
+        if (memberInfoUpdateRequest.getProfileImage() != null) {
+            newImageURL = s3Service.uploadProfile(memberInfoUpdateRequest.getProfileImage());
+        }
+
+        // DB를 업데이트한다.
+        memberInfo.updateMemberInfo(newImageURL, memberInfoUpdateRequest.getSearchId());
         memberInfoRepository.save(memberInfo);
-        personRepository.updateProfilImage(memberId, profileImagePath);
+        personRepository.updateProfileImage(memberId, newImageURL);
+
+        // 새로운 이미지를 저장했다면, 기존 프로필 이미지는 삭제한다.
+        if (!newImageURL.equals(imageURL)) {
+            s3Service.deleteS3(imageURL);
+        }
     }
 
     @Transactional

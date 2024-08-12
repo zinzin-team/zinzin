@@ -23,8 +23,10 @@ public class CardController {
     public ResponseEntity<?> createCard(HttpServletRequest request,
                                         @RequestPart CardRequest cardRequest,
                                         @RequestPart(required = false) List<MultipartFile> images) {
-        cardService.createCard(new CardRequest(cardRequest.getInfo(), images, cardRequest.getTags()),
-                (Long) request.getAttribute("memberId"));
+        cardService.createCard(cardRequest.getInfo(),
+                               images,
+                               cardRequest.getTags(),
+                               (Long) request.getAttribute("memberId"));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -40,8 +42,10 @@ public class CardController {
                                         @RequestPart CardRequest cardRequest,
                                         @RequestPart(required = false) List<MultipartFile> images) {
         cardService.updateCard(cardId,
-                new CardRequest(cardRequest.getInfo(), images, cardRequest.getTags()),
-                (Long) request.getAttribute("memberId"));
+                               cardRequest.getInfo(),
+                               images,
+                               cardRequest.getTags(),
+                               (Long) request.getAttribute("memberId"));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

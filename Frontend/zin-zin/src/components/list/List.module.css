@@ -1,2 +1,125 @@
-.list {  
-  }
+/* 전체 리스트 스타일 */
+.list {
+  /* background-color: #f9f9f9; */
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+}
+
+/* 헤더 스타일 */
+.header {
+  font-family: 'Pretendard', sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header p {
+  text-align: right;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  color: #888;
+}
+
+/* 매칭된 목록 스타일 */
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 개별 매칭 항목 스타일 */
+.matchItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 각 매칭 상대 스타일 */
+.mate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 30px 10px 30px;
+  width: 120px;
+}
+
+/* 프로필 이미지 스타일 */
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 하트 아이콘 스타일 */
+.heart i{
+  font-size: 24px;
+  color: #FF6B6B;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px  ;
+}
+
+.pagination button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover:not(.activePage) {
+  background-color: #f0f0f0;
+}
+
+.pagination .activePage {
+  background-color: #FF6B6B;
+  color: #fff;
+  border-color: #FF6B6B;
+}
+
+.lovelove{
+  display: flex;
+  flex-direction: column;
+}
+
+.pagination::-webkit-scrollbar, .longtext2::-webkit-scrollbar {
+  height: 0.8vh; /* 스크롤바 너비 */
+}
+
+.pagination::-webkit-scrollbar-track, .longtext2::-webkit-scrollbar-track {
+  /* background: #B8B8B8; 스크롤바 트랙 배경 */
+  border-radius: 10px;
+}
+
+.pagination::-webkit-scrollbar-thumb, .longtext2::-webkit-scrollbar-thumb {
+  background-color: #B8B8B8; /* 스크롤바 색상 */
+  border-radius: 10px; /* 스크롤바 둥글기 */
+  /* border: 1px solid #f1f1f1; 스크롤바와 트랙 사이의 간격 */
+}
+
+.pagination::-webkit-scrollbar-thumb:hover, .longtext2::-webkit-scrollbar-thumb:hover {
+  background-color: #a2a2a2; /* 스크롤바 호버 색상 */
+}
