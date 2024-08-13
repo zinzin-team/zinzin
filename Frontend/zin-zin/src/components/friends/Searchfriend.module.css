@@ -5,11 +5,11 @@
   text-align: center;
 }
 
-p {
+/* p {
   font-size: 18px;
   color: #808080;
   margin-bottom: 20px;
-}
+} */
 
 .searchContainer {
   display: flex;
