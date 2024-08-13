@@ -116,7 +116,7 @@ const Chat = () => {
                                         <p className={styles.namename}>{room.otherMember.nickname}</p>
                             )}
                         <div className={styles.lastMessage}>
-                            {room.lastMessage}
+                            {room.lastMessage === null? <p className={styles.startstart}>채팅을 시작해보세요</p> : room.lastMessage}
                         </div>
                         </div>
                     </div>

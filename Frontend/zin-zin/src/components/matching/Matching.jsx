@@ -27,6 +27,39 @@ const Matching = () => {
         setModalIsOpen(true);
     };
 
+    const startChatWithMate = async (mateId) => {
+        try {
+            const token = sessionStorage.getItem('accessToken');
+            const response = await axios.post('/api/chatroom/create', {
+                roomType: "MATE",
+                targetId: mateId
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const room = response.data;
+            if (room && room.roomId) {
+                navigate(`/chat/${room.roomId}`, {
+                    state: {
+                        roomType: room.roomType,
+                        name: room.otherMember.name,
+                        nickname: room.otherMember.nickname,
+                        profileImage: room.otherMember.profileImage,
+                        memberId: room.otherMember.memberId,
+                        heartToggle: room.heartToggle
+                    }
+                });
+            } else {
+                console.error('채팅방 생성에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('채팅방 생성 중 오류 발생:', error);
+        }
+    };
+
+
     const firework = () => {
         var duration = 20 * 150;
         var animationEnd = Date.now() + duration;
@@ -90,7 +123,6 @@ const Matching = () => {
                 });
                 if (response.data) {
                     const { cardId, tags, info, images } = response.data;
-                    console.log(images)
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
@@ -174,16 +206,8 @@ const Matching = () => {
     const questiontofriend = () => {
         const currentCard = matchingCardData[currentIndex];
         setMates(currentCard.mates || []);
+        console.log(currentCard.mates)
         setModalIsOpen2(true);
-    };
-
-    const handleImageSwipe = (direction) => {
-        const images = matchingCardData[currentIndex].card.images;
-        if (direction === 'left') {
-            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        } else if (direction === 'right') {
-            setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-        }
     };
 
     const handleCardFlip = () => {
@@ -276,6 +300,7 @@ const Matching = () => {
         }
 
         const currentCard = matchingCardData[currentIndex];
+        console.log(currentCard.memberId)
         const currentCardInfo = currentCard.card;
         // currentCard.mates.shift();currentCard.mates.shift();
         // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: '/assets/박상우.png'}))
@@ -393,7 +418,7 @@ const Matching = () => {
                             <div key={index} className={styles.mate}>
                                 <img src={mate.profileImage} alt={mate.name} className={styles.profileImage} />
                                 <p>{mate.name}</p>
-                                <i className="bi bi-chat-dots-fill"></i>
+                                <i className="bi bi-chat-dots-fill" onClick={() => startChatWithMate(mate.memberId)}></i>
                             </div>
                         ))
                     ) : (

@@ -24,7 +24,7 @@ const Chattingroom = () => {
     // 웹소켓 연결 설정
     const connect = () => {
         // const socket = new WebSocket("ws://localhost:8080/api/ws");
-        const socket = new WebSocket("ws://zin-zin.site/api/ws");
+        const socket = new WebSocket("wss://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -84,30 +84,16 @@ const Chattingroom = () => {
                         'Authorization': `Bearer ${token}`
                     }    
                 });
-                console.log(response.data);
-                setMessages(response.data);
+                const reversedMessages = response.data.reverse(); // 배열을 역순으로 만듦
+                console.log(reversedMessages);
+                setMessages(reversedMessages); // 역순으로 된 배열을 저장
             } catch (error) {
                 console.error('Error fetching messages:', error);
             }
         };
 
-        const fetchHeartStatus = async () => {
-            try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`/api/chatroom/${roomId}/heart`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                setIsHeart(response.data.isHeart); 
-            } catch (error) {
-                console.error('Error fetching heart status:', error);
-            }
-        };
-
         connect();
         fetchMessages();
-        fetchHeartStatus();
 
         return () => disconnect();
     }, [roomId, roomType, name, nickname, profileImage, memberId, heartToggle]);
