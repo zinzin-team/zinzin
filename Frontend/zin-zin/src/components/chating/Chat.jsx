@@ -11,7 +11,7 @@ const Chat = () => {
         const fetchChatRooms = async () => {
             try {
                 const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/chatRoom', {
+                const response = await axios.get('/api/chatroom', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }                });
@@ -41,65 +41,84 @@ const Chat = () => {
         });
     };
 
+
     return (
-        <div className={styles.chatContainer}>
-            {chatRooms && chatRooms.length > 0 ? (
+        <div className={styles.allcontainer}>
+        <div className={styles.topchatContainer}>
+            {chatRooms && chatRooms.length > 0 ? 
+            
+            (
                 chatRooms.map(room => (
                     <div key={room.roomId} className={styles.chatRoom} 
-                    onClick={() => handleRoomClick(room)}>
-                         <div key={room.roomId} className={styles.chatRoom} 
-                    onClick={() => handleRoomClick(room)}>
-                        <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
+                    >
+                        <img src="/assets/임시1.png" alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
                         <div className={styles.roomInfo}>
-                            {room.roomType === 'Mate' ? (
-                                <div>
-                                    <p>{room.otherMember.nickname}</p>
+                            {room.roomType === 'MATE' ? (
+                                <div className={styles.toptalk}>
                                     <img
                                         src="/assets/starshape.png"
                                         alt="Heart"
                                         className={styles.icon}
-                                    />
+                                        />
+                                        <p>{room.otherMember.name}</p>
                                 </div>
                             ) : (
-                                <div>
-                                    <p>{room.otherMember.name}</p>
+                                <div className={styles.toptalk}>
                                     <img
                                         src="/assets/heartshape.png"
                                         alt="Star"
                                         className={styles.icon}
-                                    />
+                                        />
+                                        <p>{room.otherMember.nickname}</p>
                                 </div>
                             )}
-                        </div>
-                        <div className={styles.lastMessage}>
-                            {room.lastMessage}
-                        </div>
                     </div>
-                        {/* <img src="/assets/홍창기.png" alt="Profile" className={styles.profileImage} />
+                    </div>
+                ))
+            )
+            
+            : (
+                <div>
+                </div>
+            )}
+        </div>
+        {chatRooms && chatRooms.length > 0 ?
+        <div className={styles.titlebox}> <p className={styles.titletitle}>채팅</p></div>    : <div></div>
+}
+        <div className={styles.bottomchatContainer} >
+            {chatRooms && chatRooms.length > 0 ? (
+                chatRooms.map(room => (
+                    <div key={room.roomId} className={styles.chatRoombottom} onClick={() => handleRoomClick(room)}>
+                        <img src={room.otherMember.profileImage} alt={room.otherMember.profileImage}     className={styles.profileImage} />
                         <div className={styles.roomInfo}>
-                            {room.roomType === 'Mate' ? (
+                            {room.roomType === 'MATE' ? (
                                 <div>
-                                    <p>{room.otherMember.nickname}</p>
                                     <img
                                         src="/assets/starshape.png"
                                         alt="Heart"
-                                        className={styles.icon}
-                                    />
+                                        className={styles.icon2}
+                                        />
                                 </div>
                             ) : (
                                 <div>
-                                    <p>{room.otherMember.name}</p>
                                     <img
                                         src="/assets/heartshape.png"
                                         alt="Star"
-                                        className={styles.icon}
-                                    />
+                                        className={styles.icon2}
+                                        />
                                 </div>
                             )}
                         </div>
+                        <div className={styles.texttext}>
+                            {room.roomType === 'MATE' ? (
+                                        <p className={styles.namename}>{room.otherMember.name}</p>
+                            ) : (
+                                        <p className={styles.namename}>{room.otherMember.nickname}</p>
+                            )}
                         <div className={styles.lastMessage}>
                             {room.lastMessage}
-                        </div> */}
+                        </div>
+                        </div>
                     </div>
                 ))
             ) : (
@@ -109,6 +128,8 @@ const Chat = () => {
                 </div>
             )}
         </div>
+           </div>
+        
     );
 }
 

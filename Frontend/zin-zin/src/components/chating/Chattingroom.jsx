@@ -23,8 +23,8 @@ const Chattingroom = () => {
 
     // 웹소켓 연결 설정
     const connect = () => {
-        const socket = new WebSocket("ws://localhost:8080/api/ws");
-        // const socket = new WebSocket("ws://zin-zin.site/api/ws");
+        // const socket = new WebSocket("ws://localhost:8080/api/ws");
+        const socket = new WebSocket("wss://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -56,7 +56,7 @@ const Chattingroom = () => {
     const goout = async () => {
         try {
             const token = sessionStorage.getItem('accessToken');
-            const response = await axios.delete(`/api/chatRoom/${roomId}/exit`, {
+            const response = await axios.delete(`/api/chatroom/${roomId}/exit`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }    
@@ -79,7 +79,7 @@ const Chattingroom = () => {
         const fetchMessages = async () => {
             try {
                 const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`/api/chatRoom/${roomId}/messages`, {
+                const response = await axios.get(`/api/chatroom/${roomId}/messages`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }    
@@ -94,7 +94,7 @@ const Chattingroom = () => {
         const fetchHeartStatus = async () => {
             try {
                 const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`/api/chatRoom/${roomId}/heart`, {
+                const response = await axios.get(`/api/chatroom/${roomId}/heart`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -131,7 +131,7 @@ const Chattingroom = () => {
 
         try {
             const token = sessionStorage.getItem('accessToken');
-            const response = await axios.put(`/api/chatRoom/${roomId}/heart`, {
+            const response = await axios.put(`/api/chatroom/${roomId}/heart`, {
                 isHeart: newIsHeart
             }, {
                 headers: {
@@ -148,7 +148,7 @@ const Chattingroom = () => {
 
     return (
         <div className={styles.chatContainer}>  
-            {roomType !== "Mate" && (
+            {roomType !== "MATE" && (
                 <>
                     <input 
                         type="checkbox"  
@@ -164,7 +164,7 @@ const Chattingroom = () => {
                     <div key={index} className={styles.message}>
                         <div>
                             {message.memberId === memberId ? (
-                                roomType === "Mate" ? name : nickname
+                                roomType === "MATE" ? name : nickname
                             ) : (
                                 <div>내가 한 채팅입니다.</div>
                             )}

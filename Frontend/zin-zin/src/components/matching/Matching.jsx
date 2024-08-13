@@ -243,7 +243,7 @@ const Matching = () => {
                         <p className={styles.title}>지인이 부족해요...</p>
                         <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
                         <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
-                        <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
+                        <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
                 </div>
             );
@@ -258,7 +258,7 @@ const Matching = () => {
                             <p className={styles.title}>지인이 부족해요...</p>
                             <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
                             <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
-                            <button className={styles.inviteButton} onClick={() => navigate('/friend')}>지인 초대하기</button>
+                            <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                         </div>
                     </div>
                 );

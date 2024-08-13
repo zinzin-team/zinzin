@@ -8,6 +8,17 @@
   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
 }
 
+.tmptmp{
+  display: flex;
+  justify-content: center;
+}
+
+.titletitle{
+  font-family: 'Pretendard', sans-serif;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
 /* 헤더 스타일 */
 .header {
   font-family: 'Pretendard', sans-serif;
@@ -15,11 +26,11 @@
   margin-bottom: 20px;
 }
 
-.header h2 {
+.titletitle {
   font-family: 'Pretendard', sans-serif;
   font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: #474747;
 }
 
 .header p {
@@ -33,6 +44,7 @@
 .matchList {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
@@ -45,6 +57,7 @@
   border-radius: 12px;
   padding: 10px 15px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 360px;
 }
 
 /* 각 매칭 상대 스타일 */
@@ -53,10 +66,15 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin: 16px 30px 10px 30px;
-  width: 120px;
+  margin: 30px 15px 10px 15px;
+  width: 160px;
 }
 
+
+.matename{
+  font-size: 14px;
+  margin-top: 8px;
+}
 /* 프로필 이미지 스타일 */
 .profileImage {
   width: 50px;
@@ -122,4 +140,48 @@
 
 .pagination::-webkit-scrollbar-thumb:hover, .longtext2::-webkit-scrollbar-thumb:hover {
   background-color: #a2a2a2; /* 스크롤바 호버 색상 */
+}
+
+.nomatch{
+  width: 290px;
+  height: 430px;
+  background-color: white;
+  /* margin-top: 20px; */
+  border-radius: 16px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.nomatch p{
+  font-family: 'Pretendard', sans-serif;
+  margin-top: 30px;
+  font-size: 25px;
+  font-weight: 600;
+  color: black;
+}
+
+.nomatch img{
+  width: 232px;
+  height: 232px;
+  border-radius: 20px;
+  margin-top: 15  px;
+}
+
+.inviteButton {
+  font-family: 'Pretendard', sans-serif;
+  width: 248px;
+  height: 40px;
+  background-color: #ff9494;
+  color: white;
+  border: none;
+  border-radius: 200px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
 }
