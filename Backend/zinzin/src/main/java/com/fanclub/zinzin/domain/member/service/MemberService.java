@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -155,7 +154,7 @@ public class MemberService {
         personRepository.updateProfileImage(memberId, newImageURL);
 
         // 새로운 이미지를 저장했다면, 기존 프로필 이미지는 삭제한다.
-        if (!newImageURL.equals(imageURL)) {
+        if (!newImageURL.equals(imageURL) && !"default.jpg".equals(imageURL)) {
             s3Service.deleteS3(imageURL);
         }
     }
