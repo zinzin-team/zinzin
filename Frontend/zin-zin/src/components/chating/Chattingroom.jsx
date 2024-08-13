@@ -113,9 +113,10 @@ const Chattingroom = () => {
     }, [messages]);
 
     const sendMessage = () => {
+        const myMemberId = sessionStorage.getItem('memberId');
         if (connected && inputValue) {
             const body = {
-                memberId: 9,
+                memberId: myMemberId,
                 message: inputValue
             };
             stompClient.current.send(`/app/${roomId}`, {}, JSON.stringify(body));
