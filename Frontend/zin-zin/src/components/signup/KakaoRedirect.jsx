@@ -28,9 +28,21 @@ const KakaoRedirect = () => {
           
                 sessionStorage.setItem('accessToken', data.accessToken);
 
-                const decodedToken = jwtDecode(data.accessToken);
-                const memberId = decodedToken.memberId;
-                sessionStorage.setItem('memberId', memberId);
+                // const decodedToken = jwtDecode(data.accessToken);
+                // const memberId = decodedToken.memberId;
+                // sessionStorage.setItem('memberId', memberId);
+
+                try {
+                    const decodedToken = jwtDecode(data.accessToken);
+                    console.log('디코딩된 토큰:', decodedToken); // 토큰 전체 내용을 출력
+                    const memberId = decodedToken.memberId;
+                    console.log('추출된 memberId:', memberId); // 추출된 memberId를 출력
+                    sessionStorage.setItem('memberId', memberId);
+                } catch (decodeError) {
+                    console.error('토큰 디코딩 실패:', decodeError.message);
+                    navigate("/login");
+                    return; // 이후 코드 실행을 막기 위해 리턴
+                }
         
                 try {
                     const memberResponse = await axios.get('/api/member/me', {
