@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.global.util;
 
+import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
@@ -85,14 +86,23 @@ public class JwtUtil {
         }
     }
 
-    public String reGenerateTokens(String refreshToken, HttpServletResponse response) {
+    public String regenerateTokens(String refreshToken, HttpServletResponse response) {
         Claims claims = getClaims(refreshToken);
         Long memberId = claims.get("memberId", Long.class);
         String sub = claims.getSubject();
-        Role role = memberRepository.findRoleByMemberId(memberId);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND));
+
+        if(member.getDeletedAt() != null){
+            throw new BaseException(MemberErrorCode.DELETED_MEMBER);
+        }
+
+        Role role = member.getRole();
         if (role == null) {
             throw new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND);
         }
+
         addRefreshTokenToCookie(response, generateRefreshToken(memberId, sub));
         return generateAccessToken(memberId, sub, role);
     }
