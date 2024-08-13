@@ -147,7 +147,7 @@ const Searchfriend = () => {
       {result && (
         <div className={styles.result}>
           <img
-            src={result.profileImage ? result.profileImage : '/assets/default-profile.png'}
+            src={result.profileImage ? result.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
             alt={`${result.name} 프로필`}
             className={styles.profileImage}
           />
