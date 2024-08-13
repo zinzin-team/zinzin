@@ -8,7 +8,8 @@ const Settings = () => {
   const [matchingMode, setMatchingMode] = useState(true);
   const [isNamePublic, setIsNamePublic] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
+  const [showVisibilityModal, setShowVisibilityModal]  = useState(false);
   const [lastModified, setLastModified] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   
@@ -41,7 +42,7 @@ const Settings = () => {
       setUserData(response.data);
       setProfileImage(response.data.profileImage);
       setMatchingMode(response.data.matchingMode);
-      setMatchingMode(response.data.matchingVisibility === 'PUBLIC');
+      setIsNamePublic(response.data.matchingVisibility === 'PUBLIC');
       setLastModified(new Date(response.data.matchingModeLog));
       setNewSearchId(response.data.searchId); // 초기 아이디 설정
     } catch (error) {
@@ -59,6 +60,7 @@ const Settings = () => {
 
   const handleNameVisibilityChange = (event) => {
     setIsNamePublic(event.target.value === 'PUBLIC');
+    setShowVisibilityModal(true);
   };
 
   const handleModalConfirm = async () => {
@@ -89,8 +91,38 @@ const Settings = () => {
     }
   };
 
+  const handleVisibilityModalConfirm = async () => {
+    try {
+      const accessToken = sessionStorage.getItem('accessToken');
+      await axios.post(
+        '/api/member/matching-mode',
+        {
+          matchingMode: matchingMode,
+          matchingVisibility: isNamePublic ? "PUBLIC" : "PRIVATE",
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+          },
+          credentials: 'include',
+        }
+      );
+
+      setShowVisibilityModal(false);
+      alert('실명 공개 여부가 변경되었습니다.');
+    } catch (error) {
+      console.error('실명 공개 여부 변경 중 오류 발생:', error);
+      alert('실명 공개 여부 변경 중 오류가 발생했습니다.');
+    }
+  };
+
   const handleModalCancel = () => {
     setShowModal(false); // 모달 숨기기
+  };
+
+  const handleVisibilityModalCancel = () => {
+    setShowVisibilityModal(false); // 모달 숨기기
   };
 
   // 아이디 변경 시작
@@ -263,6 +295,21 @@ const Settings = () => {
           <h2>매칭 모드를<br />변경할까요?</h2>
           <button onClick={handleModalCancel}>취소</button>
           <button onClick={handleModalConfirm}>확인</button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={showVisibilityModal}
+        onRequestClose={handleVisibilityModalCancel}
+        shouldCloseOnOverlayClick={false}
+        contentLabel="실명 공개 여부 변경"
+        className={styles.modal}
+        overlayClassName={styles.overlay}
+      >
+        <div>
+          <h2>실명 공개 여부를<br />변경할까요?</h2>
+          <button onClick={handleVisibilityModalCancel}>취소</button>
+          <button onClick={handleVisibilityModalConfirm}>확인</button>
         </div>
       </Modal>
     </div>
