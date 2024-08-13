@@ -9,6 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const UpdateCard = () => {
     const { cardId } = useParams(); // URL 파라미터에서 cardId 가져오기
     const [selectedOption, setSelectedOption] = useState('option1');
+    const [selectedImages, setSelectedImages] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [introduction, setIntroduction] = useState('');
@@ -25,16 +26,16 @@ const UpdateCard = () => {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         "Content-Type": "application/json"
-                      },
-                      credentials: 'include',
+                    },
+                    credentials: 'include',
                 });
 
                 const { info, images, tags } = response.data;
                 setIntroduction(info);
-                setSelectedFiles(images);
+                setSelectedImages(images);
                 setSelectedTags(tags);
             } catch (error) {
-                console.error('카드 정보를 불러오는 중 오류 발생:', error);
+                console.error('카드 정보를 불러오는 중 오류 발생 : ', error);
                 toast.error('카드 정보를 불러오는 데 실패했습니다.');
             }
         };
@@ -47,7 +48,10 @@ const UpdateCard = () => {
     };
 
     const handleFileChange = (e, index) => {
+        console.log("handleFileChange");
+
         const file = e.target.files[0];
+
         setSelectedFiles((prevFiles) => {
             const newFiles = [...prevFiles];
             newFiles[index] = file;
@@ -56,6 +60,8 @@ const UpdateCard = () => {
     };
 
     const handleRemoveFile = (index) => {
+        console.log("handleRemoveFile");
+
         setSelectedFiles((prevFiles) => {
             const newFiles = [...prevFiles];
             newFiles[index] = null;
@@ -85,10 +91,10 @@ const UpdateCard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (selectedFiles.filter(file => file !== null).length < 3) {
-            toast.error("사진을 3개 첨부해야 합니다.");
-            return;
-        }
+        // if (selectedFiles.filter(file => file !== null).length < 3) {
+        //     toast.error("사진을 3개 첨부해야 합니다.");
+        //     return;
+        // }
 
         if (selectedTags.length < 5) {
             toast.error("태그를 5개 선택해야 합니다.");
@@ -96,18 +102,22 @@ const UpdateCard = () => {
         }
 
         const formData = new FormData();
-        selectedFiles.forEach((file) => {
-            if (file) {
-                formData.append('images', file);
-            }
-        });
 
-        const jsonData = JSON.stringify({
+        const jsonData = {
             cardId,
             info: introduction,
             tags: selectedTags,
+            imageIndexes: [],
+        }
+
+        selectedFiles.forEach((file, index) => {
+            if (file) {
+                formData.append('images', file);
+                jsonData.imageIndexes.push(index);
+            }
         });
-        const blob = new Blob([jsonData], { type: 'application/json' });
+
+        const blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
         formData.append('cardRequest', blob);
 
         try {
@@ -151,7 +161,7 @@ const UpdateCard = () => {
                         name="cardOption" 
                         value="option1" 
                         checked={selectedOption === 'option1'}
-                        onChange={handleOptionChange} 
+                        onChange={handleOptionChange}
                         className={styles.hiddenInput}
                     />
                     <label 
@@ -183,20 +193,26 @@ const UpdateCard = () => {
                                 <div className={styles.tmptmp} key={index} style={{ marginBottom: '10px' }}>
                                     <div className={styles.tmprelative}>
                                         <input 
-                                            type="file" 
-                                            id={`imageUpload${index}`} 
-                                            name={`imageUpload${index}`} 
-                                            accept="image/*" 
+                                            type="file"
+                                            accept="image/*"
+                                            id={`imageUpload${index}`}
+                                            name={`imageUpload${index}`}
+                                            key={selectedFiles[index] ? selectedFiles[index].name : ""}
                                             onChange={(e) => handleFileChange(e, index)} 
-                                            style={{display:"none"}}
+                                            style={{ display: "none" }}
                                         />
                                         {!selectedFiles[index] && (
-                                            <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoPicture.png`} alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
+                                            <img src={selectedImages[index]} alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px', borderRadius: '12px' }} />
+                                        )}
+                                        {!selectedFiles[index] && (
+                                            <label className={styles.labellabel} htmlFor={`imageUpload${index}`}>
+                                                <img className={styles.addpic} src={`${process.env.REACT_APP_BASE_URL}/assets/addpicture.png`}/>
+                                            </label>
                                         )}
                                         {selectedFiles[index] && (
                                             <div>
                                                 <img 
-                                                    src={selectedFiles[index]} 
+                                                    src={URL.createObjectURL(selectedFiles[index])} 
                                                     alt={`preview ${index}`} 
                                                     style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }}
                                                     className={styles.imgimg}
@@ -207,11 +223,6 @@ const UpdateCard = () => {
                                                     </button>
                                                 </div>
                                             </div>
-                                        )}
-                                        {!selectedFiles[index] && (
-                                            <label className={styles.labellabel} htmlFor={`imageUpload${index}`}>
-                                                <img className={styles.addpic} src={`${process.env.REACT_APP_BASE_URL}/assets/addpicture.png`}/>
-                                            </label>
                                         )}
                                     </div>
                                 </div>
