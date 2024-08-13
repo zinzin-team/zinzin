@@ -95,7 +95,8 @@ const KakaoFriendsList = () => {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
-        }
+        },
+        credentials: 'include',
       });
 
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
@@ -125,7 +126,8 @@ const KakaoFriendsList = () => {
         data: {
           userMemberId: userMemberId,
           targetMemberId: selectedFriend.memberId
-        }
+        },
+        credentials: 'include',
       });
   
       setFriends(prevFriends =>
@@ -147,7 +149,7 @@ const KakaoFriendsList = () => {
 
   const handleInvite = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
-    const userMemberId = sessionStorage.getItem('userMemberId');
+    const userMemberId = sessionStorage.getItem('memberId');
     
     console.log('AccessToken:', accessToken);
     console.log('UserMemberId:', userMemberId);

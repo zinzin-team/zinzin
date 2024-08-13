@@ -143,14 +143,15 @@ public class ChatRoomService {
                 .orElseThrow(() -> new BaseException(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
         chatRoomRepository.delete(chatRoom);
 
-        ChatRoomMember firstMember = chatRoom.getMembers().get(0);
-        ChatRoomMember secondMember = chatRoom.getMembers().get(1);
-        if (firstMember.getMember().getId().equals(memberId)) {
-            personRepository.exitChatroom(firstMember.getMember().getId(), secondMember.getMember().getId());
-        } else {
-            personRepository.exitChatroom(secondMember.getMember().getId(), firstMember.getMember().getId());
+        if(chatRoom.getRoomType() == ChatRoomType.LIKE){
+            ChatRoomMember firstMember = chatRoom.getMembers().get(0);
+            ChatRoomMember secondMember = chatRoom.getMembers().get(1);
+            if (firstMember.getMember().getId().equals(memberId)) {
+                personRepository.exitChatroom(firstMember.getMember().getId(), secondMember.getMember().getId());
+            } else {
+                personRepository.exitChatroom(secondMember.getMember().getId(), firstMember.getMember().getId());
+            }
         }
-
     }
 
     @Transactional

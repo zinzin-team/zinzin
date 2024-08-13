@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 const KakaoRedirect = () => {
     const location = useLocation();
@@ -20,14 +21,28 @@ const KakaoRedirect = () => {
                 console.log('로그인 성공');
                 const tokens = {
                     accessToken: data.accessToken,
-                    refreshToken: data.refreshToken,
                 };
           
                 // Context API를 사용하여 로그인 상태 업데이트
                 login(tokens);
           
                 sessionStorage.setItem('accessToken', data.accessToken);
-                sessionStorage.setItem('refreshToken', data.refreshToken);
+
+                // const decodedToken = jwtDecode(data.accessToken);
+                // const memberId = decodedToken.memberId;
+                // sessionStorage.setItem('memberId', memberId);
+
+                try {
+                    const decodedToken = jwtDecode(data.accessToken);
+                    console.log('디코딩된 토큰:', decodedToken); // 토큰 전체 내용을 출력
+                    const memberId = decodedToken.memberId;
+                    console.log('추출된 memberId:', memberId); // 추출된 memberId를 출력
+                    sessionStorage.setItem('memberId', memberId);
+                } catch (decodeError) {
+                    console.error('토큰 디코딩 실패:', decodeError.message);
+                    navigate("/login");
+                    return; // 이후 코드 실행을 막기 위해 리턴
+                }
         
                 try {
                     const memberResponse = await axios.get('/api/member/me', {

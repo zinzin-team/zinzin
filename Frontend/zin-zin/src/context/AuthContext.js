@@ -9,26 +9,26 @@ export const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     accessToken: null,
-    refreshToken: null,
+    // refreshTosken: null,
   });
 
   const login = (tokens) => {
     sessionStorage.setItem('accessToken', tokens.accessToken);
-    sessionStorage.setItem('refreshToken', tokens.refreshToken);
+    // sessionStorage.setItem('refreshToken', tokens.refreshToken);
     setAuthState({
       isAuthenticated: true,
       accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
+      // refreshToken: tokens.refreshToken,
     });
   };
 
   const logout = () => {
     sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
+    // sessionStorage.removeItem('refreshToken');
     setAuthState({
       isAuthenticated: false,
       accessToken: null,
-      refreshToken: null,
+      // refreshToken: null,
     });
   };
 

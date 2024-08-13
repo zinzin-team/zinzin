@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.member.entity;
 
+import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -78,5 +79,12 @@ public class MemberInfo {
     public String updateNickname(String nickname) {
         this.nickname = nickname;
         return nickname;
+    }
+
+    public void updateDeletedMemberInfo(MemberRegisterDto memberRegisterDto, String nickname){
+        this.searchId = memberRegisterDto.getSearchId();
+        this.matchingMode = memberRegisterDto.isMatchingMode();
+        this.matchingVisibility = memberRegisterDto.getMatchingVisibility();
+        this.nickname = nickname;
     }
 }

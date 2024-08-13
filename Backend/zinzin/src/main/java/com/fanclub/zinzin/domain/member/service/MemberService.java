@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -50,10 +49,21 @@ public class MemberService {
     @Transactional
     public MemberAuthResponseDto registerNewMember(HttpServletResponse response, MemberRegisterDto memberRegisterDto) {
         try {
-            Member member = memberRegisterDto.toMemberEntity();
-            memberRepository.save(member);
-            MemberInfo memberInfo = memberRegisterDto.toMemberInfoEntity(member, getRandomNickname().getNickname());
-            memberInfoRepository.save(memberInfo);
+            Member member = memberRepository.findBySub(memberRegisterDto.getSub());
+            MemberInfo memberInfo = null;
+
+            if(member == null){
+                member = memberRegisterDto.toMemberEntity();
+                memberRepository.save(member);
+                memberInfo = memberRegisterDto.toMemberInfoEntity(member, getRandomNickname().getNickname());
+                memberInfoRepository.save(memberInfo);
+            }
+            else{
+                member.updateDeletedMember(memberRegisterDto);
+                memberInfo = memberInfoRepository.findMemberInfoByMemberId(member.getId())
+                        .orElseThrow(() -> new BaseException(CommonErrorCode.BAD_REQUEST));
+                memberInfo.updateDeletedMemberInfo(memberRegisterDto, getRandomNickname().getNickname());
+            }
 
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
             personRepository.save(person);
@@ -155,7 +165,7 @@ public class MemberService {
         personRepository.updateProfileImage(memberId, newImageURL);
 
         // 새로운 이미지를 저장했다면, 기존 프로필 이미지는 삭제한다.
-        if (!newImageURL.equals(imageURL)) {
+        if (!newImageURL.equals(imageURL) && !"default.jpg".equals(imageURL)) {
             s3Service.deleteS3(imageURL);
         }
     }

@@ -27,6 +27,7 @@ const LeaveView = () => {
                   credentials: 'include',
             });
             if (response.status === 200) {
+                sessionStorage.clear();
                 alert("탈퇴가 완료되었습니다.");
                 navigate("/login");
             } else {
