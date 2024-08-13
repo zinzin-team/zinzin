@@ -1,5 +1,6 @@
 package com.fanclub.zinzin.domain.member.entity;
 
+import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import com.fanclub.zinzin.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -57,6 +58,16 @@ public class Member extends BaseTimeEntity {
         this.birth = birth;
         this.gender = gender;
         this.deletedAt = deletedAt;
+        this.status = Status.ACTIVE;
+        this.role = Role.USER;
+    }
+
+    public void updateDeletedMember(MemberRegisterDto memberRegisterDto){
+        this.email = memberRegisterDto.getEmail();
+        this.name = memberRegisterDto.getName();
+        this.birth = memberRegisterDto.getBirth();
+        this.gender = memberRegisterDto.getGender();
+        this.deletedAt = null;
         this.status = Status.ACTIVE;
         this.role = Role.USER;
     }
