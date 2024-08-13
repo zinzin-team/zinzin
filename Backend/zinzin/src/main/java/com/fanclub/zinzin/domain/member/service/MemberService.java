@@ -50,14 +50,26 @@ public class MemberService {
     @Transactional
     public MemberAuthResponseDto registerNewMember(HttpServletResponse response, MemberRegisterDto memberRegisterDto) {
         try {
-            Member member = memberRegisterDto.toMemberEntity();
-            memberRepository.save(member);
-            MemberInfo memberInfo = memberRegisterDto.toMemberInfoEntity(member, getRandomNickname().getNickname());
-            memberInfoRepository.save(memberInfo);
+            Member member = memberRepository.findBySub(memberRegisterDto.getSub());
+            MemberInfo memberInfo = null;
+
+            if(member == null){
+                member = memberRegisterDto.toMemberEntity();
+                memberRepository.save(member);
+                memberInfo = memberRegisterDto.toMemberInfoEntity(member, getRandomNickname().getNickname());
+                memberInfoRepository.save(memberInfo);
+            }
+            else{
+                member.updateDeletedMember(memberRegisterDto);
+                memberInfo = memberInfoRepository.findMemberInfoByMemberId(member.getId())
+                        .orElseThrow(() -> new BaseException(CommonErrorCode.BAD_REQUEST));
+                memberInfo.updateDeletedMemberInfo(memberRegisterDto, getRandomNickname().getNickname());
+            }
 
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
             personRepository.save(person);
 
+            System.out.println(memberRegisterDto.getSub());
             List<TempFriend> tempFriends = tempFriendRepository.findAllByMySub(memberRegisterDto.getSub());
             for (TempFriend tempFriend : tempFriends) {
                 personRepository.saveKakaoFriends(tempFriend.getMySub(), tempFriend.getFriendSub(), tempFriend.getFriendName());
