@@ -47,6 +47,7 @@ public class MemberRegisterDto {
                 .birth(birth)
                 .gender(gender)
                 .matchingMode(matchingMode)
+                .matchingVisibility(matchingVisibility)
                 .nickname(memberInfo.getNickname())
                 .profileImage(memberInfo.getProfileImage())
                 .build();
