@@ -41,6 +41,7 @@ const Settings = () => {
       setUserData(response.data);
       setProfileImage(response.data.profileImage);
       setMatchingMode(response.data.matchingMode);
+      setMatchingMode(response.data.matchingVisibility === 'PUBLIC');
       setLastModified(new Date(response.data.matchingModeLog));
       setNewSearchId(response.data.searchId); // 초기 아이디 설정
     } catch (error) {
@@ -57,7 +58,7 @@ const Settings = () => {
   };
 
   const handleNameVisibilityChange = (event) => {
-    setIsNamePublic(event.target.value === 'public');
+    setIsNamePublic(event.target.value === 'PUBLIC');
   };
 
   const handleModalConfirm = async () => {
@@ -214,26 +215,28 @@ const Settings = () => {
           <div>
             <p>매칭이 되면 지인에게 실명을 공개할까요?</p>
             <div className={styles.radioGroup}>
-              <label className={styles.radioLabel}>
-                <input 
-                  type="radio" 
-                  name="nameVisibility" 
-                  value="public" 
-                  checked={isNamePublic} 
-                  onChange={handleNameVisibilityChange} 
-                />
-                공개
-              </label>
-              <label className={styles.radioLabel}>
-                <input 
-                  type="radio" 
-                  name="nameVisibility" 
-                  value="private" 
-                  checked={!isNamePublic} 
-                  onChange={handleNameVisibilityChange} 
-                />
-                비공개
-              </label>
+              <div>
+                  <input 
+                      type="radio"
+                      id="public"
+                      value="PUBLIC" 
+                      checked={isNamePublic} 
+                      onChange={handleNameVisibilityChange} 
+                      className={styles.radioInput}
+                  />
+                  <label htmlFor="public" className={styles.radioLabel}>공개</label>
+              </div>
+              <div>
+                  <input 
+                      type="radio"
+                      id="private"
+                      value="PRIVATE" 
+                      checked={!isNamePublic} 
+                      onChange={handleNameVisibilityChange} 
+                      className={styles.radioInput}
+                  />
+                  <label htmlFor="private" className={styles.radioLabel}>비공개</label>
+              </div>
             </div>
           </div>
         )}
