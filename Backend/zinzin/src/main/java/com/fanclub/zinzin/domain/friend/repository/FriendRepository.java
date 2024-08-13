@@ -14,7 +14,7 @@ public interface FriendRepository extends Neo4jRepository<Person, String> {
         "WITH person, kakao.kakao_name AS kakaoName, rf, " +
         "[rel IN collect(type(fr)) WHERE rel <> 'KAKAO' AND rel IN ['REQUEST_FOLLOW','FOLLOW']] as rels " +
         "RETURN person, kakaoName, rels " +
-        "+ CASE WHEN rf IS NOT NULL THEN [type(rf)] "+
+        "+ CASE WHEN rf IS NOT NULL THEN ['RECEIVE_REQUEST'] "+
         "WHEN person.member_id IS NOT NULL AND size(rels) = 0 THEN ['MEMBER'] "+
         "ELSE [] END AS relationships")
     List<Friend> getKakaoRelationships(Long memberId);
