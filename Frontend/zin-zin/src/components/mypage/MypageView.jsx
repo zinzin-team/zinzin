@@ -173,11 +173,11 @@ const MypageView = () => {
         <div className={styles.userInfoTop}>
           <div className={styles.profileImageContainer}>
             <img 
-              src={userData.profileImage === 'default.jpg' ? 'https://zin-zin.site/assets/default-profile.png' : userData.profileImage} 
+              src={userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage} 
               alt="프로필" 
               className={styles.profileImage} 
               onClick={handleProfileImageClick} 
-              onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
+              onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
             />
             <button 
               className={styles.imageEditButton}
@@ -238,7 +238,7 @@ const MypageView = () => {
             <div className={styles.matchingContent}>
               <div className={styles.matchingProfileImageContainer}>
                 <img 
-                  src={matchingProfileImage ? matchingProfileImage : '/assets/default-profile.png'} 
+                  src={matchingProfileImage ? matchingProfileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
                   alt="프로필" 
                   className={styles.profileImageSmall} 
                 />

@@ -145,7 +145,7 @@ const Like = () => {
                         <div key={index} className={styles.matchItem}>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate1.profileImage ? `${match.mate1.profileImage}` : "/assets/default.png"} 
+                                    src={match.mate1.profileImage ? `${match.mate1.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
                                     alt={match.mate1.name} 
                                     className={styles.profileImage} 
                                 />
@@ -156,7 +156,7 @@ const Like = () => {
                             </div>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate2.profileImage ? `${match.mate2.profileImage}` : "/assets/default.png"} 
+                                    src={match.mate2.profileImage ? `${match.mate2.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
                                     alt={match.mate2.name} 
                                     className={styles.profileImage} 
                                     />
@@ -169,7 +169,7 @@ const Like = () => {
                        <p>
                        지인 소식이 비어있어요
                         </p> 
-                        <img src="/assets/Matchingcouple.png" alt="Matching No Mode" />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode" />
                         <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
                 )}

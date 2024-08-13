@@ -51,13 +51,13 @@ const Chat = () => {
                 chatRooms.map(room => (
                     <div key={room.roomId} className={styles.chatRoom} 
                     >
-                        <img src="/assets/임시1.png" alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/임시1.png`} alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
                         <div className={styles.roomInfo}>
                             {room.roomType === 'MATE' ? (
                                 <div className={styles.toptalk}>
                                     <img
-                                        src="/assets/starshape.png"
-                                        alt="Heart"
+                                        src={`${process.env.REACT_APP_BASE_URL}/assets/starshape.png`}
+                                        alt="Star"
                                         className={styles.icon}
                                         />
                                         <p>{room.otherMember.name}</p>
@@ -65,8 +65,8 @@ const Chat = () => {
                             ) : (
                                 <div className={styles.toptalk}>
                                     <img
-                                        src="/assets/heartshape.png"
-                                        alt="Star"
+                                        src={`${process.env.REACT_APP_BASE_URL}/assets/heartshape.png`}
+                                        alt="Heart"
                                         className={styles.icon}
                                         />
                                         <p>{room.otherMember.nickname}</p>
@@ -94,16 +94,16 @@ const Chat = () => {
                             {room.roomType === 'MATE' ? (
                                 <div>
                                     <img
-                                        src="/assets/starshape.png"
-                                        alt="Heart"
+                                        src={`${process.env.REACT_APP_BASE_URL}/assets/starshape.png`}
+                                        alt="Star"
                                         className={styles.icon2}
                                         />
                                 </div>
                             ) : (
                                 <div>
                                     <img
-                                        src="/assets/heartshape.png"
-                                        alt="Star"
+                                        src={`${process.env.REACT_APP_BASE_URL}/assets/heartshape.png`}
+                                        alt="Heart"
                                         className={styles.icon2}
                                         />
                                 </div>
@@ -123,7 +123,7 @@ const Chat = () => {
                 ))
             ) : (
                 <div className={styles.nochattingroom}>
-                    <img src="/assets/nochattingroom.png" alt="Matching No Mode" />
+                    <img src={`${process.env.REACT_APP_BASE_URL}/assets/nochattingroom.png`} alt="Matching No Mode" />
                     <p className={styles.nochattingroomtext}>채팅방이 존재하지 않습니다</p>
                 </div>
             )}

@@ -226,10 +226,10 @@ const KakaoFriendsList = () => {
             {requests.map((request, index) => (
               <div key={index} className={styles.requestItem}>
                 <img
-                  src={request.profileImage ? request.profileImage : '/assets/default-profile.png'}
+                  src={request.profileImage ? request.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
                   alt={`${request.kakaoName} 프로필`}
                   className={styles.avatar}
-                  onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
+                  onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
                 />
                 <span className={styles.kakaoName}>{request.name}</span>
                 <button className={styles.receiveRequestButton} onClick={() => openModal(request)}>요청 수락 +</button>
@@ -242,10 +242,10 @@ const KakaoFriendsList = () => {
         {friends.map((friend, index) => (
           <div key={index} className={styles.friendItem}>
             <img
-              src={friend.profileImage ? friend.profileImage : '/assets/default-profile.png'}
+              src={friend.profileImage ? friend.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
               alt={`${friend.kakaoName} 프로필`}
               className={styles.profileImage}
-              onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
+              onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
             />
             <span className={styles.kakaoName}>{friend.kakaoName}</span>
             <button className={
