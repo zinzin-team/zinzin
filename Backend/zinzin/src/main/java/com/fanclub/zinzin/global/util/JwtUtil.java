@@ -2,6 +2,7 @@ package com.fanclub.zinzin.global.util;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.Role;
+import com.fanclub.zinzin.domain.member.entity.Status;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.code.TokenErrorCode;
@@ -94,8 +95,12 @@ public class JwtUtil {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND));
 
-        if(member.getDeletedAt() != null){
+        if(member.getStatus() == Status.DELETED){
             throw new BaseException(MemberErrorCode.DELETED_MEMBER);
+        }
+
+        if(member.getStatus() == Status.SUSPEND){
+            throw new BaseException(MemberErrorCode.SUSPENDED_MEMBER);
         }
 
         Role role = member.getRole();

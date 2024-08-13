@@ -12,7 +12,8 @@ public enum MemberErrorCode implements ErrorCode{
     MEMBER_REGIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "M003", "회원가입 오류입니다."),
     INVALID_SEARCHID(HttpStatus.BAD_REQUEST, "M004", "검색용 아이디가 입력되지 않았습니다."),
     MEMBER_ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "M005", "회원 역할을 찾을 수 없습니다."),
-    DELETED_MEMBER(HttpStatus.UNAUTHORIZED, "M006", "탈퇴한 회원입니다.");
+    DELETED_MEMBER(HttpStatus.UNAUTHORIZED, "M006", "탈퇴한 회원입니다."),
+    SUSPENDED_MEMBER(HttpStatus.UNAUTHORIZED, "M007", "정지된 회원입니다.");
 
     private final HttpStatus status;
     private final String code;
