@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate ,Link} from 'react-router-dom';
 import styles from './Chattingroom.module.css';
 import { Stomp } from "@stomp/stompjs"; 
 
 const Chattingroom = () => {
     const location = useLocation();
-
     const { roomType, name, nickname, profileImage, memberId, heartToggle } = location.state || {};
     const { roomId } = useParams(); // URL에서 roomId를 가져옴
     const [messages, setMessages] = useState([]);
@@ -15,6 +14,8 @@ const Chattingroom = () => {
     const stompClient = useRef(null);
     const [connected, setConnected] = useState(false);
     const navigate = useNavigate();
+    const [isGooutDropdownOpen, setIsGooutDropdownOpen] = useState(false); // 신고 드롭다운 상태
+    const messagesEndRef = useRef(null); // 메시지 리스트 끝에 대한 ref 추가
 
     // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
     const handleInputChange = (event) => {
@@ -24,7 +25,7 @@ const Chattingroom = () => {
     // 웹소켓 연결 설정
     const connect = () => {
         // const socket = new WebSocket("ws://localhost:8080/api/ws");
-        const socket = new WebSocket("wss://zin-zin.site/api/ws");
+        const socket = new WebSocket("https://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -53,6 +54,10 @@ const Chattingroom = () => {
         }
     };
 
+    const toggleGooutDropdown = () => {
+        setIsGooutDropdownOpen(!isGooutDropdownOpen);
+    };
+
     const goout = async () => {
         try {
             const token = sessionStorage.getItem('accessToken');
@@ -66,6 +71,10 @@ const Chattingroom = () => {
         } catch (error) {
             console.error('Error exiting chat room:', error);
         }
+    };
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
@@ -94,9 +103,14 @@ const Chattingroom = () => {
 
         connect();
         fetchMessages();
+        scrollToBottom();
 
         return () => disconnect();
     }, [roomId, roomType, name, nickname, profileImage, memberId, heartToggle]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const sendMessage = () => {
         if (connected && inputValue) {
@@ -132,45 +146,75 @@ const Chattingroom = () => {
         }
     };
 
+    console.log(profileImage)
+
     return (
         <div className={styles.chatContainer}>  
-            {roomType !== "MATE" && (
-                <>
-                    <input 
-                        type="checkbox"  
-                        id="heart-check" 
-                        checked={isHeart} // 체크박스 상태를 isHeart 상태와 연동
-                        onChange={handleHeartToggle} // 체크박스 상태 변화시 handleHeartToggle 호출
-                    />
-                    <label htmlFor="heart-check">하트뿅</label>
-                </>
-            )}
-            {messages.length > 0 ? (
-                messages.map((message, index) => (
-                    <div key={index} className={styles.message}>
-                        <div>
-                            {message.memberId === memberId ? (
-                                roomType === "MATE" ? name : nickname
-                            ) : (
-                                <div>내가 한 채팅입니다.</div>
-                            )}
+        <div className={styles.toptop}>
+        <div>
+        <Link to="/chat" ><i className="bi bi-chevron-left"/></Link>
+        </div>
+        <div className={styles.imagecontainer}>
+            {/* <img src={profileImage}/> */}
+            <img src="/assets/홍창기.png"/>
+            {roomType === 'MATE' ? <div>{name}</div> : <div>{nickname}</div>}
+        </div>
+                    <div className={styles.reportcontainer}>
+                    <i className="bi bi-three-dots" onClick={toggleGooutDropdown}></i>
+                    {isGooutDropdownOpen && (
+                        <div className={styles.dropdownMenu}>
+                            <button onClick={goout}>채팅방 나가기</button>
                         </div>
-                        <div className={styles.text}>{message.message}</div>
-                    </div>
-                ))
-            ) : (
-                <div className={styles.noMessages}>새로운 채팅을 시작하세요</div>
-            )}
-            <div>
+                    )}
+                </div>
+        </div>
+                    {roomType !== "MATE" && (
+                        <>
+                            <input 
+                                type="checkbox"  
+                                id="heart-check" 
+                                checked={isHeart} // 체크박스 상태를 isHeart 상태와 연동
+                                onChange={handleHeartToggle} // 체크박스 상태 변화시 handleHeartToggle 호출
+                            />
+                            <label htmlFor="heart-check">하트뿅</label>
+                        </>
+                    )}
+            <div className={styles.customDivider}></div>
+            <div className={styles.messageList}>
+                {messages.length > 0 ? (
+                    messages.map((message, index) => (
+                        <div key={index} className={styles.message}>
+                            <div>
+                                {message.memberId === memberId ? (
+                                    <div>
+                                        {/* <img src={profileImage}/> */}
+                                        <img src="/assets/홍창기.png"/>
+                                         <div className={styles.text}>{message.message}</div>
+                                    </div> 
+                                ) : (
+                                    <div>
+                                        <div className={styles.text}>{message.message}</div>
+                                    </div>
+                                    
+                                )}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className={styles.noMessages}>새로운 채팅을 시작하세요</div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
+            <div className={styles.chatchat}>
                 <input
                     type="text"
                     value={inputValue}
                     onChange={handleInputChange}    
                     onKeyPress={handleKeyPress}    
+                    placeholder="메세지를 입력해주세요"
                 />
                 <button onClick={sendMessage}>입력</button> 
             </div>
-            <button onClick={goout}>채팅 나가기</button> 
         </div>
     );
 }

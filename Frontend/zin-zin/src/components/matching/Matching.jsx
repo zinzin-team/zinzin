@@ -21,6 +21,8 @@ const Matching = () => {
     const [isReportDropdownOpen, setIsReportDropdownOpen] = useState(false); // 신고 드롭다운 상태
     const [isMatesDropdownOpen, setIsMatesDropdownOpen] = useState(false); // 지인 드롭다운 상태
     const navigate = useNavigate();
+    const [roomData, setRoomData] = useState(null);  // 추가된 상태
+
 
     const testtest = () => {
         firework();
@@ -101,6 +103,7 @@ const Matching = () => {
                 }
             });
             if (response.data && Array.isArray(response.data.matchings)) {
+                console.log(response.data)
                 setMatchingCardData(response.data.matchings);
             } else {
                 console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
@@ -109,6 +112,21 @@ const Matching = () => {
             console.error('매칭 카드 데이터를 가져오는 중 오류 발생:', error);
         } finally {
             setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
+        }
+    };
+
+    const navigateToChat = () => {
+        if (roomData) {
+            navigate(`/chat/${roomData.roomId}`, {
+                state: {
+                    roomType: roomData.roomType,
+                    name: roomData.otherMember.name,
+                    nickname: roomData.otherMember.nickname,
+                    profileImage: roomData.otherMember.profileImage,
+                    memberId: roomData.otherMember.memberId,
+                    heartToggle: roomData.heartToggle,
+                }
+            });
         }
     };
 
@@ -159,6 +177,8 @@ const Matching = () => {
         }
     }, [matchingCardData]);
 
+    
+
     const handleCreateCard = () => {
         navigate('/create-card');
     };
@@ -182,10 +202,24 @@ const Matching = () => {
             if (response.data) {
                 setCurrentImageIndex(0);
                 setIsFront(true);
-                if (response.data.matchingSuccess) {
+                console.log(currentCard)
+                if (!response.data.matchingSuccess) {
+                    const chatRoomResponse = await axios.post('/api/chatroom/create', {
+                        roomType: "LIKE",
+                        targetId: currentCard.memberId
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const room = chatRoomResponse.data;
+                    console.log(room)
+                    setRoomData(room);  
+                    
                     firework();
                     setModalIsOpen(true);
-                    fetchMatchingCards();
+                    // fetchMatchingCards()
                 } else {
                     fetchMatchingCards();
                 }
@@ -194,6 +228,12 @@ const Matching = () => {
             console.error('좋아요/싫어요 전송 중 오류 발생:', error);
         }
     };
+
+    useEffect(() => {
+        if (!modalIsOpen) {
+            fetchMatchingCards();
+        }
+    }, [modalIsOpen]);
 
     const handleLike = () => {
         handleLikeDislike(true);
@@ -250,7 +290,7 @@ const Matching = () => {
 
     const renderCreateCardContent = () => (
         <div className={styles.match}>
-            <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingnocard.png`} alt="Matching No Card" />
+            <img src="/assets/Matchingnocard.png" alt="Matching No Card" />
             <div className={styles.makecard}>
                 <p>새로운 만남을 위해서</p>
                 <p>내 카드를 만들어 주세요</p>
@@ -265,7 +305,7 @@ const Matching = () => {
                 <div className={styles.match}>
                     <div className={styles.exhaustcard}>
                         <p className={styles.title}>지인이 부족해요...</p>
-                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Nomorecard.png`} alt="No More Card" className={styles.image} />
+                        <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
                         <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
                         <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
@@ -280,7 +320,7 @@ const Matching = () => {
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
                             <p className={styles.title}>지인이 부족해요...</p>
-                            <img src={`${process.env.REACT_APP_BASE_URL}/assets/Nomorecard.png`} alt="No More Card" className={styles.image} />
+                            <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
                             <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
                             <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                         </div>
@@ -291,7 +331,7 @@ const Matching = () => {
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
                             <p>카드가 떨어졌어요...</p>
-                            <img src={`${process.env.REACT_APP_BASE_URL}/assets/exhaustcard.png`} alt="Exhausted Card" />
+                            <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
                             <p>내일 접속해서 새로운 카드를 받으세요</p>
                         </div>
                     </div>
@@ -308,7 +348,7 @@ const Matching = () => {
         // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: 'default.jpg'}))
         // console.log(currentCardInfo.tags.push("피자먹는"))
         // currentCardInfo.info = "안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안"
-        currentCardInfo.images = [`${process.env.REACT_APP_BASE_URL}/assets/임시3.png`, `${process.env.REACT_APP_BASE_URL}/assets/임시2.png`, `${process.env.REACT_APP_BASE_URL}/assets/임시1.png`];
+        currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
 
         return (
             <div className={styles.match}>
@@ -436,7 +476,7 @@ const Matching = () => {
                 >
                     <h1>💘 매칭이 성공했어요</h1>
                     <img src={currentCardInfo.images[0]} alt="Matching Couple"/>
-                    <button  className={styles.gotochat} >채팅방으로 바로가기</button>
+                    <button className={styles.gotochat} onClick={() => navigateToChat()}>채팅방으로 바로가기</button>
                     <button  className={styles.closemodal} onClick={() => setModalIsOpen(false)}>닫기</button>
                 </Modal>
             </div>
@@ -446,7 +486,7 @@ const Matching = () => {
     const renderMatchingModeOffContent = () => (
         <div className={styles.match}>
             <div className={styles.matchoff}>
-                <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoMatchingMode.png`} alt="Matching No Mode" />
+                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
             </div>
             <div className={styles.offModeContent}>
                 <p>매칭 OFF 상태 입니다</p>
