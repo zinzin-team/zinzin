@@ -156,18 +156,19 @@
 }
 
 .nomatch p{
-  font-family: 'Pretendard', sans-serif;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
   margin-top: 30px;
-  font-size: 25px;
-  font-weight: 600;
-  color: black;
 }
 
 .nomatch img{
   width: 232px;
   height: 232px;
   border-radius: 20px;
-  margin-top: 15  px;
+  margin-top: 40px;
 }
 
 .inviteButton {
@@ -183,5 +184,5 @@
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 30px;
+  margin-top: 20px;
 }
