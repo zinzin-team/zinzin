@@ -229,10 +229,10 @@ input[type="radio"] {
 .radioLabel:before {
   content: '';
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   margin-right: 10px;
-  border: 2px solid #dedede;
+  border: 6px solid #dedede;
   border-radius: 50%;
   background-color: white;
   transition: border-color 0.3s, background-color 0.3s;
@@ -240,12 +240,12 @@ input[type="radio"] {
 
 input[type="radio"]:checked + .radioLabel:before {
   border-color: #505DB9;
-  background-color: #505DB9;
+  /* background-color: #505DB9; */
 }
 
-input[type="radio"]:checked + .radioLabel {
+/* input[type="radio"]:checked + .radioLabel {
   color: #505DB9;
-}
+} */
 
 .radioInput {
   margin-right: 10px;
