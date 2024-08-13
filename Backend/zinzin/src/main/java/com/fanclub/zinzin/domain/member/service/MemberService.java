@@ -72,7 +72,7 @@ public class MemberService {
     }
 
     private MemberAuthResponseDto generateRegisterTokens(HttpServletResponse response, Member member) {
-        if (member != null) {
+        if (member == null) {
             throw new BaseException (MemberErrorCode.MEMBER_REGIST_FAILED);
         }
         Long memberId = member.getId();
