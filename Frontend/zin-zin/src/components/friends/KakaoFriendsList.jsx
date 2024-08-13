@@ -89,7 +89,8 @@ const KakaoFriendsList = () => {
     const accessToken = sessionStorage.getItem('accessToken');
     try {
       await axios.put('/api/mates', {
-        targetMemberId: selectedRequest.memberId,
+        // targetMemberId: selectedRequest.memberId,
+        targetMemberId: selectedRequest.id,
         accepted
       }, {
         headers: {
@@ -115,7 +116,7 @@ const KakaoFriendsList = () => {
 
   const handleUnfriend = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
-    const userMemberId = sessionStorage.getItem('userMemberId');
+    const userMemberId = sessionStorage.getItem('memberId');
   
     try {
       await axios.delete('/api/mates', {
