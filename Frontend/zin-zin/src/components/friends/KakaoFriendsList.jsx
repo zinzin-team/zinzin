@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
+// import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './KakaoFriendsList.module.css';
@@ -27,17 +28,17 @@ const KakaoFriendsList = () => {
       }
 
       try {
-        const responseFriends = await axios.get('/api/mates/social-friends', {
+        const responseFriends = await apiClient.get('/api/mates/social-friends', {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
         });
 
-        const responseRequests = await axios.get('/api/mates/requests', {
+        const responseRequests = await apiClient.get('/api/mates/requests', {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -88,13 +89,13 @@ const KakaoFriendsList = () => {
   const handleAccept = async (accepted) => {
     const accessToken = sessionStorage.getItem('accessToken');
     try {
-      await axios.put('/api/mates', {
+      await apiClient.put('/api/mates', {
         // targetMemberId: selectedRequest.memberId,
         targetMemberId: selectedRequest.id,
         accepted
       }, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         credentials: 'include',
@@ -119,9 +120,9 @@ const KakaoFriendsList = () => {
     const userMemberId = sessionStorage.getItem('memberId');
   
     try {
-      await axios.delete('/api/mates', {
+      await apiClient.delete('/api/mates', {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         data: {
@@ -159,12 +160,12 @@ const KakaoFriendsList = () => {
     try {
       console.log('Sending invite request...');
       
-      const response = await axios.post('/api/mates', {
+      const response = await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.memberId
       }, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         }
       });
