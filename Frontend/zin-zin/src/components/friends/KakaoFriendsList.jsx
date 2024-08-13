@@ -103,9 +103,9 @@ const KakaoFriendsList = () => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (accepted) {
-        toast.success(`${selectedRequest.kakaoName}님과 지인이 되어따`);
+        toast.success(`${selectedRequest.name}님과 지인이 되어따`);
       } else {
-        toast.info(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
+        toast.info(`${selectedRequest.name}님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
@@ -230,7 +230,7 @@ const KakaoFriendsList = () => {
               <div key={index} className={styles.requestItem}>
                 <img
                   src={request.profileImage ? request.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
-                  alt={`${request.kakaoName} 프로필`}
+                  alt={`${request.name} 프로필`}
                   className={styles.avatar}
                   onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
                 />
@@ -287,7 +287,7 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
+            <h2>{selectedRequest.name}님의<br />지인 요청을 수락할까요?</h2>
             <button onClick={() => handleAccept(false)}>거절하기</button>
             <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
