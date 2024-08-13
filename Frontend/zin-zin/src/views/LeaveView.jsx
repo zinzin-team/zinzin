@@ -6,13 +6,6 @@ import "./LeaveView.css";
 const LeaveView = () => {
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const storedData = JSON.parse(sessionStorage.getItem('userData'));
-    //     if (storedData) {
-    //         setUserData(storedData);
-    //     }
-    // }, [setUserData]);
-
     const handleDelete = async (event) => {
         event.preventDefault();
         const accessToken = sessionStorage.getItem("accessToken");
@@ -20,9 +13,10 @@ const LeaveView = () => {
         try {
             const response = await axios.delete('/api/member/me', {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                  },
+                  credentials: 'include',
             });
             if (response.status === 200) {
                 alert("탈퇴가 완료되었습니다.");

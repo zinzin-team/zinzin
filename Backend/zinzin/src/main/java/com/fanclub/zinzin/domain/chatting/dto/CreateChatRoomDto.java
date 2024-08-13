@@ -11,5 +11,5 @@ import java.util.List;
 public class CreateChatRoomDto {
 
     private final ChatRoomType roomType;
-    private final List<Long> memberIds;
+    private final Long targetId;
 }

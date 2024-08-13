@@ -1,8 +1,13 @@
 package com.fanclub.zinzin.domain.member.controller;
 
 import com.fanclub.zinzin.domain.member.dto.*;
+import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.domain.member.service.MemberService;
+import com.fanclub.zinzin.global.auth.OAuth2Service;
+import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
+import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +30,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody MemberRegisterDto memberRegisterDto) {
-        memberService.registerNewMember(memberRegisterDto);
-        return ResponseEntity.ok("회원가입 성공");
+    public ResponseEntity<MemberAuthResponseDto> register(HttpServletResponse response, @RequestBody MemberRegisterDto memberRegisterDto) {
+        return ResponseEntity.ok(memberService.registerNewMember(response, memberRegisterDto));
     }
 
     @GetMapping("/register/search-id/{searchId}")

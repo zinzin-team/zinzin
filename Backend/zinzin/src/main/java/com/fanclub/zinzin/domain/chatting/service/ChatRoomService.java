@@ -98,25 +98,19 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ResponseChatRoomDto createAndFetchChatRoom(CreateChatRoomDto createChatRoomDto) {
+    public ResponseChatRoomDto createAndFetchChatRoom(CreateChatRoomDto createChatRoomDto, Long myMemberId) {
         ChatRoom chatRoom = ChatRoom.createRoom(createChatRoomDto);
         chatRoomRepository.save(chatRoom);
 
-        List<ChatRoomMember> chatRoomMembers = createChatRoomDto.getMemberIds().stream()
-                .map(memberId -> {
-                    Member member = memberRepository.findById(memberId)
-                            .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
-
-                    return ChatRoomMember.builder()
-                            .chatRoom(chatRoom)
-                            .member(member)
-                            .build();
-                }).toList();
+        List<ChatRoomMember> chatRoomMembers = new ArrayList<>();
+        chatRoomMembers.add(new ChatRoomMember(chatRoom, memberRepository.findById(myMemberId)
+                .orElseThrow(()-> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND))));
+        chatRoomMembers.add(new ChatRoomMember(chatRoom, memberRepository.findById(createChatRoomDto.getTargetId())
+                .orElseThrow(()-> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND))));
 
         chatRoom.updateMembers(chatRoomMembers);
 
-        Long myMemberId = createChatRoomDto.getMemberIds().get(0);
-        Long otherMemberId = createChatRoomDto.getMemberIds().get(1);
+        Long otherMemberId = createChatRoomDto.getTargetId();
         List<ChatRoom> fetchedChatRoomList = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
 
         if(fetchedChatRoomList.isEmpty()){
