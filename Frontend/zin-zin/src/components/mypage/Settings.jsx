@@ -179,26 +179,34 @@ const Settings = () => {
   const handleIdChangeConfirm = async () => {
     if (isIdDuplicate || !isIdValid) return;
 
+    const formData = new FormData();
+
+    const jsonData = JSON.stringify({
+      searchId: newSearchId,
+      a: 'a', // 백엔드에서 요청을 못 받아서 추가한 가짜 필드입니다.
+    });
+
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    formData.append('memberRequest', blob);
+
     try {
       const accessToken = sessionStorage.getItem('accessToken');
-      await axios.put(
-        '/api/member/me',
-        {
-          searchId: newSearchId,
-          profileImage: profileImage
-        },
-        {
+
+      await axios.put("/api/member/me", formData, {
           headers: {
             "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data"
           },
           credentials: 'include',
-        }
-      );
+      });
 
       setIsEditingId(false);
       setButtonLabel("아이디 변경하기");
       setIdStatusMessage("");
+      setUserData((userData) => ({
+        ...userData,
+        searchId: newSearchId,
+      }));
       alert('아이디가 성공적으로 변경되었습니다.');
     } catch (error) {
       console.error("아이디 변경 중 오류 발생:", error);
