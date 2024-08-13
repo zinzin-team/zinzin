@@ -68,25 +68,20 @@ const MypageView = () => {
   };
 
   const updateProfileImage = async (file) => {
-    const accessToken = sessionStorage.getItem('accessToken');
-
     const formData = new FormData();
     formData.append('profileImage', file);
 
     const jsonData = JSON.stringify({
       searchId: userData.searchId,
+      a: 'a', // 백엔드에서 요청을 못 받아서 추가한 가짜 필드입니다.
     });
 
     const blob = new Blob([jsonData], { type: 'application/json' });
     formData.append('memberRequest', blob);
-  
-    console.log('프로필 이미지 업데이트 준비 중...');
-    console.log('AccessToken:', accessToken);
-    console.log('파일 정보:', file);
-    console.log('SearchId:', userData.searchId);
-  
+
     try {
-      console.log('프로필 이미지 업데이트 요청을 전송 중...'); 
+      const accessToken = sessionStorage.getItem('accessToken');
+
       const response = await axios.put("/api/member/me", formData, {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
@@ -94,9 +89,9 @@ const MypageView = () => {
         },
         credentials: 'include',
       });
-  
+
       console.log('프로필 이미지 업데이트 성공:', response.data);
-  
+
       // 업데이트된 내용을 반영하기 위해 사용자 데이터를 다시 가져옴
       fetchUserData();
     } catch (error) {
