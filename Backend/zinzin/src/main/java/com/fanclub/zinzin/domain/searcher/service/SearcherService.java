@@ -1,8 +1,8 @@
 package com.fanclub.zinzin.domain.searcher.service;
 
-import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
-import com.fanclub.zinzin.domain.searcher.dto.SearchedMemberDto;
+import com.fanclub.zinzin.domain.searcher.dto.SearchedResultDto;
 import com.fanclub.zinzin.domain.searcher.dto.SearcherResponse;
+import com.fanclub.zinzin.domain.searcher.repository.SearcherRepository;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.code.SearcherErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SearcherService {
 
-    private final MemberInfoRepository memberInfoRepository;
+    private final SearcherRepository searcherRepository;
 
     public SearcherResponse searchBySearchId(HttpServletRequest request, String searchId){
         if(searchId == null || searchId.replace(" ","").isEmpty()){
@@ -26,8 +26,7 @@ public class SearcherService {
         }
 
         Long memberId = (Long)request.getAttribute("memberId");
-        SearchedMemberDto searchedMemberDto = memberInfoRepository.findSearcherResponseBySearchId(memberId, searchId)
-                                                .orElse(null);
-        return SearcherResponse.of(searchedMemberDto!=null, searchedMemberDto);
+        SearchedResultDto searchedResultDto = searcherRepository.findPersonBySearchId(memberId, searchId);
+        return SearcherResponse.of(searchedResultDto.getId()!=null, searchedResultDto);
     }
 }

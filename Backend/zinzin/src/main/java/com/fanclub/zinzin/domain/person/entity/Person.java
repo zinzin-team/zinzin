@@ -40,6 +40,9 @@ public class Person {
     @Property(name = "matching_visibility")
     private MatchingVisibility matchingVisibility;
 
+    @Property(name = "search_id")
+    private String searchId;
+
     @Getter
     private String nickname;
 
@@ -48,7 +51,7 @@ public class Person {
     private String profileImage;
 
     @Builder
-    private Person(String sub, Long memberId, String name, LocalDate birth, Gender gender, Long cardId, boolean matchingMode, MatchingVisibility matchingVisibility, String nickname, String profileImage) {
+    private Person(String sub, Long memberId, String name, LocalDate birth, Gender gender, Long cardId, boolean matchingMode, MatchingVisibility matchingVisibility, String searchId, String nickname, String profileImage) {
         this.sub = sub;
         this.memberId = memberId;
         this.name = name;
@@ -57,6 +60,7 @@ public class Person {
         this.cardId = cardId;
         this.matchingMode = matchingMode;
         this.matchingVisibility = matchingVisibility;
+        this.searchId = searchId;
         this.nickname = nickname;
         this.profileImage = profileImage;
     }
