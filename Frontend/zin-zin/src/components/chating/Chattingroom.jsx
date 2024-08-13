@@ -24,8 +24,8 @@ const Chattingroom = () => {
 
     // 웹소켓 연결 설정
     const connect = () => {
-        // const socket = new WebSocket("ws://localhost:8080/api/ws");
-        const socket = new WebSocket("https://zin-zin.site/api/ws");
+        const socket = new WebSocket("ws://localhost:8080/api/ws");
+        // const socket = new WebSocket("https://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -152,7 +152,7 @@ const Chattingroom = () => {
         <div className={styles.chatContainer}>  
         <div className={styles.toptop}>
         <div>
-        <Link to="/chat" ><i className="bi bi-chevron-left"/></Link>
+        <Link to="/chat" className={styles.iconicon}><i className="bi bi-chevron-left"/></Link>
         </div>
         <div className={styles.imagecontainer}>
             {/* <img src={profileImage}/> */}
@@ -186,13 +186,13 @@ const Chattingroom = () => {
                         <div key={index} className={styles.message}>
                             <div>
                                 {message.memberId === memberId ? (
-                                    <div>
+                                    <div className={styles.itisyou}>
                                         {/* <img src={profileImage}/> */}
                                         <img src="/assets/홍창기.png"/>
                                          <div className={styles.text}>{message.message}</div>
                                     </div> 
                                 ) : (
-                                    <div>
+                                    <div className={styles.itisme}>
                                         <div className={styles.text}>{message.message}</div>
                                     </div>
                                     

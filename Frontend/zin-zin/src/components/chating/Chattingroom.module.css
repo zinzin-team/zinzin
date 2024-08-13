@@ -40,7 +40,14 @@
   justify-content: right;
 }
 
+
+.iconicon i{
+  font-size: 24px;
+  color: rgb(133, 133, 133);  
+}
 .reportcontainer i{
+  font-size: 24px;
+
 color : rgb(133, 133, 133);
 }
 
@@ -100,4 +107,51 @@ color : rgb(133, 133, 133);
   border-radius: 20px;
   color: white;
   cursor: pointer;
+}
+
+.messageList {
+  width: 100%;
+  padding: 10px;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.itisyou {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 400px;
+}
+
+.itisme {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 400px;
+}
+
+.itisyou img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.itisyou .text, .itisme .text {
+  padding: 10px 15px;
+  border-radius: 20px;
+  max-width: 60%;
+}
+
+.itisyou .text {
+  background-color: #efefef;
+  color: #333;
+}
+
+.itisme .text {
+  background-color: #FF9494;
+  color: white;
 }
