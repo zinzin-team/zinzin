@@ -162,7 +162,7 @@ public class MemberService {
         // DB를 업데이트한다.
         memberInfo.updateMemberInfo(newImageURL, memberInfoUpdateRequest.getSearchId());
         memberInfoRepository.save(memberInfo);
-        personRepository.updateProfileImage(memberId, newImageURL);
+        personRepository.updateProfileImageAndSearchId(memberId, newImageURL, memberInfoUpdateRequest.getSearchId());
 
         // 새로운 이미지를 저장했다면, 기존 프로필 이미지는 삭제한다.
         if (!newImageURL.equals(imageURL) && !"default.jpg".equals(imageURL)) {
