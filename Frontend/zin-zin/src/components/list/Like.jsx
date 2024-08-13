@@ -166,10 +166,10 @@ const Like = () => {
                     ))
                 ) : (
                     <div className={styles.nomatch}>
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode" />
                        <p>
                        지인 소식이 비어있어요
                         </p> 
-                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode" />
                         <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
                 )}

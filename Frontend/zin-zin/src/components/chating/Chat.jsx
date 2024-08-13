@@ -51,7 +51,7 @@ const Chat = () => {
                 chatRooms.map(room => (
                     <div key={room.roomId} className={styles.chatRoom} 
                     >
-                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/임시1.png`} alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
+                        <img src={room.otherMember.profileImage} alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
                         <div className={styles.roomInfo}>
                             {room.roomType === 'MATE' ? (
                                 <div className={styles.toptalk}>

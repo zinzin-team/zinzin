@@ -140,6 +140,7 @@ const Matching = () => {
                     }
                 });
                 if (response.data) {
+                    console.log(response.data)
                     const { cardId, tags, info, images } = response.data;
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
@@ -153,7 +154,8 @@ const Matching = () => {
             }
         };
 
-        const storedMatchingMode = true;
+        const storedMatchingMode = sessionStorage.getItem('matchingMode');
+        // const storedMatchingMode = true;
 
         if (storedMatchingMode) {
             const fetchDataAndSetCardData = async () => {
@@ -198,7 +200,8 @@ const Matching = () => {
                     }
                 }
             );
-            currentCard.card.checked = true;
+            console.log(currentCard)
+            // currentCard.card.checked = true;
             if (response.data) {
                 setCurrentImageIndex(0);
                 setIsFront(true);
@@ -347,7 +350,7 @@ const Matching = () => {
         // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: 'default.jpg'}))
         // console.log(currentCardInfo.tags.push("피자먹는"))
         // currentCardInfo.info = "안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안"
-        currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
+        // currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
 
         return (
             <div className={styles.match}>
@@ -483,15 +486,25 @@ const Matching = () => {
     };
 
     const renderMatchingModeOffContent = () => (
-        <div className={styles.match}>
-            <div className={styles.matchoff}>
-                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+
+            <div className={styles.match}>
+                <div className={styles.exhaustcard}>
+                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
+                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
+                    <p className={styles.secondtext}>내일 접속해서 새로운 카드를 받으세요</p>
+                </div>
             </div>
-            <div className={styles.offModeContent}>
-                <p>매칭 OFF 상태 입니다</p>
-                <button onClick={() => navigate('/like')}>지인 현황보기</button>
-            </div>
-        </div>
+
+        
+        // <div className={styles.match}>
+        //     <div className={styles.matchoff}>
+        //         <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+        //     </div>
+        //     <div className={styles.offModeContent}>
+        //         <p>매칭 OFF 상태 입니다</p>
+        //         <button onClick={() => navigate('/like')}>지인 현황보기</button>
+        //     </div>
+        // </div>
     );
 
     const getContent = () => {
@@ -503,7 +516,9 @@ const Matching = () => {
             );
         }
 
-        const matchingMode = true;
+        const matchingMode = sessionStorage.getItem('matchingMode');
+        // const matchingMode = true;
+
         if (matchingMode === true) {
             if (!cardData) {
                 return renderCreateCardContent();

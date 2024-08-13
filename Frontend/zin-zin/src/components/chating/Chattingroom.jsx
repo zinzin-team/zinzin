@@ -157,8 +157,8 @@ const Chattingroom = () => {
         <Link to="/chat" className={styles.iconicon}><i className="bi bi-chevron-left"/></Link>
         </div>
         <div className={styles.imagecontainer}>
-            {/* <img src={profileImage}/> */}
-            <img src="/assets/홍창기.png"/>
+            <img src={profileImage}/>
+            {/* <img src="/assets/홍창기.png"/> */}
             {roomType === 'MATE' ? <div>{name}</div> : <div>{nickname}</div>}
         </div>
                     <div className={styles.reportcontainer}>
@@ -190,8 +190,8 @@ const Chattingroom = () => {
                             <div>
                                 {message.memberId === memberId ? (
                                     <div className={styles.itisyou}>
-                                        {/* <img src={profileImage}/> */}
-                                        <img src="/assets/홍창기.png"/>
+                                        <img src={profileImage}/>
+                                        {/* <img src="/assets/홍창기.png"/> */}
                                         <div className={styles.text}>{message.message}</div>
                                     </div> 
                                 ) : (
