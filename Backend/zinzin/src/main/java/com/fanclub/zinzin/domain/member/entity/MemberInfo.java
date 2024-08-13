@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "member_info")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MemberInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +20,11 @@ public class MemberInfo {
 
     @Column(length = 300, nullable = false)
     @ColumnDefault("'default.jpg'")
-    @Getter
     private String profileImage;
 
-    @Getter
     @Column(length = 30, nullable = false)
     private String nickname;
 
-    @Getter
     @Column(length = 15, nullable = false)
     private String searchId;
 
@@ -34,20 +32,16 @@ public class MemberInfo {
     @ColumnDefault("'PRIVATE'")
     private MatchingVisibility matchingVisibility;
 
-    @Getter
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean matchingMode;
 
-    @Getter
     @LastModifiedDate
     private LocalDateTime matchingModeLog;
 
-    @Getter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    @Getter
     @Column(name = "success_cnt")
     private Integer successCount;
 
