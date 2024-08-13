@@ -22,7 +22,7 @@ public class TokenService {
         String refreshToken = getRefreshTokenFromCookies(request);
 
         if (refreshToken != null && jwtUtil.validateRefreshToken(refreshToken)) {
-            String newAccessToken = jwtUtil.reGenerateTokens(refreshToken, response);
+            String newAccessToken = jwtUtil.regenerateTokens(refreshToken, response);
 
             return new TokenDto(newAccessToken);
         }
