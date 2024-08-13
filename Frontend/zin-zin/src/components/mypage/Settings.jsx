@@ -180,9 +180,9 @@ const Settings = () => {
         <h3>아이디 변경</h3>
         <input 
           type="text" 
-          value={isEditingId ? newSearchId : userData?.searchId} 
+          value={isEditingId ? newSearchId : (userData?.searchId || "")}
           onChange={handleIdChange} 
-          placeholder={userData?.searchId} 
+          placeholder={userData?.searchId || "아이디를 입력하세요"}
           className={styles.inputField} 
           disabled={!isEditingId} 
         />
