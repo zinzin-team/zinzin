@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ChatRoomErrorCode implements ErrorCode{
     CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CH001", "채팅방을 찾을 수 없습니다."),
     CHAT_ROOM_CANNOT_DELETE(HttpStatus.UNAUTHORIZED, "CH002", "채팅방 삭제 권한이 없습니다."),
-    CANNOT_GET_MESSAGES(HttpStatus.UNAUTHORIZED, "CH003", "채팅 내역 조회 권한이 없습니다.");
+    CANNOT_GET_MESSAGES(HttpStatus.UNAUTHORIZED, "CH003", "채팅 내역 조회 권한이 없습니다."),
+    EXISTED_CHAT_ROOM(HttpStatus.BAD_REQUEST, "CH004", "이미 존재하는 채팅방입니다.");
 
     private final HttpStatus status;
     private final String code;

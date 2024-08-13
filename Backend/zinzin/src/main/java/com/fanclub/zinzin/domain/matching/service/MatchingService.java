@@ -139,7 +139,7 @@ public class MatchingService {
         ArrayList<Long> members = new ArrayList<>();
         members.add(memberId);
         members.add(other);
-        ResponseChatRoomDto responseChatRoomDto = chatRoomService.createAndFetchChatRoom(new CreateChatRoomDto(ChatRoomType.Like, members));
+        ResponseChatRoomDto responseChatRoomDto = chatRoomService.createAndFetchChatRoom(new CreateChatRoomDto(ChatRoomType.LIKE, other), memberId);
         return CheckingResponse.of(responseChatRoomDto,true);
     }
 

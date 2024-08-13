@@ -2,29 +2,32 @@ package com.fanclub.zinzin.domain.member.service;
 
 import com.fanclub.zinzin.domain.card.entity.Card;
 import com.fanclub.zinzin.domain.card.repository.CardRepository;
-import com.fanclub.zinzin.domain.card.service.ImageStorageService;
+import com.fanclub.zinzin.domain.friend.entity.TempFriend;
+import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.domain.member.dto.*;
-import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
-import com.fanclub.zinzin.domain.member.entity.Member;
-import com.fanclub.zinzin.domain.member.entity.MemberInfo;
-import com.fanclub.zinzin.domain.member.entity.RandomNickname;
+import com.fanclub.zinzin.domain.member.entity.*;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
-import com.fanclub.zinzin.domain.friend.entity.TempFriend;
-import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
+import com.fanclub.zinzin.global.auth.OAuth2Service;
+import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
+import com.fanclub.zinzin.global.s3.S3Service;
+import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -37,14 +40,15 @@ public class MemberService {
     private final RandomNicknameRepository randomNicknameRepository;
     private final CardRepository cardRepository;
     private final TempFriendRepository tempFriendRepository;
-    private final ImageStorageService imageStorageService;
+    private final S3Service s3Service;
+    private final OAuth2Service oAuth2Service;
+    private final JwtUtil jwtUtil;
 
     @Value("${random-nickname.size}")
     private int randomNicknameSize;
 
     @Transactional
-    public void registerNewMember(MemberRegisterDto memberRegisterDto) {
-
+    public MemberAuthResponseDto registerNewMember(HttpServletResponse response, MemberRegisterDto memberRegisterDto) {
         try {
             Member member = memberRegisterDto.toMemberEntity();
             memberRepository.save(member);
@@ -60,9 +64,23 @@ public class MemberService {
             }
 
             tempFriendRepository.deleteAll(tempFriends);
+
+            return generateRegisterTokens(response, member);
         } catch (Exception e) {
             throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
         }
+    }
+
+    private MemberAuthResponseDto generateRegisterTokens(HttpServletResponse response, Member member) {
+        if (member != null) {
+            throw new BaseException (MemberErrorCode.MEMBER_REGIST_FAILED);
+        }
+        Long memberId = member.getId();
+        Map<String, String> tokensMap = oAuth2Service.generateTokens(memberId, member.getSub(), Role.USER);
+        String accessToken = tokensMap.get("accessToken");
+        jwtUtil.addRefreshTokenToCookie(response, tokensMap.get("refreshToken"));
+
+        return MemberAuthResponseDto.createTokenResponse(accessToken);
     }
 
     public CheckSearchIdResponse checkDuplicatedSearchId(String searchId) {
@@ -123,11 +141,23 @@ public class MemberService {
         MemberInfo memberInfo = memberInfoRepository.findMemberInfoByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        String profileImagePath = imageStorageService.storeFile(memberInfoUpdateRequest.getProfileImage(), memberId);
+        // 요청으로 들어온 프로필 이미지가 있다면, 새로운 이미지를 업로드하고 URL을 얻는다.
+        String imageURL = memberInfo.getProfileImage();
+        String newImageURL = imageURL;
 
-        memberInfo.updateMemberInfo(profileImagePath, memberInfoUpdateRequest.getSearchId());
+        if (memberInfoUpdateRequest.getProfileImage() != null) {
+            newImageURL = s3Service.uploadProfile(memberInfoUpdateRequest.getProfileImage());
+        }
+
+        // DB를 업데이트한다.
+        memberInfo.updateMemberInfo(newImageURL, memberInfoUpdateRequest.getSearchId());
         memberInfoRepository.save(memberInfo);
-        personRepository.updateProfilImage(memberId, profileImagePath);
+        personRepository.updateProfileImage(memberId, newImageURL);
+
+        // 새로운 이미지를 저장했다면, 기존 프로필 이미지는 삭제한다.
+        if (!newImageURL.equals(imageURL)) {
+            s3Service.deleteS3(imageURL);
+        }
     }
 
     @Transactional
@@ -144,7 +174,7 @@ public class MemberService {
     }
 
     @Transactional
-    public String updateRandomNickname(Long memberId) {
+    public RandomNicknameResponse updateRandomNickname(Long memberId) {
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
@@ -156,6 +186,6 @@ public class MemberService {
 
         personRepository.updateNicknameByMemberId(memberId,randomNickname);
 
-        return randomNickname;
+        return new RandomNicknameResponse(randomNickname);
     }
 }

@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = (tokens) => {
+    sessionStorage.setItem('accessToken', tokens.accessToken);
+    sessionStorage.setItem('refreshToken', tokens.refreshToken);
     setAuthState({
       isAuthenticated: true,
       accessToken: tokens.accessToken,
@@ -21,6 +23,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
     setAuthState({
       isAuthenticated: false,
       accessToken: null,

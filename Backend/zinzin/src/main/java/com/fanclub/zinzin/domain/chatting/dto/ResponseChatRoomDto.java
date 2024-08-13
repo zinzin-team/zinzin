@@ -1,13 +1,12 @@
 package com.fanclub.zinzin.domain.chatting.dto;
 
 import com.fanclub.zinzin.domain.chatting.entity.ChatRoom;
-import com.fanclub.zinzin.domain.chatting.entity.ChatRoomMember;
 import com.fanclub.zinzin.domain.chatting.entity.ChatRoomType;
+import com.fanclub.zinzin.domain.person.entity.Person;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class ResponseChatRoomDto {
 
     private final Long roomId;
@@ -16,23 +15,22 @@ public class ResponseChatRoomDto {
     private final String lastMessage;
     private final boolean heartToggle;
 
-    public static ResponseChatRoomDto fromEntity(ChatRoom chatRoom, Long memberId, String lastMessage) {
-        ChatMemberDto otherMember = chatRoom.getMembers().stream()
-                .filter(member -> !member.getMemberInfo().getMember().getId().equals(memberId))
-                .map(member -> ChatMemberDto.fromEntity(member.getMemberInfo()))
-                .findFirst().orElse(null);
+    @Builder
+    private ResponseChatRoomDto(Long roomId, ChatRoomType roomType, ChatMemberDto otherMember, String lastMessage, boolean heartToggle){
+        this.roomId = roomId;
+        this.roomType = roomType;
+        this.otherMember = otherMember;
+        this.lastMessage = lastMessage;
+        this.heartToggle = heartToggle;
+    }
 
-        boolean heartToggle = chatRoom.getMembers().stream()
-                .filter(member -> member.getMemberInfo().getMember().getId().equals(memberId))
-                .map(ChatRoomMember::getHeartToggle)
-                .findFirst().orElse(false);
-
+    public static ResponseChatRoomDto of(ChatRoom chatRoom, Person otherMember, String lastMessage, boolean heartToggle){
         return ResponseChatRoomDto.builder()
                 .roomId(chatRoom.getId())
                 .roomType(chatRoom.getRoomType())
-                .lastMessage(lastMessage)
-                .otherMember(otherMember)
+                .otherMember(ChatMemberDto.fromEntity(otherMember))
                 .heartToggle(heartToggle)
+                .lastMessage(lastMessage)
                 .build();
     }
 }

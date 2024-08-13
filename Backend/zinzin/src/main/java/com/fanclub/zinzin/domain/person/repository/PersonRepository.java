@@ -8,8 +8,11 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository extends Neo4jRepository<Person, String>, MatchingStatusRepository {
+
+    Optional<Person> findPersonByMemberId(Long memberId);
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.nickname = $randomNickname")
@@ -17,7 +20,7 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
 
     @Query("MATCH (me:Person {member_id:$memberId}) " +
             "SET me.profile_image = $profileImage")
-    void updateProfilImage(Long memberId, String profileImage);
+    void updateProfileImage(Long memberId, String profileImage);
 
     @Query("MATCH (me:Person {sub: $mySub}) " +
             "MERGE (friend:Person {sub: $friendSub}) " +
@@ -32,8 +35,8 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
             "WHERE me.gender <> matching.gender " +
             "AND matching.matching_mode = true " +
             "AND matching.card_id IS NOT NULL " +
-            "AND NOT (me)-[:INTEREST|BLOCKED|FOLLOW]->(matching) " +
-            "AND NOT (me)-[:REJECT_FOLLOW|REQUEST_FOLLOW|UNFOLLOW]-(matching)" +
+            "AND NOT (me)-[:INTEREST|FOLLOW]->(matching) " +
+            "AND NOT (me)-[:REJECT_FOLLOW|BLOCKED|REQUEST_FOLLOW|UNFOLLOW]-(matching)" +
             "OPTIONAL MATCH (me)-[r:GET_CARD_OF]->(matching) " +
             "WITH matching, r " +
             "ORDER BY CASE WHEN r IS NULL THEN 0 ELSE 1 END, r.rejectCnt " +
@@ -83,4 +86,9 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
             "DELETE r " +
             "MERGE (me)-[:BLOCKED]->(target)")
     void report(Long memberId, Long target);
+
+    @Query("MATCH (me:Person {member_id:$memberId})-[r:INTEREST]-(target:Person {member_id:$target}) " +
+            "delete r " +
+            "merge (me)-[:BLOCKED]->(target)")
+    void exitChatroom(Long memberId, Long target);
 }

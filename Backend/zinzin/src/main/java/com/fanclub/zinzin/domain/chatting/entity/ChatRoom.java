@@ -33,7 +33,7 @@ public class ChatRoom extends BaseTimeEntity {
     private ChatRoomStatus status;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatRoomMember> members = new ArrayList<>();;
+    private List<ChatRoomMember> members = new ArrayList<>();
 
     @Builder(builderClassName = "createRoomBuilder", builderMethodName = "createRoomBuilder")
     public ChatRoom(ChatRoomType roomType) {
