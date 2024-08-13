@@ -179,7 +179,7 @@
                                         style={{display:"none"}}
                                     />
                                     {!selectedFiles[index] && (
-                                        <img src="/assets/NoPicture.png" alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
+                                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoPicture.png`} alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
                                     )}
                                     {selectedFiles[index] && (
                                         <div>
@@ -190,13 +190,13 @@
                                                 className={styles.imgimg}
                                             />
                                             <div className={styles.labellabel}>
-                                            <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> <img className={styles.deletepic} src="assets/deletepicture.png"/></button>
+                                            <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> <img className={styles.deletepic} src={`${process.env.REACT_APP_BASE_URL}/assets/deletepicture.png`}/></button>
                                             </div>
                                         </div>
                                     )}
                                     {!selectedFiles[index] && (
                                         <label className={styles.labellabel} htmlFor={`imageUpload${index}`} >
-                                            <img className={styles.addpic} src="assets/addpicture.png"/>
+                                            <img className={styles.addpic} src={`${process.env.REACT_APP_BASE_URL}/assets/addpicture.png`}/>
                                         </label>
                                     )}
                                     </div>

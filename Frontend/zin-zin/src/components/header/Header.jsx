@@ -6,11 +6,11 @@ const Header = () => {
   return (
     <header className={styles.header}>
          <Link to="/" className={styles.icon2} >
-              <img className={styles.logo} src="./assets/logo.png" />
+              <img className={styles.logo} src={`${process.env.REACT_APP_BASE_URL}/assets/logo.png`} />
       </Link>
             <div className={styles.icon}>
      <Link to="/friends" className={styles.friends}  >
-        <img src="./assets/friend-icon.png" />
+        <img src={`${process.env.REACT_APP_BASE_URL}/assets/friend-icon.png`} />
       </Link>
             </div>
     </header>
