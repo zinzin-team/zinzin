@@ -92,7 +92,7 @@ color : rgb(133, 133, 133);
 }
 
 .chatchat input[type="text"] {
-  width: 80%;
+  width: 300px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -123,14 +123,14 @@ color : rgb(133, 133, 133);
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 400px;
+  width: 390px;
 }
 
 .itisme {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 400px;
+  width: 390px;
 }
 
 .itisyou img {
@@ -154,4 +154,10 @@ color : rgb(133, 133, 133);
 .itisme .text {
   background-color: #FF9494;
   color: white;
+}
+
+.chatchat input[type="text"]:focus,
+.chatchat input[type="text"]:active {
+  outline: none; /* 기본 브라우저 outline 제거 */
+  border: 2px solid #ffca38; /* 테두리 색상 변경 */
 }
