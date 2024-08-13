@@ -1,10 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./LeaveView.css";
 
 const LeaveView = () => {
     const navigate = useNavigate();
+    const [name, setName] = useState(""); // 상태로 name을 관리
+
+    useEffect(() => {
+        const storedName = sessionStorage.getItem('name');
+        if (storedName) {
+            setName(storedName);
+        }
+    }, []); // 컴포넌트가 처음 렌더링될 때 sessionStorage에서 name을 가져옴
 
     const handleDelete = async (event) => {
         event.preventDefault();
@@ -35,7 +43,7 @@ const LeaveView = () => {
             <h1 className="leave-title">회원탈퇴</h1>
             <p className="leave-message">정말 정말 탈퇴 하시나요 <span role="img" aria-label="crying">😭</span></p>
             <p className="leave-reason">
-                김윤지 님 덕분에
+                {name} 님 덕분에
                 <br />
                 수 많은 지인들이 서로 연결되고 있어요.
                 <br />
@@ -44,7 +52,7 @@ const LeaveView = () => {
             <p className="leave-warning">
                 회원 탈퇴 후 15일 간 회원 정보가 보관되며, 이후에는 회원 정보가 완전히 삭제되어 재가입이 필요 합니다.
             </p>
-            <form className="leave- form" onSubmit={handleDelete}>
+            <form className="leave-form" onSubmit={handleDelete}>
                 <button type="submit" className="leave-button">탈퇴하기</button>
             </form>
         </div>

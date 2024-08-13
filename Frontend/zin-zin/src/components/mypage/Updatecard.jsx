@@ -31,7 +31,7 @@ const UpdateCard = () => {
 
                 const { info, images, tags } = response.data;
                 setIntroduction(info);
-                setSelectedFiles(images.map((image) => URL.createObjectURL(image)));
+                setSelectedFiles(images);
                 setSelectedTags(tags);
             } catch (error) {
                 console.error('카드 정보를 불러오는 중 오류 발생:', error);
@@ -191,26 +191,26 @@ const UpdateCard = () => {
                                             style={{display:"none"}}
                                         />
                                         {!selectedFiles[index] && (
-                                            <img src="/assets/NoPicture.png" alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
+                                            <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoPicture.png`} alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
                                         )}
                                         {selectedFiles[index] && (
                                             <div>
                                                 <img 
-                                                    src={URL.createObjectURL(selectedFiles[index])} 
+                                                    src={selectedFiles[index]} 
                                                     alt={`preview ${index}`} 
                                                     style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }}
                                                     className={styles.imgimg}
                                                 />
                                                 <div className={styles.labellabel}>
                                                     <button className={styles.deletepicture} type="button" onClick={() => handleRemoveFile(index)}> 
-                                                        <img className={styles.deletepic} src="assets/deletepicture.png"/>
+                                                        <img className={styles.deletepic} src={`${process.env.REACT_APP_BASE_URL}/assets/deletepicture.png`}/>
                                                     </button>
                                                 </div>
                                             </div>
                                         )}
                                         {!selectedFiles[index] && (
                                             <label className={styles.labellabel} htmlFor={`imageUpload${index}`}>
-                                                <img className={styles.addpic} src="assets/addpicture.png"/>
+                                                <img className={styles.addpic} src={`${process.env.REACT_APP_BASE_URL}/assets/addpicture.png`}/>
                                             </label>
                                         )}
                                     </div>
