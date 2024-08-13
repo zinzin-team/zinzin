@@ -17,8 +17,8 @@ public interface MemberInfoRepository extends JpaRepository<MemberInfo, Long> {
     @Query("SELECT new com.fanclub.zinzin.domain.searcher.dto.SearchedMemberDto(m.id, m.name, mi.profileImage) " +
             "FROM MemberInfo mi " +
             "JOIN mi.member m " +
-            "WHERE mi.searchId = :searchId")
-    Optional<SearchedMemberDto> findSearcherResponseBySearchId(@Param("searchId") String searchId);
+            "WHERE mi.searchId = :searchId and mi.member.id != :memberId")
+    Optional<SearchedMemberDto> findSearcherResponseBySearchId(@Param("memberId") Long memberId, @Param("searchId") String searchId);
 
     boolean existsBySearchId(String searchId);
 
