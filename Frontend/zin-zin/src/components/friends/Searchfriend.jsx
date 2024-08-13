@@ -18,7 +18,7 @@ const Searchfriend = () => {
     setIsMe(false);
 
     const accessToken = sessionStorage.getItem('accessToken');
-    const userId = sessionStorage.getItem('userId'); // Assuming userId is stored in session
+    const memberId = sessionStorage.getItem('memberId');
 
     if (!accessToken) {
       setError('로그인이 필요합니다.');
@@ -40,16 +40,18 @@ const Searchfriend = () => {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: 'include',
       });
 
       const data = response.data;
+      console.log(data)
 
       if (data.success) {
         setResult(data.member);
 
         // 자신을 검색한 경우
-        if (data.member.id === parseInt(userId, 10)) {
+        if (data.member.id === parseInt(memberId, 10)) {
           setIsMe(true);
         } else {
           // 두 번째 API 호출: 나의 친구 목록 가져오기
