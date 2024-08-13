@@ -8,6 +8,7 @@ import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.domain.friend.entity.TempFriend;
 import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.AuthErrorCode;
+import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -109,6 +110,10 @@ public class OAuth2Service {
     public MemberAuthResponseDto loginOrRegister(Member member, String[] claims, String kakaoAccesstoken, HttpServletResponse response) {
         String sub = claims[0];
         String email = claims[1];
+
+        if(member != null && member.getStatus() == Status.SUSPEND){
+            throw new BaseException(MemberErrorCode.SUSPENDED_MEMBER);
+        }
 
         if (member != null && member.getStatus() == Status.ACTIVE) {
             Long memberId = member.getId();
