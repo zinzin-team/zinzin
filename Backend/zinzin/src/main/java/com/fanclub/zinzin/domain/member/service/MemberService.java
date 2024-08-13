@@ -69,7 +69,6 @@ public class MemberService {
             Person person = memberRegisterDto.toPersonEntity(member, memberInfo);
             personRepository.save(person);
 
-            System.out.println(memberRegisterDto.getSub());
             List<TempFriend> tempFriends = tempFriendRepository.findAllByMySub(memberRegisterDto.getSub());
             for (TempFriend tempFriend : tempFriends) {
                 personRepository.saveKakaoFriends(tempFriend.getMySub(), tempFriend.getFriendSub(), tempFriend.getFriendName());
