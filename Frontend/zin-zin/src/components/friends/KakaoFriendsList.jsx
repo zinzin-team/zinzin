@@ -85,14 +85,12 @@ const KakaoFriendsList = () => {
     setInviteModalIsOpen(false);
   };
 
-  const handleAccept = async (isAccepted) => {
+  const handleAccept = async (accepted) => {
     const accessToken = sessionStorage.getItem('accessToken');
-    const userMemberId = sessionStorage.getItem('userMemberId');
     try {
       await axios.put('/api/mates', {
-        userMemberId,
         targetMemberId: selectedRequest.memberId,
-        isAccepted
+        accepted
       }, {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
@@ -102,7 +100,7 @@ const KakaoFriendsList = () => {
 
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
-      if (isAccepted) {
+      if (accepted) {
         toast.success(`${selectedRequest.kakaoName}님과 지인이 되어따`);
       } else {
         toast.info(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
