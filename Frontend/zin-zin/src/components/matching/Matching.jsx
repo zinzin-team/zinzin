@@ -203,7 +203,7 @@ const Matching = () => {
                 setCurrentImageIndex(0);
                 setIsFront(true);
                 console.log(currentCard)
-                if (!response.data.matchingSuccess) {
+                if (response.data.matchingSuccess) {
                     const chatRoomResponse = await axios.post('/api/chatroom/create', {
                         roomType: "LIKE",
                         targetId: currentCard.memberId
@@ -219,7 +219,6 @@ const Matching = () => {
                     
                     firework();
                     setModalIsOpen(true);
-                    // fetchMatchingCards()
                 } else {
                     fetchMatchingCards();
                 }

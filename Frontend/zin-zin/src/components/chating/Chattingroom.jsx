@@ -24,8 +24,8 @@ const Chattingroom = () => {
 
     // 웹소켓 연결 설정
     const connect = () => {
-        // const socket = new WebSocket("ws://localhost:8080/api/ws");
-        const socket = new WebSocket("https://zin-zin.site/api/ws");
+        const socket = new WebSocket("ws://localhost:8080/api/ws");
+        // const socket = new WebSocket("https://zin-zin.site/api/ws");
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({}, () => {
             setConnected(true);
@@ -150,6 +150,7 @@ const Chattingroom = () => {
 
     return (
         <div className={styles.chatContainer}>  
+        <div className={styles.topfix}>
         <div className={styles.toptop}>
         <div>
         <Link to="/chat" className={styles.iconicon}><i className="bi bi-chevron-left"/></Link>
@@ -169,7 +170,7 @@ const Chattingroom = () => {
                 </div>
         </div>
                     {roomType !== "MATE" && (
-                        <>
+                        <div className={styles.heartheart}>
                             <input 
                                 type="checkbox"  
                                 id="heart-check" 
@@ -177,9 +178,10 @@ const Chattingroom = () => {
                                 onChange={handleHeartToggle} // 체크박스 상태 변화시 handleHeartToggle 호출
                             />
                             <label htmlFor="heart-check">하트뿅</label>
-                        </>
+                        </div>
                     )}
             <div className={styles.customDivider}></div>
+        </div>
             <div className={styles.messageList}>
                 {messages.length > 0 ? (
                     messages.map((message, index) => (
@@ -189,7 +191,7 @@ const Chattingroom = () => {
                                     <div className={styles.itisyou}>
                                         {/* <img src={profileImage}/> */}
                                         <img src="/assets/홍창기.png"/>
-                                         <div className={styles.text}>{message.message}</div>
+                                        <div className={styles.text}>{message.message}</div>
                                     </div> 
                                 ) : (
                                     <div className={styles.itisme}>
@@ -213,7 +215,7 @@ const Chattingroom = () => {
                     onKeyPress={handleKeyPress}    
                     placeholder="메세지를 입력해주세요"
                 />
-                <button onClick={sendMessage}>입력</button> 
+                <button onClick={sendMessage}>전송</button> 
             </div>
         </div>
     );
