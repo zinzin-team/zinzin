@@ -231,7 +231,7 @@ const KakaoFriendsList = () => {
                   className={styles.avatar}
                   onError={(e) => { e.target.src = '/assets/default-profile.png'; }}
                 />
-                <span className={styles.kakaoName}>{request.kakaoName}</span>
+                <span className={styles.kakaoName}>{request.name}</span>
                 <button className={styles.receiveRequestButton} onClick={() => openModal(request)}>요청 수락 +</button>
               </div>
             ))}
