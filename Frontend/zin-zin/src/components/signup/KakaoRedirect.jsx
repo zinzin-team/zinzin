@@ -20,14 +20,14 @@ const KakaoRedirect = () => {
                 console.log('로그인 성공');
                 const tokens = {
                     accessToken: data.accessToken,
-                    refreshToken: data.refreshToken,
+                    // refreshToken: data.refreshToken,
                 };
           
                 // Context API를 사용하여 로그인 상태 업데이트
                 login(tokens);
           
                 sessionStorage.setItem('accessToken', data.accessToken);
-                sessionStorage.setItem('refreshToken', data.refreshToken);
+                // sessionStorage.setItem('refreshToken', data.refreshToken);
         
                 try {
                     const memberResponse = await axios.get('/api/member/me', {
