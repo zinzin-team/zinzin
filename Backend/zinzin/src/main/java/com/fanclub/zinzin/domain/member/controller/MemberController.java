@@ -1,11 +1,8 @@
 package com.fanclub.zinzin.domain.member.controller;
 
 import com.fanclub.zinzin.domain.member.dto.*;
-import com.fanclub.zinzin.domain.member.entity.Role;
 import com.fanclub.zinzin.domain.member.service.MemberService;
-import com.fanclub.zinzin.global.auth.OAuth2Service;
 import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
-import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -57,8 +54,8 @@ public class MemberController {
 
     @PutMapping("/me")
     public ResponseEntity<?> updateOwnInfo(HttpServletRequest request,
-                                           @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-                                           @RequestPart MemberRequest memberRequest) {
+                                           @RequestPart MemberRequest memberRequest,
+                                           @RequestPart(required = false) MultipartFile profileImage) {
         memberService.updateMemberInfo((Long) request.getAttribute("memberId"),
                 new MemberInfoUpdateRequest(profileImage, memberRequest.getSearchId()));
         return new ResponseEntity<>(HttpStatus.OK);
