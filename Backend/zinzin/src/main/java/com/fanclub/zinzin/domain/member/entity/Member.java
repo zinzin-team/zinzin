@@ -14,29 +14,24 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
 
-    @Getter
     @Column(length = 320, nullable = false, unique = true)
     private String email;
 
-    @Getter
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Getter
     @Column(length = 50, nullable = false, unique = true)
     private String sub;
 
-    @Getter
     @Column(nullable = false)
     private LocalDate birth;
 
-    @Getter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;

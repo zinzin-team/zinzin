@@ -2,11 +2,13 @@ package com.fanclub.zinzin.global.auth;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.Role;
+import com.fanclub.zinzin.domain.member.entity.Status;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.domain.friend.entity.TempFriend;
 import com.fanclub.zinzin.domain.friend.repository.TempFriendRepository;
 import com.fanclub.zinzin.global.error.code.AuthErrorCode;
+import com.fanclub.zinzin.global.error.code.MemberErrorCode;
 import com.fanclub.zinzin.global.error.exception.BaseException;
 import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -108,7 +110,12 @@ public class OAuth2Service {
     public MemberAuthResponseDto loginOrRegister(Member member, String[] claims, String kakaoAccesstoken, HttpServletResponse response) {
         String sub = claims[0];
         String email = claims[1];
-        if (member != null) {
+
+        if(member != null && member.getStatus() == Status.SUSPEND){
+            throw new BaseException(MemberErrorCode.SUSPENDED_MEMBER);
+        }
+
+        if (member != null && member.getStatus() == Status.ACTIVE) {
             Long memberId = member.getId();
             Map<String, String> tokensMap = generateTokens(memberId, sub, Role.USER);
             String accessToken = tokensMap.get("accessToken");
@@ -116,6 +123,7 @@ public class OAuth2Service {
 
             return MemberAuthResponseDto.createTokenResponse(accessToken);
         }
+
         saveKakaoFriends(sub, getKakaoFriends(kakaoAccesstoken));
         return MemberAuthResponseDto.createRegisterResponse(sub, email);
     }
