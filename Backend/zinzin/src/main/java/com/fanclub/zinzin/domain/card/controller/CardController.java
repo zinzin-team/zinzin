@@ -44,6 +44,7 @@ public class CardController {
         cardService.updateCard(cardId,
                                cardRequest.getInfo(),
                                images,
+                               cardRequest.getImageIndexes(),
                                cardRequest.getTags(),
                                (Long) request.getAttribute("memberId"));
         return new ResponseEntity<>(HttpStatus.OK);
