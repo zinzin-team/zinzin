@@ -56,7 +56,9 @@ public interface FollowRepository extends Neo4jRepository<Person, String> {
             "RETURN count(*)")
     Integer rejectFollowRequest(Long fromMemberId, Long toMemberId);
 
-    @Query("MATCH (a:Person)-[:REQUEST_FOLLOW]->(b:Person{member_id: $memberId})" +
-            "RETURN a.member_id AS id, a.name AS name")
+    @Query("MATCH (a:Person)-[:REQUEST_FOLLOW]->(b:Person {member_id: $memberId}) " +
+            "OPTIONAL MATCH (b)-[r:KAKAO]->(a) " +
+            "RETURN a.member_id AS id, a.profile_image AS profileImagePath, " +
+            "CASE WHEN r IS NOT NULL THEN r.kakao_name ELSE a.name END AS name")
     List<FollowingRequestResponse> findPeopleByRequestFollowRelation(Long memberId);
 }
