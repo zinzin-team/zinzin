@@ -171,12 +171,13 @@
                                 <div className={styles.tmptmp} key={index} style={{ marginBottom: '10px' }} >
                                     <div className={styles.tmprelative}>
                                     <input 
-                                        type="file" 
-                                        id={`imageUpload${index}`} 
-                                        name={`imageUpload${index}`} 
-                                        accept="image/*" 
-                                        onChange={(e) => handleFileChange(e, index)} 
-                                        style={{display:"none"}}
+                                        type="file"
+                                        accept="image/*"
+                                        id={`imageUpload${index}`}
+                                        name={`imageUpload${index}`}
+                                        key={selectedFiles[index] ? selectedFiles[index].name : ""}
+                                        onChange={(e) => handleFileChange(e, index)}
+                                        style={{ display: "none" }}
                                     />
                                     {!selectedFiles[index] && (
                                         <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoPicture.png`} alt="No Picture" style={{ width: '149.33px', height: '214.63px', objectFit: 'cover', marginRight: '10px' }} />
