@@ -1,6 +1,6 @@
 import styles from './Matching.module.css';
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import confetti from 'canvas-confetti';
@@ -31,14 +31,9 @@ const Matching = () => {
 
     const startChatWithMate = async (mateId) => {
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.post('/api/chatroom/create', {
+            const response = await apiClient.post('/api/chatroom/create', {
                 roomType: "MATE",
-                targetId: mateId
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                targetId: mateId,
             });
 
             const room = response.data;
@@ -96,12 +91,7 @@ const Matching = () => {
 
     const fetchMatchingCards = async () => {
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.get('/api/matchings', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const response = await apiClient.get('/api/matchings');
             if (response.data && Array.isArray(response.data.matchings)) {
                 console.log(response.data)
                 setMatchingCardData(response.data.matchings);
@@ -133,12 +123,7 @@ const Matching = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/cards', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await apiClient.get('/api/cards');
                 if (response.data) {
                     console.log(response.data)
                     const { cardId, tags, info, images } = response.data;
@@ -187,19 +172,12 @@ const Matching = () => {
 
     const handleLikeDislike = async (like) => {
         const currentCard = matchingCardData[currentIndex];
-        const token = sessionStorage.getItem('accessToken');
         try {
-            const response = await axios.post('/api/matchings/like',
+            const response = await apiClient.post('/api/matchings/like',
                 {
                     cardId: currentCard.card.cardId,
                     like: like
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+                });
             console.log(currentCard)
             // currentCard.card.checked = true;
             if (response.data) {
@@ -207,13 +185,9 @@ const Matching = () => {
                 setIsFront(true);
                 console.log(currentCard)
                 if (response.data.matchingSuccess) {
-                    const chatRoomResponse = await axios.post('/api/chatroom/create', {
+                    const chatRoomResponse = await apiClient.post('/api/chatroom/create', {
                         roomType: "LIKE",
-                        targetId: currentCard.memberId
-                    }, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
+                        targetId: currentCard.memberId,
                     });
                     
                     const room = chatRoomResponse.data;

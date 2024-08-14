@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import styles from './Id.module.css';
 
 const Id = ({ userData, setUserData }) => {
@@ -39,7 +39,7 @@ const Id = ({ userData, setUserData }) => {
         if (id.trim() && isValid) {
             if (buttonText === '중복 확인') {
                 try {
-                    const response = await axios.get(`/api/member/register/search-id/${id}`);
+                    const response = await apiClient.get(`/api/member/register/search-id/${id}`);
         
                     if (response.data.duplicated) {
                         setIsDuplicate(true);

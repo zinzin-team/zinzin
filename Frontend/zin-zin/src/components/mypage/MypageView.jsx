@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import axios from "axios";
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineChangeCircle, MdEdit } from "react-icons/md";
 import { useAuth } from '../../context/AuthContext';
@@ -25,9 +25,8 @@ const MypageView = () => {
     }
 
     try {
-      const response = await axios.get("/api/member/me", {
+      const response = await apiClient.get("/api/member/me", {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         credentials: 'include',
@@ -80,11 +79,8 @@ const MypageView = () => {
     formData.append('memberRequest', blob);
 
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-
-      const response = await axios.put("/api/member/me", formData, {
+      const response = await apiClient.put("/api/member/me", formData, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data"
         },
         credentials: 'include',
@@ -110,12 +106,9 @@ const MypageView = () => {
   };
 
   const handleNicknameChange = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
-
     try {
-      const response = await axios.post("/api/member/nickname", {}, {
+      const response = await apiClient.post("/api/member/nickname", {}, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         credentials: 'include',

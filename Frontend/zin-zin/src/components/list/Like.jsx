@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import styles from './List.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -73,12 +73,7 @@ const Like = () => {
     useEffect(() => {
         const fetchSuccessCount = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/success-count', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await apiClient.get('/api/success-count');
                 if (response.data) {
                     setSuccessCount(response.data.successCount);
                 }
@@ -90,7 +85,7 @@ const Like = () => {
         const fetchMatchingList = async () => {
             try {
                 const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/matching-list', {
+                const response = await apiClient.get('/api/matching-list', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

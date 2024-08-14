@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"; 
 import styles from './Settings.module.css'; 
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 
 const Settings = () => {
   const [matchingMode, setMatchingMode] = useState(true);
@@ -31,7 +31,7 @@ const Settings = () => {
     }
 
     try {
-      const response = await axios.get("/api/member/me", {
+      const response = await apiClient.get("/api/member/me", {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
@@ -65,8 +65,7 @@ const Settings = () => {
 
   const handleModalConfirm = async () => {
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-      await axios.post(
+      await apiClient.post(
         '/api/member/matching-mode',
         {
           matchingMode: !matchingMode,
@@ -74,7 +73,6 @@ const Settings = () => {
         },
         {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -93,8 +91,7 @@ const Settings = () => {
 
   const handleVisibilityModalConfirm = async () => {
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-      await axios.post(
+      await apiClient.post(
         '/api/member/matching-mode',
         {
           matchingMode: matchingMode,
@@ -102,7 +99,6 @@ const Settings = () => {
         },
         {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -154,12 +150,7 @@ const Settings = () => {
     if (!isIdValid) return;
 
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-      const response = await axios.get(`/api/member/search-id/${newSearchId}`, {
-        headers: {
-          "Authorization": `Bearer ${accessToken}`
-        }
-      });
+      const response = await apiClient.get(`/api/member/search-id/${newSearchId}`);
 
       if (response.data.duplicated) {
         setIsIdDuplicate(true);
@@ -190,11 +181,8 @@ const Settings = () => {
     formData.append('memberRequest', blob);
 
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-
-      await axios.put("/api/member/me", formData, {
+      await apiClient.put("/api/member/me", formData, {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data"
           },
           credentials: 'include',

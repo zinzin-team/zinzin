@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Chat.module.css';
 
@@ -10,11 +10,7 @@ const Chat = () => {
     useEffect(() => {
         const fetchChatRooms = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/chatroom', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }                });
+                const response = await apiClient.get('/api/chatroom');
                 console.log(response.data)
                 if (response.data) {
                     setChatRooms(response.data);
