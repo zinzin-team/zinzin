@@ -126,7 +126,7 @@ input:checked + .slider::after {
 .matchingModeLog{
   margin-top: 8px;
   font-size: small;
-  color: #505965;
+  color: #b0b0b0;
 }
 
 .radioGroup {
@@ -318,11 +318,10 @@ input[type="radio"]:checked + .radioLabel:before {
 .leaveButton {
   background: none;
   border: none;
-  color: #979797;
+  color: #b0b0b0;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: small;
   cursor: pointer;
   padding: 0;
-  margin-top: 20px;
   font-family: inherit;
 }
