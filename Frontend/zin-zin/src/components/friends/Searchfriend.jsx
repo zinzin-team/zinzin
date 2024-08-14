@@ -54,31 +54,6 @@ const Searchfriend = () => {
       // console.log(data)
       if (data.success) {
         setResult(data.member);
-        // console.log(result)
-
-        // 자신을 검색한 경우
-        if (data.member.id === parseInt(memberId, 10)) {
-          setIsMe(true);
-        } else {
-          // 두 번째 API 호출: 나의 친구 목록 가져오기
-          const friendsResponse = await apiClient.get('/api/mates/social-friends', {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-          });
-
-          const friends = friendsResponse.data;
-
-          // friends 배열에서 검색된 사용자를 찾기
-          const relationshipWithSearchedUser = friends.find(
-            (friend) => friend.memberId === data.member.id
-          );
-
-          // 찾은 friend 객체를 상태로 저장
-          setRelationship(relationshipWithSearchedUser);
-          console.log(relationship.relationship)
-        }
       } else {
         setError('존재하지 않는 아이디입니다.');
       }
