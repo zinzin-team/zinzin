@@ -162,7 +162,7 @@ const KakaoFriendsList = () => {
       const response = await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.memberId
-      }, {
+      }, {  
         headers: {
           // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
@@ -229,7 +229,7 @@ const KakaoFriendsList = () => {
             {requests.map((request, index) => (
               <div key={index} className={styles.requestItem}>
                 <img
-                  src={request.profileImage ? request.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+                  src={request.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : request.profileImagePath }
                   alt={`${request.name} 프로필`}
                   className={styles.avatar}
                   onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
@@ -287,7 +287,7 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.name}님의<br />지인 요청을 수락할까요?</h2>
+            <h2>{selectedRequest.name?selectedRequest.name:selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
             <button onClick={() => handleAccept(false)}>거절하기</button>
             <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
