@@ -103,9 +103,9 @@ const KakaoFriendsList = () => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (accepted) {
-        toast.success(`${selectedRequest.name}님과 지인이 되어따`);
+        toast.success(`${selectedRequest.name} 님과 지인이 되었습니다.`);
       } else {
-        toast.info(`${selectedRequest.name}님의 지인 요청을 거절했습니다.`);
+        toast.info(`${selectedRequest.name} 님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
@@ -115,7 +115,6 @@ const KakaoFriendsList = () => {
   };
 
   const handleUnfriend = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
   
     try {
@@ -139,7 +138,7 @@ const KakaoFriendsList = () => {
         )
       );
   
-      toast.success(`${selectedFriend.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
+      toast.success(`${selectedFriend.kakaoName} 님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
       console.error('오류:', error.message);
       // toast.error('지인 해제 중 오류가 발생했습니다.');
@@ -179,7 +178,7 @@ const KakaoFriendsList = () => {
         )
       );
   
-      toast.success(`${selectedFriend.kakaoName}님에게 지인 요청을 보냈습니당 :)`);
+      toast.success(`${selectedFriend.kakaoName} 님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
       console.error('Error during invite request:', error);
       
@@ -270,7 +269,7 @@ const KakaoFriendsList = () => {
             }}>
               {friend.relationship === null && '초대 보내기'}
               {friend.relationship === 'MEMBER' && '지인 요청 +'}
-              {friend.relationship === 'FOLLOW' && '나의 지인'}
+              {friend.relationship === 'FOLLOW' && '지인 해제'}
               {friend.relationship === 'REQUEST_FOLLOW' && '요청 대기중'}
               {friend.relationship === 'RECEIVE_REQUEST' && '요청 수락 +'}
             </button>
@@ -287,7 +286,7 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.name?selectedRequest.name:selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
+            <h2>{selectedRequest.name?selectedRequest.name:selectedRequest.kakaoName} 님의<br />지인 요청을 수락할까요?</h2>
             <button onClick={() => handleAccept(false)}>거절하기</button>
             <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
@@ -303,9 +302,9 @@ const KakaoFriendsList = () => {
       >
         {selectedFriend && (
           <div>
-            <h2>{selectedFriend.kakaoName}님과<br />지인관계를 해제할까요?</h2>
-            <button onClick={closeUnfriendModal}>유지하기</button>
-            <button onClick={handleUnfriend}>해제하기</button>
+            <h2>{selectedFriend.kakaoName} 님과<br />지인관계를 해제할까요?</h2>
+            <button onClick={closeUnfriendModal}>최소</button>
+            <button onClick={handleUnfriend}>해제</button>
           </div>
         )}
       </Modal>
@@ -319,9 +318,9 @@ const KakaoFriendsList = () => {
       >
         {selectedFriend && (
           <div>
-            <h2>{selectedFriend.kakaoName}님에게<br />지인을 요청할까요?</h2>
+            <h2>{selectedFriend.kakaoName} 님에게<br />지인을 요청할까요?</h2>
             <button onClick={closeInviteModal}>취소</button>
-            <button onClick={handleInvite}>요청하기</button>
+            <button onClick={handleInvite}>요청</button>
           </div>
         )}
       </Modal>

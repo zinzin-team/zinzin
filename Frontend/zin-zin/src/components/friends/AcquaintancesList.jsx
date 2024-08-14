@@ -110,8 +110,8 @@ const AcquaintancesList = () => {
         {selectedAcquaintance && (
           <div>
             <h2>{selectedAcquaintance.name}님과<br />지인관계를 해제할까요?</h2>
-            <button onClick={closeUnfriendModal}>유지하기</button>
-            <button onClick={handleUnfriend}>해제하기</button>
+            <button onClick={closeUnfriendModal}>취소</button>
+            <button onClick={handleUnfriend}>해제</button>
           </div>
         )}
       </Modal>
