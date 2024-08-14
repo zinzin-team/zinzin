@@ -28,7 +28,8 @@ public class TokenAuthenticationFilter implements Filter {
             "/api/login",
             "/api/mates/kakao",
             "/api/ws",
-            "/api/member/register"
+            "/api/member/register",
+            "/api/auth/refresh"
     );
 
     @Autowired

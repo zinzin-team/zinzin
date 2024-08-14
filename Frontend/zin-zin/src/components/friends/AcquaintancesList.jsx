@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './AcquaintancesList.module.css';
@@ -21,7 +21,7 @@ const AcquaintancesList = () => {
       }
 
       try {
-        const response = await axios.get('/api/mates', {
+        const response = await apiClient.get('/api/mates', {
           headers: {
             "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
@@ -54,7 +54,7 @@ const AcquaintancesList = () => {
     const userMemberId = sessionStorage.getItem('userMemberId');
   
     try {
-      const response = await axios.delete('/api/mates', {
+      const response = await apiClient.delete('/api/mates', {
         headers: {
           "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"

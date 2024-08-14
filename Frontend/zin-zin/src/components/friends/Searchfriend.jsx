@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './Searchfriend.module.css';
@@ -43,16 +43,15 @@ const Searchfriend = () => {
       }
 
       // 첫 번째 API 호출: searchId로 사용자 검색
-      const response = await axios.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
+      const response = await apiClient.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
         credentials: 'include',
       });
 
       const data = response.data;
-
+      // console.log(data)
       if (data.success) {
         setResult(data.member);
         // console.log(result)
@@ -62,9 +61,8 @@ const Searchfriend = () => {
           setIsMe(true);
         } else {
           // 두 번째 API 호출: 나의 친구 목록 가져오기
-          const friendsResponse = await axios.get('/api/mates/social-friends', {
+          const friendsResponse = await apiClient.get('/api/mates/social-friends', {
             headers: {
-              'Authorization': `Bearer ${accessToken}`,
               'Content-Type': 'application/json'
             },
             credentials: 'include',
@@ -101,14 +99,12 @@ const Searchfriend = () => {
   };
 
   const handleAcceptRequest = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     try {
-      await axios.put('/api/mates', {
+      await apiClient.put('/api/mates', {
         targetMemberId: result.id,
         accepted: true
       }, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
@@ -122,13 +118,11 @@ const Searchfriend = () => {
   };
 
   const handleUnfriend = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
 
     try {
-      await axios.delete('/api/mates', {
+      await apiClient.delete('/api/mates', {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
         data: {
@@ -147,16 +141,14 @@ const Searchfriend = () => {
   };
 
   const handleInvite = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
 
     try {
-      await axios.post('/api/mates', {
+      await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: result.id
       }, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
@@ -170,16 +162,8 @@ const Searchfriend = () => {
     closeModal();
   };
 
-  const renderButton = () => {
-    if (isMe) {
-      return (
-        <button className={styles.meButton} disabled>
-          me
-        </button>
-      );
-    }
-
-    if (!relationship) {
+  const renderButton = (result) => {
+    if (!result.relationships) {
       // relationship이 null이거나 undefined일 경우에도 MEMBER 케이스로 처리
       return (
         <button
@@ -192,7 +176,7 @@ const Searchfriend = () => {
     }
 
     // relationship 상태에서 relationship 속성에 접근하여 버튼 표시
-    switch (relationship.relationship) {
+    switch (result.relationships[0]) {
       case 'FOLLOW':
         return (
           <button
@@ -256,12 +240,12 @@ const Searchfriend = () => {
       {result && (
         <div className={styles.result}>
           <img
-            src={result.profileImage ? result.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+            src={result.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : result.profileImagePath}
             alt={`${result.name} 프로필`}
             className={styles.profileImage}
           />
           <span className={styles.kakaoName}>{result.name}</span>
-          {renderButton()}
+          {renderButton(result)}
         </div>
       )}
       <Modal

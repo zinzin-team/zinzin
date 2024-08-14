@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './Createcard.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useNavigate } from 'react-router-dom';
-
 
 const Createcard = () => {
     const [selectedOption, setSelectedOption] = useState('option1');
@@ -16,7 +15,6 @@ const Createcard = () => {
     const [charCount, setCharCount] = useState(0);
     const MAX_TAGS = 5;
     const navigate = useNavigate();
-
 
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
@@ -94,12 +92,9 @@ const Createcard = () => {
         formData.append('cardRequest', blob);
 
         try {
-            const token = sessionStorage.getItem('accessToken');
-        
-            const response = await axios.post('/api/cards', formData, {
+            const response = await apiClient.post('/api/cards', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
                 }
             });
             navigate('/');
@@ -110,7 +105,8 @@ const Createcard = () => {
                 toast.error("카드 수정에 실패했습니다.");
             }
         }
-    };
+
+    }
 
     useEffect(() => {
         console.log(selectedFiles); // 상태가 변경될 때마다 출력

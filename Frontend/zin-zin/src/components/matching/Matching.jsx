@@ -1,6 +1,6 @@
 import styles from './Matching.module.css';
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import confetti from 'canvas-confetti';
@@ -31,14 +31,9 @@ const Matching = () => {
 
     const startChatWithMate = async (mateId) => {
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.post('/api/chatroom/create', {
+            const response = await apiClient.post('/api/chatroom/create', {
                 roomType: "MATE",
-                targetId: mateId
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                targetId: mateId,
             });
 
             const room = response.data;
@@ -96,12 +91,7 @@ const Matching = () => {
 
     const fetchMatchingCards = async () => {
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.get('/api/matchings', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const response = await apiClient.get('/api/matchings');
             if (response.data && Array.isArray(response.data.matchings)) {
                 console.log(response.data)
                 setMatchingCardData(response.data.matchings);
@@ -133,12 +123,7 @@ const Matching = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get('/api/cards', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await apiClient.get('/api/cards');
                 if (response.data) {
                     console.log(response.data)
                     const { cardId, tags, info, images } = response.data;
@@ -187,19 +172,12 @@ const Matching = () => {
 
     const handleLikeDislike = async (like) => {
         const currentCard = matchingCardData[currentIndex];
-        const token = sessionStorage.getItem('accessToken');
         try {
-            const response = await axios.post('/api/matchings/like',
+            const response = await apiClient.post('/api/matchings/like',
                 {
                     cardId: currentCard.card.cardId,
                     like: like
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+                });
             console.log(currentCard)
             // currentCard.card.checked = true;
             if (response.data) {
@@ -207,13 +185,9 @@ const Matching = () => {
                 setIsFront(true);
                 console.log(currentCard)
                 if (response.data.matchingSuccess) {
-                    const chatRoomResponse = await axios.post('/api/chatroom/create', {
+                    const chatRoomResponse = await apiClient.post('/api/chatroom/create', {
                         roomType: "LIKE",
-                        targetId: currentCard.memberId
-                    }, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
+                        targetId: currentCard.memberId,
                     });
                     
                     const room = chatRoomResponse.data;
@@ -331,11 +305,11 @@ const Matching = () => {
             } else {
                 return (
                     <div className={styles.match}>
-                        <div className={styles.exhaustcard}>
-                            <p>카드가 떨어졌어요...</p>
-                            <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
-                            <p>내일 접속해서 새로운 카드를 받으세요</p>
-                        </div>
+                        <div className={styles.exhaustcard1}>
+                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
+                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
+                    <p className={styles.secondtext2}>내일 접속해서 새로운 카드를 받으세요</p>
+                </div>
                     </div>
                 );
             }
@@ -487,37 +461,38 @@ const Matching = () => {
 
     const renderMatchingModeOffContent = () => (
 
-            <div className={styles.match}>
-                <div className={styles.exhaustcard}>
-                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
-                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
-                    <p className={styles.secondtext}>내일 접속해서 새로운 카드를 받으세요</p>
-                </div>
-            </div>
-
         
-        // <div className={styles.match}>
-        //     <div className={styles.matchoff}>
-        //         <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
-        //     </div>
-        //     <div className={styles.offModeContent}>
-        //         <p>매칭 OFF 상태 입니다</p>
-        //         <button onClick={() => navigate('/like')}>지인 현황보기</button>
-        //     </div>
-        // </div>
+        <div className={styles.match}>
+            <div className={styles.matchoff}>
+                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+            </div>
+            <div className={styles.offModeContent}>
+                <p>매칭 OFF 상태 입니다</p>
+                <button onClick={() => navigate('/like')}>지인 현황보기</button>
+            </div>
+        </div>
     );
 
     const getContent = () => {
         if (isLoading) {
             return (
-                <div className={styles.loading}>
-                    <p>로딩 중...</p>
+                <div className={styles.spinner}>
+                    <div className={`${styles.heart} ${styles.heart1}`}></div>
+                    <div className={`${styles.heart} ${styles.heart2}`}></div>
+                    <div className={`${styles.heart} ${styles.heart3}`}></div>
+                    <div className={styles.loadingtext}>
+                        Loading
+                        <span className={styles.dot1}>.</span>
+                        <span className={styles.dot2}>.</span>
+                        <span className={styles.dot3}>.</span>
+                    </div>
                 </div>
             );
         }
 
         const matchingMode = sessionStorage.getItem('matchingMode');
         // const matchingMode = true;
+        console.log(matchingMode)
 
         if (matchingMode === true) {
             if (!cardData) {

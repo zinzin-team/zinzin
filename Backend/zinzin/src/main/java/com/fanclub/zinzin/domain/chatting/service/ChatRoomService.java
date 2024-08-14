@@ -8,9 +8,9 @@ import com.fanclub.zinzin.domain.chatting.entity.*;
 import com.fanclub.zinzin.domain.chatting.repository.ChatMessageRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomMemberRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomRepository;
-import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
+import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.ChatRoomErrorCode;
@@ -99,18 +99,32 @@ public class ChatRoomService {
 
     @Transactional
     public ResponseChatRoomDto createAndFetchChatRoom(CreateChatRoomDto createChatRoomDto, Long myMemberId) {
+        Long otherMemberId = createChatRoomDto.getTargetId();
+        List<ChatRoom> checkDuplicateRooms = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
+
+        if(checkDuplicateRooms.size() == 1){
+            ChatRoom duplicateRoom = checkDuplicateRooms.get(0);
+
+            if(!duplicateRoom.getRoomType().equals(ChatRoomType.MATE)){
+                throw new BaseException(ChatRoomErrorCode.EXISTED_CHAT_ROOM);
+            }
+
+            Person otherPerson = personRepository.findPersonByMemberId(otherMemberId)
+                    .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
+            return ResponseChatRoomDto.of(duplicateRoom, otherPerson, chatService.getLastMessage(duplicateRoom.getId()), false);
+        }
+
         ChatRoom chatRoom = ChatRoom.createRoom(createChatRoomDto);
         chatRoomRepository.save(chatRoom);
 
         List<ChatRoomMember> chatRoomMembers = new ArrayList<>();
         chatRoomMembers.add(new ChatRoomMember(chatRoom, memberRepository.findById(myMemberId)
                 .orElseThrow(()-> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND))));
-        chatRoomMembers.add(new ChatRoomMember(chatRoom, memberRepository.findById(createChatRoomDto.getTargetId())
+        chatRoomMembers.add(new ChatRoomMember(chatRoom, memberRepository.findById(otherMemberId)
                 .orElseThrow(()-> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND))));
 
         chatRoom.updateMembers(chatRoomMembers);
 
-        Long otherMemberId = createChatRoomDto.getTargetId();
         List<ChatRoom> fetchedChatRoomList = chatRoomRepository.findChatRoomByMemberIds(myMemberId, otherMemberId, ChatRoomStatus.ACTIVE);
 
         if(fetchedChatRoomList.isEmpty()){
@@ -175,10 +189,12 @@ public class ChatRoomService {
 
         myMember.updateHeart(isHeart);
         if (isHeart && otherMember.getHeartToggle()) {
+            List<Mate> mates = personRepository.getMatesByMatchingPartnerId(memberId, otherMember.getMember().getId());
             chatRoom.updateChatRoomType(ChatRoomType.LOVE);
-            return new HeartToggleDto(true);
+            return new HeartToggleDto(true, mates);
         }
-        return new HeartToggleDto(false);
+
+        return new HeartToggleDto(false, null);
     }
 }
 

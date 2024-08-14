@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class FollowingRequestResponse {
     private Long id;
-    private String profileImage;
+    private String profileImagePath;
     private String name;
 }
