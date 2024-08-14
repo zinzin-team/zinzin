@@ -11,6 +11,7 @@ import com.fanclub.zinzin.domain.chatting.repository.ChatRoomRepository;
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberInfoRepository;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
+import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
 import com.fanclub.zinzin.global.error.code.ChatRoomErrorCode;
@@ -175,10 +176,12 @@ public class ChatRoomService {
 
         myMember.updateHeart(isHeart);
         if (isHeart && otherMember.getHeartToggle()) {
+            List<Mate> mates = personRepository.getMatesByMatchingPartnerId(memberId, otherMember.getMember().getId());
             chatRoom.updateChatRoomType(ChatRoomType.LOVE);
-            return new HeartToggleDto(true);
+            return new HeartToggleDto(true, mates);
         }
-        return new HeartToggleDto(false);
+
+        return new HeartToggleDto(false, null);
     }
 }
 
