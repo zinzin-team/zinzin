@@ -57,7 +57,6 @@ const KakaoFriendsList = () => {
   }, []);
 
   const openModal = (request) => {
-    console.log(request)
     setSelectedRequest(request);
     setModalIsOpen(true);
   };
