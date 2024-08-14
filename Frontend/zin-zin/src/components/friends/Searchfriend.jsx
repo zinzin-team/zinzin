@@ -192,7 +192,7 @@ const Searchfriend = () => {
   return (
     <div className={styles.container}>
       <ToastContainer />
-      <p>아이디로 친구를 찾을 수 있어요!</p>
+      <p className={styles.searchInfo}>아이디를 통해 지인을 찾아보세요!</p>
       <div className={styles.searchContainer}>
         <input
           type="text"
