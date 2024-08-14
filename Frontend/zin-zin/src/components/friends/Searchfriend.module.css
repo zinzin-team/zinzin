@@ -1,7 +1,7 @@
 .container {
   min-width: 320px;
   min-height: 600px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   text-align: center;
 }
 
@@ -13,10 +13,23 @@
   margin-bottom: 10px;
 }
 
+.searchInfo{
+  color: #b0b0b0;
+  margin-bottom: 20px;
+}
+
+.searchContainer{
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ gap: 10px;
+}
+
 .searchInput {
   width: 70%;
   padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .searchButton {
@@ -26,6 +39,7 @@
   color: #fff;
   background-color: #ff9494;
   border: 1px solid #ff9494;
+  border-radius: 6px;
 }
 
 .result {

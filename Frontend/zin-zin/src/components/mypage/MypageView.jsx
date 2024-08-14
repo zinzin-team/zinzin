@@ -164,7 +164,6 @@ const MypageView = () => {
               src={userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage} 
               alt="프로필" 
               className={styles.profileImage} 
-              onClick={handleProfileImageClick} 
               onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
             />
             <button 

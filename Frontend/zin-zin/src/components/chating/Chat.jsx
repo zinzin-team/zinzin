@@ -63,7 +63,8 @@ const Chat = () => {
                 (
                     chatRooms.map(room => (
                         <div key={room.roomId} className={styles.chatRoom}>
-                            <img src={room.otherMember.profileImage} alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
+                            <img src={room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage}
+                                alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
                                     <div className={styles.toptalk}>
@@ -98,7 +99,7 @@ const Chat = () => {
                 {chatRooms && chatRooms.length > 0 ? (
                     chatRooms.map(room => (
                         <div key={room.roomId} className={styles.chatRoombottom} onClick={() => handleRoomClick(room)}>
-                            <img src={room.otherMember.profileImage} alt={room.otherMember.profileImage} className={styles.profileImage} />
+                            <img src={room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage} alt={room.otherMember.profileImage} className={styles.profileImage} />
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
                                     <div>
