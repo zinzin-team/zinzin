@@ -247,7 +247,7 @@ const Chattingroom = () => {
         <Link to="/chat" className={styles.iconicon}><i className="bi bi-chevron-left"/></Link>
         </div>
         <div className={styles.imagecontainer}>
-            <img src={profileImage}/>
+            <img src={profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : profileImage}/>
             {/* <img src="/assets/홍창기.png"/> */}
             {roomType === 'MATE' ? <div>{name}</div> : <div>{nickname}</div>}
         </div>

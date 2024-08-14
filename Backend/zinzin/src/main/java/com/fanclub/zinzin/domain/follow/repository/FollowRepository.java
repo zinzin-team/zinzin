@@ -11,7 +11,7 @@ import java.util.List;
 public interface FollowRepository extends Neo4jRepository<Person, String> {
 
     @Query("MATCH (a:Person {member_id: $memberId})-[:FOLLOW]->(b:Person), (b)-[:FOLLOW]->(a) " +
-            "RETURN b.member_id AS id, b.name AS name")
+            "RETURN b.member_id AS id, b.profile_image as profileImagePath, b.name AS name")
     List<FollowingResponse> findPeopleByFollowRelation(Long memberId);
 
     @Query("MATCH (a:Person {member_id: $userMemberId}) " +
