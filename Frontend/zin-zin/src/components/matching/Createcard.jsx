@@ -81,6 +81,7 @@ const Createcard = () => {
         const jsonData = {
             info: introduction,
             tags: selectedTags,
+            imageIndexes: [0, 1, 2],
         };
 
         selectedFiles.forEach((file) => {
