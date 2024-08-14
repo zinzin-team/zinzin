@@ -36,6 +36,8 @@ const KakaoFriendsList = () => {
           credentials: 'include',
         });
 
+        console.log("social-friends >> ")
+        console.log(responseFriends.data)
         const responseRequests = await apiClient.get('/api/mates/requests', {
           headers: {
             // "Authorization": `Bearer ${accessToken}`,
@@ -43,6 +45,9 @@ const KakaoFriendsList = () => {
           },
           credentials: 'include',
         });
+
+        console.log("requests >> ")
+        console.log(responseRequests.data)
 
         setFriends(responseFriends.data);
         setRequests(responseRequests.data);
