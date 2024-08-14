@@ -126,7 +126,7 @@ const MypageView = () => {
   };
 
   const handleInviteButtonClick = () => {
-    const loginUrl = "https://zin-zin.site/login";
+    const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
       toast.success("초대링크를 클립보드에 저장했어요! :)");
@@ -210,7 +210,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              초대하기
+              초대링크복사
             </button>
           </div>
         </div>
