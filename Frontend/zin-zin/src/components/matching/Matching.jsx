@@ -492,9 +492,9 @@ const Matching = () => {
 
         const matchingMode = sessionStorage.getItem('matchingMode');
         // const matchingMode = true;
-        console.log(matchingMode)
-
-        if (matchingMode === true) {
+        // console.log(typeof(matchingMode)) /// true
+        // console.log(matchingMode === "true" ) /// false
+        if (matchingMode === "true") {
             if (!cardData) {
                 return renderCreateCardContent();
             } else {

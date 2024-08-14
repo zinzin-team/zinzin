@@ -124,7 +124,7 @@ const Chattingroom = () => {
 
         try {
             const response = await apiClient.put(`/api/chatroom/${roomId}/heart`, {
-                isHeart: newIsHeart
+                heart: newIsHeart
             });
 
             // 서버로부터의 응답을 확인하고 추가적인 처리가 필요하다면 여기에 작성
@@ -156,7 +156,7 @@ const Chattingroom = () => {
                     )}
                 </div>
         </div>
-        {roomType !== "MATE" && (
+        {roomType === "LIKE" && (
             <div className={styles.centercenter}>
                 <div title="Like" className={styles.heartContainer}>
                     <input
@@ -183,6 +183,11 @@ const Chattingroom = () => {
                         </svg>
                     </div>
                 </div>
+            </div>
+            )}
+              {roomType === "LOVE" && (
+            <div className={styles.centercenter}>
+               <img src="/assets/prettyHeart.png" className={styles.hearth}/>
             </div>
             )}
             <div className={styles.customDivider}></div>
