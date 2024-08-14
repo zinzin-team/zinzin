@@ -18,7 +18,7 @@ public class TokenController {
     private final TokenService tokenService;
 
     @GetMapping("/refresh")
-    public ResponseEntity<TokenDto> reGenerateToken(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<TokenDto> regenerateToken(HttpServletRequest request, HttpServletResponse response) {
         return ResponseEntity.ok(tokenService.refreshTokens(request, response));
     }
 }
