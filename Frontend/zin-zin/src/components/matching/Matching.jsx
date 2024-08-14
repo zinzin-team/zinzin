@@ -331,11 +331,11 @@ const Matching = () => {
             } else {
                 return (
                     <div className={styles.match}>
-                        <div className={styles.exhaustcard}>
-                            <p>카드가 떨어졌어요...</p>
-                            <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
-                            <p>내일 접속해서 새로운 카드를 받으세요</p>
-                        </div>
+                        <div className={styles.exhaustcard1}>
+                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
+                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
+                    <p className={styles.secondtext2}>내일 접속해서 새로운 카드를 받으세요</p>
+                </div>
                     </div>
                 );
             }
@@ -487,37 +487,38 @@ const Matching = () => {
 
     const renderMatchingModeOffContent = () => (
 
-            <div className={styles.match}>
-                <div className={styles.exhaustcard}>
-                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
-                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
-                    <p className={styles.secondtext}>내일 접속해서 새로운 카드를 받으세요</p>
-                </div>
-            </div>
-
         
-        // <div className={styles.match}>
-        //     <div className={styles.matchoff}>
-        //         <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
-        //     </div>
-        //     <div className={styles.offModeContent}>
-        //         <p>매칭 OFF 상태 입니다</p>
-        //         <button onClick={() => navigate('/like')}>지인 현황보기</button>
-        //     </div>
-        // </div>
+        <div className={styles.match}>
+            <div className={styles.matchoff}>
+                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
+            </div>
+            <div className={styles.offModeContent}>
+                <p>매칭 OFF 상태 입니다</p>
+                <button onClick={() => navigate('/like')}>지인 현황보기</button>
+            </div>
+        </div>
     );
 
     const getContent = () => {
         if (isLoading) {
             return (
-                <div className={styles.loading}>
-                    <p>로딩 중...</p>
+                <div className={styles.spinner}>
+                    <div className={`${styles.heart} ${styles.heart1}`}></div>
+                    <div className={`${styles.heart} ${styles.heart2}`}></div>
+                    <div className={`${styles.heart} ${styles.heart3}`}></div>
+                    <div className={styles.loadingtext}>
+                        Loading
+                        <span className={styles.dot1}>.</span>
+                        <span className={styles.dot2}>.</span>
+                        <span className={styles.dot3}>.</span>
+                    </div>
                 </div>
             );
         }
 
         const matchingMode = sessionStorage.getItem('matchingMode');
         // const matchingMode = true;
+        console.log(matchingMode)
 
         if (matchingMode === true) {
             if (!cardData) {

@@ -125,8 +125,16 @@ const Like = () => {
 
     if (loading) {
         return (
-            <div className={styles.loadingContainer}>
-                <p>로딩중...</p>
+            <div className={styles.spinner}>
+                <div className={`${styles.heart} ${styles.heart1}`}></div>
+                <div className={`${styles.heart} ${styles.heart2}`}></div>
+                <div className={`${styles.heart} ${styles.heart3}`}></div>
+                <div className={styles.loadingtext}>
+                    Loading
+                    <span className={styles.dot1}>.</span>
+                    <span className={styles.dot2}>.</span>
+                    <span className={styles.dot3}>.</span>
+                </div>
             </div>
         );
     }
