@@ -57,6 +57,7 @@ const AppContent = () => {
         <Route path="/match" element={<ProtectedRoute element={<MatchingView />} />} />
         <Route path="/mypage" element={<ProtectedRoute element={<MypageView />} />} />
         <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
+        <Route path="/userguide" element={<ProtectedRoute element={<UserGuide />} />} />
         <Route path="/create-card" element={<ProtectedRoute element={<CreatecardView />} />} />
         <Route path="/update-card/:cardId" element={<ProtectedRoute element={<UpdateCard />} />} />
         <Route path="/leave" element={<ProtectedRoute element={<LeaveView />} />} />

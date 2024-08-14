@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
+// import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './KakaoFriendsList.module.css';
@@ -27,17 +28,17 @@ const KakaoFriendsList = () => {
       }
 
       try {
-        const responseFriends = await axios.get('/api/mates/social-friends', {
+        const responseFriends = await apiClient.get('/api/mates/social-friends', {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
         });
 
-        const responseRequests = await axios.get('/api/mates/requests', {
+        const responseRequests = await apiClient.get('/api/mates/requests', {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -88,13 +89,13 @@ const KakaoFriendsList = () => {
   const handleAccept = async (accepted) => {
     const accessToken = sessionStorage.getItem('accessToken');
     try {
-      await axios.put('/api/mates', {
+      await apiClient.put('/api/mates', {
         // targetMemberId: selectedRequest.memberId,
         targetMemberId: selectedRequest.id,
         accepted
       }, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         credentials: 'include',
@@ -103,9 +104,9 @@ const KakaoFriendsList = () => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (accepted) {
-        toast.success(`${selectedRequest.kakaoName}님과 지인이 되어따`);
+        toast.success(`${selectedRequest.name}님과 지인이 되어따`);
       } else {
-        toast.info(`${selectedRequest.kakaoName}님의 지인 요청을 거절했습니다.`);
+        toast.info(`${selectedRequest.name}님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
@@ -119,9 +120,9 @@ const KakaoFriendsList = () => {
     const userMemberId = sessionStorage.getItem('memberId');
   
     try {
-      await axios.delete('/api/mates', {
+      await apiClient.delete('/api/mates', {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         data: {
@@ -159,12 +160,12 @@ const KakaoFriendsList = () => {
     try {
       console.log('Sending invite request...');
       
-      const response = await axios.post('/api/mates', {
+      const response = await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.memberId
       }, {
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         }
       });
@@ -230,7 +231,7 @@ const KakaoFriendsList = () => {
               <div key={index} className={styles.requestItem}>
                 <img
                   src={request.profileImage ? request.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
-                  alt={`${request.kakaoName} 프로필`}
+                  alt={`${request.name} 프로필`}
                   className={styles.avatar}
                   onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
                 />
@@ -287,7 +288,7 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
+            <h2>{selectedRequest.name}님의<br />지인 요청을 수락할까요?</h2>
             <button onClick={() => handleAccept(false)}>거절하기</button>
             <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
