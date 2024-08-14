@@ -163,7 +163,7 @@ const KakaoFriendsList = () => {
       const response = await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.memberId
-      }, {
+      }, {  
         headers: {
           // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
@@ -230,7 +230,7 @@ const KakaoFriendsList = () => {
             {requests.map((request, index) => (
               <div key={index} className={styles.requestItem}>
                 <img
-                  src={request.profileImage ? request.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+                  src={request.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : request.profileImagePath }
                   alt={`${request.name} 프로필`}
                   className={styles.avatar}
                   onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
