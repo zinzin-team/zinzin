@@ -35,7 +35,6 @@ const UpdateCard = () => {
                 setSelectedImages(images);
                 setSelectedTags(tags);
             } catch (error) {
-                console.error('카드 정보를 불러오는 중 오류 발생 : ', error);
                 toast.error('카드 정보를 불러오는 데 실패했습니다.');
             }
         };
@@ -48,20 +47,25 @@ const UpdateCard = () => {
     };
 
     const handleFileChange = (e, index) => {
-        console.log("handleFileChange");
-
         const file = e.target.files[0];
 
-        setSelectedFiles((prevFiles) => {
-            const newFiles = [...prevFiles];
-            newFiles[index] = file;
-            return newFiles;
-        });
+        if (file && file.size) {
+            const maxFileSize = 5 * 1024 * 1024; // 5MB 사이즈 제한
+
+            if (file.size > maxFileSize) {
+                toast.warn("5MB 이하의 이미지만 업로드할 수 있습니다.");
+                return;
+            }
+
+            setSelectedFiles((prevFiles) => {
+                const newFiles = [...prevFiles];
+                newFiles[index] = file;
+                return newFiles;
+            });
+        }
     };
 
     const handleRemoveFile = (index) => {
-        console.log("handleRemoveFile");
-
         setSelectedFiles((prevFiles) => {
             const newFiles = [...prevFiles];
             newFiles[index] = null;
@@ -102,13 +106,12 @@ const UpdateCard = () => {
         }
 
         const formData = new FormData();
-
         const jsonData = {
             cardId,
             info: introduction,
             tags: selectedTags,
             imageIndexes: [],
-        }
+        };
 
         selectedFiles.forEach((file, index) => {
             if (file) {
@@ -128,13 +131,17 @@ const UpdateCard = () => {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
                 },
+                timeout: 30000, // 타임아웃을 30초로 설정
             });
 
             toast.success('카드 수정 성공');
             navigate('/');
         } catch (error) {
-            console.error('카드 수정 중 오류 발생:', error);
-            toast.error('카드 수정에 실패했습니다.');
+            if (error.response && error.response.status === 413) {
+                toast.error("업로드 가능한 이미지 용량을 초과하여 카드 수정에 실패했습니다.");
+            } else {
+                toast.error("카드 수정에 실패했습니다.");
+            }
         }
     };
 
