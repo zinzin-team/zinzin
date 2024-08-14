@@ -85,6 +85,7 @@ const Settings = () => {
       setLastModified(new Date());
       setShowModal(false);
       toast.success('매칭 모드가 변경되었습니다.');
+      sessionStorage.setItem('matchingMode', !matchingMode)
     } catch (error) {
       console.error('매칭 모드 변경 중 오류 발생:', error);
       toast.error('매칭 모드 변경 중 오류가 발생했습니다.');
