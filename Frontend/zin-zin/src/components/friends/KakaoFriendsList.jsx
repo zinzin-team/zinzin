@@ -57,6 +57,7 @@ const KakaoFriendsList = () => {
   }, []);
 
   const openModal = (request) => {
+    console.log(request)
     setSelectedRequest(request);
     setModalIsOpen(true);
   };
@@ -288,7 +289,7 @@ const KakaoFriendsList = () => {
       >
         {selectedRequest && (
           <div>
-            <h2>{selectedRequest.name}님의<br />지인 요청을 수락할까요?</h2>
+            <h2>{selectedRequest.name?selectedRequest.name:selectedRequest.kakaoName}님의<br />지인 요청을 수락할까요?</h2>
             <button onClick={() => handleAccept(false)}>거절하기</button>
             <button onClick={() => handleAccept(true)}>수락하기</button>
           </div>
