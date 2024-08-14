@@ -10,4 +10,5 @@ import java.util.List;
 public class CardRequest {
     private String info;
     private List<String> tags;
+    private List<Integer> imageIndexes;
 }

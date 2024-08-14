@@ -104,7 +104,8 @@ public class CardService {
     }
 
     @Transactional
-    public void updateCard(Long cardId, String info, List<MultipartFile> images, List<String> tags, Long memberId) {
+    public void updateCard(Long cardId, String info, List<MultipartFile> images, List<Integer> imageIndexes,
+                           List<String> tags, Long memberId) {
         if (memberId == null) {
             throw new BaseException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
@@ -119,7 +120,11 @@ public class CardService {
             throw new BaseException(CardErrorCode.AUTHOR_MISMATCH);
         }
 
-        if (images == null || images.size() != 3) {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+
+        if (images.size() != imageIndexes.size()) {
             throw new BaseException(CardErrorCode.INVALID_NUMBER_OF_IMAGES);
         }
 
@@ -143,19 +148,23 @@ public class CardService {
 
         // 요청으로 들어온 카드 이미지를 업로드하고 URL을 저장한다.
         // 요청으로 들어온 카드 이미지가 존재하지 않으면 기존 URL을 저장한다.
-        List<String> imageURLs = card.getCardImages().stream()
+        List<String> oldImageURLs = card.getCardImages().stream()
                 .sorted(Comparator.comparingInt(CardImage::getImageNum))
                 .map(CardImage::getImage)
                 .toList();
+        List<String> newImageURLs = new ArrayList<>(oldImageURLs.stream().toList());
+
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile image = images.get(i);
+            Integer imageIndex = imageIndexes.get(i);
+            String newImageURL = s3Service.uploadCard(image);
+            newImageURLs.set(imageIndex, newImageURL);
+        }
+
         List<CardImage> newCardImages = new ArrayList<>();
 
-        for (int i = 0; i < imageURLs.size(); i++) {
-            if (images.get(i) == null) {
-                newCardImages.add(CardImage.toCardImageEntity(card, imageURLs.get(i), i));
-            } else {
-                String newImageURL = s3Service.uploadCard(images.get(i));
-                newCardImages.add(CardImage.toCardImageEntity(card, newImageURL, i));
-            }
+        for (int i = 0; i < 3; i++) {
+            newCardImages.add(CardImage.toCardImageEntity(card, newImageURLs.get(i), i));
         }
 
         // cardImages를 업데이트한다.
@@ -166,8 +175,10 @@ public class CardService {
         cardRepository.save(card);
 
         // 기존 URL에 해당하는 카드 이미지를 삭제한다.
-        for (String imageURL : imageURLs) {
-            s3Service.deleteS3(imageURL);
+        for (int i = 0; i < 3; i++) {
+            if (oldImageURLs.get(i) != newImageURLs.get(i)) {
+                s3Service.deleteS3(oldImageURLs.get(i));
+            }
         }
     }
 }
