@@ -99,6 +99,7 @@ public class ChatRoomService {
 
     @Transactional
     public ResponseChatRoomDto createAndFetchChatRoom(CreateChatRoomDto createChatRoomDto, Long myMemberId) {
+
         ChatRoom chatRoom = ChatRoom.createRoom(createChatRoomDto);
         chatRoomRepository.save(chatRoom);
 
