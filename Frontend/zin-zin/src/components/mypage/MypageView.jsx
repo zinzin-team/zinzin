@@ -157,6 +157,7 @@ const MypageView = () => {
         autoClose={800}
         limit={1}
       />
+      <h2>마이페이지</h2>
       <div className={styles.userInfoBox}>
         <div className={styles.userInfoTop}>
           <div className={styles.profileImageContainer}>
