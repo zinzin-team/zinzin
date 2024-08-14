@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { useLocation, useParams, useNavigate ,Link} from 'react-router-dom';
 import styles from './Chattingroom.module.css';
 import { Stomp } from "@stomp/stompjs"; 
@@ -60,12 +60,7 @@ const Chattingroom = () => {
 
     const goout = async () => {
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.delete(`/api/chatroom/${roomId}/exit`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }    
-            });
+            const response = await apiClient.delete(`/api/chatroom/${roomId}/exit`);
             navigate('/chat');
             console.log(response.data)
         } catch (error) {
@@ -89,12 +84,7 @@ const Chattingroom = () => {
         
         const fetchMessages = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`/api/chatroom/${roomId}/messages`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }    
-                });
+                const response = await apiClient.get(`/api/chatroom/${roomId}/messages`);
                 const reversedMessages = response.data.reverse(); // 배열을 역순으로 만듦
                 console.log(reversedMessages);
                 setMessages(reversedMessages); // 역순으로 된 배열을 저장
@@ -133,13 +123,8 @@ const Chattingroom = () => {
         setIsHeart(newIsHeart); // UI 업데이트
 
         try {
-            const token = sessionStorage.getItem('accessToken');
-            const response = await axios.put(`/api/chatroom/${roomId}/heart`, {
+            const response = await apiClient.put(`/api/chatroom/${roomId}/heart`, {
                 isHeart: newIsHeart
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
             });
 
             // 서버로부터의 응답을 확인하고 추가적인 처리가 필요하다면 여기에 작성

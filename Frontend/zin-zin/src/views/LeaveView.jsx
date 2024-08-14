@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import apiClient from '../api/apiClient';
 import "./LeaveView.css";
 
 const LeaveView = () => {
@@ -16,12 +16,9 @@ const LeaveView = () => {
 
     const handleDelete = async (event) => {
         event.preventDefault();
-        const accessToken = sessionStorage.getItem("accessToken");
-
         try {
-            const response = await axios.delete('/api/member/me', {
+            const response = await apiClient.delete('/api/member/me', {
                 headers: {
-                    "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                   },
                   credentials: 'include',

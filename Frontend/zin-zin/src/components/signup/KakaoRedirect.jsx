@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { useAuth } from '../../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,7 +13,7 @@ const KakaoRedirect = () => {
         console.log('handleOAuthKakao 호출됨');
         try {
             console.log('인가 코드:', code);
-            const response = await axios.get(`/api/oauth2/kakao/callback?code=${code}`);
+            const response = await apiClient.get(`/api/oauth2/kakao/callback?code=${code}`);
             const data = response.data;
             console.log('카카오 응답 데이터:', data);
 
@@ -45,9 +45,8 @@ const KakaoRedirect = () => {
                 }
         
                 try {
-                    const memberResponse = await axios.get('/api/member/me', {
+                    const memberResponse = await apiClient.get('/api/member/me', {
                         headers: {
-                            "Authorization": `Bearer ${data.accessToken}`,
                             "Content-Type": "application/json"
                         },
                         credentials: 'include',

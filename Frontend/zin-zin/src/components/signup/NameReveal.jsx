@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NameReveal.module.css';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
+
 
 const NameReveal = ({ userData, setUserData }) => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const NameReveal = ({ userData, setUserData }) => {
                 nickname: null
             };
             
-            const response = await axios.post('/api/member/register', requestData, {
+            const response = await apiClient.post('/api/member/register', requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }

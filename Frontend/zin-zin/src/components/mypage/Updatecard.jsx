@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './Updatecard.module.css';  // 경로를 확인하고 올바르게 수정
@@ -20,10 +20,8 @@ const UpdateCard = () => {
     useEffect(() => {
         const fetchCardData = async () => {
             try {
-                const token = sessionStorage.getItem('accessToken');
-                const response = await axios.get(`/api/cards`, {
+                const response = await apiClient.get(`/api/cards`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`,
                         "Content-Type": "application/json"
                       },
                       credentials: 'include',
@@ -111,12 +109,9 @@ const UpdateCard = () => {
         formData.append('cardRequest', blob);
 
         try {
-            const token = sessionStorage.getItem('accessToken');
-
-            const response = await axios.put(`/api/cards/${cardId}`, formData, {
+            const response = await apiClient.put(`/api/cards/${cardId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
                 },
             });
 
