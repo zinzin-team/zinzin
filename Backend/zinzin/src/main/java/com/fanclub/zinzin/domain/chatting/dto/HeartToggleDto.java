@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class HeartToggleDto {
-    private boolean isHeart;
+    private boolean heart;
     private List<Mate> mates;
 }
