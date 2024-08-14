@@ -52,35 +52,9 @@ const Searchfriend = () => {
       });
 
       const data = response.data;
-
+      // console.log(data)
       if (data.success) {
         setResult(data.member);
-        // console.log(result)
-
-        // 자신을 검색한 경우
-        if (data.member.id === parseInt(memberId, 10)) {
-          setIsMe(true);
-        } else {
-          // 두 번째 API 호출: 나의 친구 목록 가져오기
-          const friendsResponse = await axios.get('/api/mates/social-friends', {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-          });
-
-          const friends = friendsResponse.data;
-
-          // friends 배열에서 검색된 사용자를 찾기
-          const relationshipWithSearchedUser = friends.find(
-            (friend) => friend.memberId === data.member.id
-          );
-
-          // 찾은 friend 객체를 상태로 저장
-          setRelationship(relationshipWithSearchedUser);
-          console.log(relationship.relationship)
-        }
       } else {
         setError('존재하지 않는 아이디입니다.');
       }
@@ -170,16 +144,8 @@ const Searchfriend = () => {
     closeModal();
   };
 
-  const renderButton = () => {
-    if (isMe) {
-      return (
-        <button className={styles.meButton} disabled>
-          me
-        </button>
-      );
-    }
-
-    if (!relationship) {
+  const renderButton = (result) => {
+    if (!result.relationships) {
       // relationship이 null이거나 undefined일 경우에도 MEMBER 케이스로 처리
       return (
         <button
@@ -192,7 +158,7 @@ const Searchfriend = () => {
     }
 
     // relationship 상태에서 relationship 속성에 접근하여 버튼 표시
-    switch (relationship.relationship) {
+    switch (result.relationships[0]) {
       case 'FOLLOW':
         return (
           <button
@@ -256,12 +222,12 @@ const Searchfriend = () => {
       {result && (
         <div className={styles.result}>
           <img
-            src={result.profileImage ? result.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+            src={result.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : result.profileImagePath}
             alt={`${result.name} 프로필`}
             className={styles.profileImage}
           />
           <span className={styles.kakaoName}>{result.name}</span>
-          {renderButton()}
+          {renderButton(result)}
         </div>
       )}
       <Modal
