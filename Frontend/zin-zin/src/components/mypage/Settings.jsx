@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"; 
 import styles from './Settings.module.css'; 
 import Modal from 'react-modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import apiClient from '../../api/apiClient';
 
 const Settings = () => {
@@ -82,10 +84,11 @@ const Settings = () => {
       setMatchingMode(prevState => !prevState);
       setLastModified(new Date());
       setShowModal(false);
-      alert('매칭 모드가 변경되었습니다.');
+      toast.success('매칭 모드가 변경되었습니다.');
     } catch (error) {
       console.error('매칭 모드 변경 중 오류 발생:', error);
-      alert('매칭 모드 변경 중 오류가 발생했습니다.');
+      toast.error('매칭 모드 변경 중 오류가 발생했습니다.');
+      // alert('매칭 모드 변경 중 오류가 발생했습니다.');
     }
   };
 
@@ -106,10 +109,10 @@ const Settings = () => {
       );
 
       setShowVisibilityModal(false);
-      alert('실명 공개 여부가 변경되었습니다.');
+      toast.success('실명 공개 여부가 변경되었습니다.');
     } catch (error) {
       console.error('실명 공개 여부 변경 중 오류 발생:', error);
-      alert('실명 공개 여부 변경 중 오류가 발생했습니다.');
+      toast.error('실명 공개 여부 변경 중 오류가 발생했습니다.');
     }
   };
 
@@ -195,7 +198,7 @@ const Settings = () => {
         ...userData,
         searchId: newSearchId,
       }));
-      alert('아이디가 성공적으로 변경되었습니다.');
+      toast.success('아이디가 성공적으로 변경되었습니다.');
     } catch (error) {
       console.error("아이디 변경 중 오류 발생:", error);
     }
@@ -203,8 +206,8 @@ const Settings = () => {
 
   return (
     <div className={styles.settingsContainer}>
+      <ToastContainer />
       <h2>설정</h2>
-      
       <div className={styles.settingIdSection}>
         <h3>아이디 변경</h3>
         <input 
