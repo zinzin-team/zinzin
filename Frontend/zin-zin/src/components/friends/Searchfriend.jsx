@@ -90,6 +90,7 @@ const Searchfriend = () => {
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
+    window.location.reload();
   };
 
   const handleUnfriend = async () => {
@@ -113,6 +114,7 @@ const Searchfriend = () => {
       toast.error('지인 해제 중 오류가 발생했습니다.');
     }
     closeModal();
+    window.location.reload();
   };
 
   const handleInvite = async () => {
@@ -135,6 +137,7 @@ const Searchfriend = () => {
       toast.error('지인 요청 중 오류가 발생했습니다.');
     }
     closeModal();
+    window.location.reload();
   };
 
   const renderButton = (result) => {
