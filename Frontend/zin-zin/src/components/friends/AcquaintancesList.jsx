@@ -66,7 +66,7 @@ const AcquaintancesList = () => {
       });
   
       if (response.status === 200) { // 성공적으로 요청이 완료된 경우
-        toast.success(`${selectedAcquaintance.kakaoName}님과 지인관계가 해제되었습니다ㅠㅠ`);
+        toast.success(`${selectedAcquaintance.kakaoName?selectedAcquaintance.kakaoName:selectedAcquaintance.name}님과 지인관계가 해제되었습니다ㅠㅠ`);
         setAcquaintances(acquaintances.filter(acquaintance => acquaintance.id !== selectedAcquaintance.id));
       }
     } catch (error) {
@@ -75,6 +75,7 @@ const AcquaintancesList = () => {
     }
   
     closeUnfriendModal();
+    window.location.reload();
   };
 
   if (loading) {
