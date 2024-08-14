@@ -218,7 +218,7 @@ const MypageView = () => {
       <div className={styles.matchingModeBox}>
         <div className={styles.matchingModeTop}>
           <h3 className={styles.matchingModeText}>매칭 모드 {userData.matchingMode ? "ON" : "OFF"}</h3>
-          <p>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
+          <p className={styles.matchingModeLog}>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
         </div>
         <div className={styles.matchingModeBottom} style={{ margin: userData.matchingMode ? '20px' : '0' }}>
         {userData.matchingMode ? (
