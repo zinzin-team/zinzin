@@ -135,7 +135,7 @@ const Chattingroom = () => {
         try {
             const token = sessionStorage.getItem('accessToken');
             const response = await axios.put(`/api/chatroom/${roomId}/heart`, {
-                isHeart: newIsHeart
+                heart: newIsHeart
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -171,7 +171,7 @@ const Chattingroom = () => {
                     )}
                 </div>
         </div>
-        {roomType !== "MATE" && (
+        {roomType === "LIKE" && (
             <div className={styles.centercenter}>
                 <div title="Like" className={styles.heartContainer}>
                     <input
@@ -198,6 +198,11 @@ const Chattingroom = () => {
                         </svg>
                     </div>
                 </div>
+            </div>
+            )}
+              {roomType === "LOVE" && (
+            <div className={styles.centercenter}>
+               <img src="/assets/prettyHeart.png" className={styles.hearth}/>
             </div>
             )}
             <div className={styles.customDivider}></div>
