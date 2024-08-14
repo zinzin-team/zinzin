@@ -51,7 +51,7 @@ const Searchfriend = () => {
       });
 
       const data = response.data;
-
+      // console.log(data)
       if (data.success) {
         setResult(data.member);
         // console.log(result)
@@ -162,16 +162,8 @@ const Searchfriend = () => {
     closeModal();
   };
 
-  const renderButton = () => {
-    if (isMe) {
-      return (
-        <button className={styles.meButton} disabled>
-          me
-        </button>
-      );
-    }
-
-    if (!relationship) {
+  const renderButton = (result) => {
+    if (!result.relationships) {
       // relationship이 null이거나 undefined일 경우에도 MEMBER 케이스로 처리
       return (
         <button
@@ -184,7 +176,7 @@ const Searchfriend = () => {
     }
 
     // relationship 상태에서 relationship 속성에 접근하여 버튼 표시
-    switch (relationship.relationship) {
+    switch (result.relationships[0]) {
       case 'FOLLOW':
         return (
           <button
@@ -248,12 +240,12 @@ const Searchfriend = () => {
       {result && (
         <div className={styles.result}>
           <img
-            src={result.profileImage ? result.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+            src={result.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : result.profileImagePath}
             alt={`${result.name} 프로필`}
             className={styles.profileImage}
           />
           <span className={styles.kakaoName}>{result.name}</span>
-          {renderButton()}
+          {renderButton(result)}
         </div>
       )}
       <Modal

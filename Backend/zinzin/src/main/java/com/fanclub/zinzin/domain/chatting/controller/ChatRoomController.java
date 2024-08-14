@@ -43,6 +43,6 @@ public class ChatRoomController {
 
     @PutMapping("/{roomId}/heart")
     public ResponseEntity<HeartToggleDto> updateHeart(HttpServletRequest request, @PathVariable Long roomId, @RequestBody HeartToggleDto heartToggleDto) {
-        return ResponseEntity.ok(chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, heartToggleDto.getIsHeart()));
+        return ResponseEntity.ok(chatRoomService.updateHeartToggle((Long) request.getAttribute("memberId"), roomId, heartToggleDto.isHeart()));
     }
 }
