@@ -12,11 +12,12 @@
 }
 
 .requestContainer {
-  background-color: #FF9494;
+  background-color: #fff;
+  /* border: 1px solid #ff9494; */
   padding: 20px 30px;
   border-radius: 10px;
   margin-bottom: 40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(137, 137, 137, 0.2);
 }
 
 .requestItem {
@@ -106,6 +107,31 @@
   height: 30px;
 }
 
+.geojeolButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 6px;
+  color: #808080;
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+}
+
+.surakButton {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: #ff9494;
+  border: 1px solid #ff9494;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+  margin-left: 10px;
+}
+
 .friendsList {
   display: flex;
   flex-direction: column;
@@ -133,7 +159,7 @@
 }
 
 .requestItem .kakaoName {
-  color: #fff;
+  color: #000;
 }
 
 .modal {
