@@ -1,6 +1,6 @@
     import React, { useState, useEffect } from 'react';
     import { Link } from 'react-router-dom';
-    import axios from 'axios';
+    import apiClient from '../../api/apiClient';
     import { ToastContainer, toast } from 'react-toastify';
     import 'react-toastify/dist/ReactToastify.css';
     import styles from './Createcard.module.css';
@@ -88,12 +88,9 @@
             }
         
             try {
-                const token = sessionStorage.getItem('accessToken');
-            
-                const response = await axios.post('/api/cards', formData, {
+                const response = await apiClient.post('/api/cards', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${token}`
                     }
                 });
                 console.log('Server Response:', response.data);

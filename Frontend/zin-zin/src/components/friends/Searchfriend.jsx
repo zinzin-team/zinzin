@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './Searchfriend.module.css';
@@ -43,9 +43,8 @@ const Searchfriend = () => {
       }
 
       // 첫 번째 API 호출: searchId로 사용자 검색
-      const response = await axios.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
+      const response = await apiClient.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
         credentials: 'include',
@@ -55,6 +54,31 @@ const Searchfriend = () => {
       // console.log(data)
       if (data.success) {
         setResult(data.member);
+        // console.log(result)
+
+        // 자신을 검색한 경우
+        if (data.member.id === parseInt(memberId, 10)) {
+          setIsMe(true);
+        } else {
+          // 두 번째 API 호출: 나의 친구 목록 가져오기
+          const friendsResponse = await apiClient.get('/api/mates/social-friends', {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+          });
+
+          const friends = friendsResponse.data;
+
+          // friends 배열에서 검색된 사용자를 찾기
+          const relationshipWithSearchedUser = friends.find(
+            (friend) => friend.memberId === data.member.id
+          );
+
+          // 찾은 friend 객체를 상태로 저장
+          setRelationship(relationshipWithSearchedUser);
+          console.log(relationship.relationship)
+        }
       } else {
         setError('존재하지 않는 아이디입니다.');
       }
@@ -75,14 +99,12 @@ const Searchfriend = () => {
   };
 
   const handleAcceptRequest = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     try {
-      await axios.put('/api/mates', {
+      await apiClient.put('/api/mates', {
         targetMemberId: result.id,
         accepted: true
       }, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
@@ -96,13 +118,11 @@ const Searchfriend = () => {
   };
 
   const handleUnfriend = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
 
     try {
-      await axios.delete('/api/mates', {
+      await apiClient.delete('/api/mates', {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
         data: {
@@ -121,16 +141,14 @@ const Searchfriend = () => {
   };
 
   const handleInvite = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
 
     try {
-      await axios.post('/api/mates', {
+      await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: result.id
       }, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
