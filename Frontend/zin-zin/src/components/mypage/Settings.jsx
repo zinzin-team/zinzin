@@ -208,8 +208,8 @@ const Settings = () => {
     <div className={styles.settingsContainer}>
       <ToastContainer />
       <h2>설정</h2>
-      <div className={styles.settingIdSection}>
-        <h3>아이디 변경</h3>
+      <div className={styles.settingSection}>
+        <h3 className={styles.settingSectionTitle}>아이디 변경</h3>
         <input 
           type="text" 
           value={isEditingId ? newSearchId : (userData?.searchId || "")}
@@ -229,10 +229,9 @@ const Settings = () => {
       </div>
 
       <div className={styles.settingSection}>
-        <h3>매칭 모드 변경</h3>
+        <h3 className={styles.settingSectionTitle}>매칭 모드 변경</h3>
         <div className={styles.matchingModeContainer}>
-          <p>매칭 모드 {matchingMode ? "ON" : "OFF"}</p>
-          <p>마지막 변경: {new Date(userData?.matchingModeLog).toLocaleDateString()}</p>
+          {/* <p>매칭 모드 {matchingMode ? "ON" : "OFF"}</p> */}
           {/* <p>마지막 변경: {lastModified ? lastModified.toLocaleDateString() : 'N/A'}</p> */}
           <div className={styles.toggleSwitch}>
             <label className={styles.switch}>
@@ -240,11 +239,12 @@ const Settings = () => {
               <span className={styles.slider}></span>
             </label>
           </div>
+          <p className={styles.matchingModeLog}>마지막 변경: {new Date(userData?.matchingModeLog).toLocaleDateString()}</p>
         </div>
 
         {matchingMode && (
-          <div>
-            <p>매칭이 되면 지인에게 실명을 공개할까요?</p>
+          <div className={styles.matchingVisibilitySettingDiv}>
+            <p align="center">매칭이 되면 지인에게 실명을 공개할까요?</p>
             <div className={styles.radioGroup}>
               <div>
                   <input 
