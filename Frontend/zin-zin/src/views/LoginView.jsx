@@ -4,22 +4,22 @@ import styles from "./LoginView.module.css";
 const LoginView = () => {
   // 6개의 카드에 대한 앞면 이미지 경로를 배열로 정의
   const frontImages = [
-    '/assets/z.png',
-    '/assets/in.png',
-    '/assets/s.png',
-    '/assets/z2.png',
-    '/assets/in2.png',
-    '/assets/logo.png',
+    `${process.env.REACT_APP_BASE_URL}/assets/z.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/in.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/s.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/z2.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/in2.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/logo.png`,
   ];
 
   // 6개의 카드에 대한 뒷면 이미지 경로를 배열로 정의
   const backImages = [
-    '/assets/in.png',
-    '/assets/z.png',
-    '/assets/z2.png',
-    '/assets/in2.png',
-    '/assets/s.png',
-    '/assets/logo.png',
+    `${process.env.REACT_APP_BASE_URL}/assets/in.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/z.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/z2.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/in2.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/s.png`,
+    `${process.env.REACT_APP_BASE_URL}/assets/logo.png`,
   ];
 
   const handleKakaoLogin = () => {
