@@ -12,64 +12,6 @@ const Like = () => {
     const itemsPerPage = 10; // 페이지당 아이템 수
     const navigate = useNavigate();
 
-//    matchingList.push({  mate1: {
-//         name: "호기심 많은 청둥오리",
-//         profileImage: "/assets/박상우.png" // 공개
-//     },
-//     mate2: {
-//         name: "김은지",
-//         profileImage: null // 공개
-//     }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
-    
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "산뜻한 우산",
-    //     profileImage: null // 공개
-    // }}) 
-
     useEffect(() => {
         const fetchSuccessCount = async () => {
             try {
@@ -134,7 +76,6 @@ const Like = () => {
         );
     }
 
-
     let matchingHeader = null;
 
     if (matchingList.length > 0) {
@@ -147,7 +88,7 @@ const Like = () => {
 
     return (
         <div className={styles.list}>
-              {matchingHeader}
+            {matchingHeader}
             <div className={styles.header}>
                 {successCount === 0 || successCount === null ? <p></p> : <p>총 {successCount}커플 탄생</p> }
             </div>
@@ -157,7 +98,7 @@ const Like = () => {
                         <div key={index} className={styles.matchItem}>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate1.profileImage ? `${match.mate1.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={match.mate1.profileImage === "default.jpg" ? `${match.mate1.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
                                     alt={match.mate1.name} 
                                     className={styles.profileImage} 
                                 />
@@ -168,7 +109,7 @@ const Like = () => {
                             </div>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate2.profileImage ? `${match.mate2.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={match.mate2.profileImage === "default.jpg" ? `${match.mate2.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
                                     alt={match.mate2.name} 
                                     className={styles.profileImage} 
                                     />
