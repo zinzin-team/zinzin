@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import confetti from 'canvas-confetti';
 import ReactCardFlip from 'react-card-flip';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root'); // 이 설정은 접근성을 위해 필요합니다.
 
@@ -231,7 +233,7 @@ const Matching = () => {
     };
 
     const reportbadperson = () => {
-        alert("신고 되었습니다.");
+        toast.success("신고 되었습니다.");
     };
 
     const toggleReportDropdown = () => {
@@ -253,26 +255,28 @@ const Matching = () => {
         return (
             <div className={styles.imageStackContainer} onClick={handleImageClick}>
                 {imageOrder.map((index, position) => (
-                    <img
-                        key={index}
-                        src={images[index]}
-                        className={`${styles.cardImage} ${styles[`position${position}`]}`}
-                        alt={`Image ${index}`}
-                    />
+                        <img
+                            key={index}
+                            src={images[index]}
+                            className={`${styles.cardImage} ${styles[`position${position}`]}`}
+                            alt={`Image ${index}`}
+                        />
                 ))}
             </div>
         );
     };
 
     const renderCreateCardContent = () => (
-        <div className={styles.match}>
-            <img src="/assets/Matchingnocard.png" alt="Matching No Card" />
-            <div className={styles.makecard}>
-                <p>새로운 만남을 위해서</p>
-                <p>내 카드를 만들어 주세요</p>
-                <button onClick={handleCreateCard}>카드 만들기</button>
+            <div className={styles.match}>
+            <div className={styles.exhaustcard}>
+            <img src="/assets/Matchingnocard.png" alt="Matching No Card"  className={styles.image} />
+            <div className={styles.textdummy}>
+                <p className={styles.title}>새로운 만남을 위해서</p>
+                <p className={styles.subtitle}>내 카드를 만들어 주세요</p>
+                </div>
+                <button className={styles.inviteButton}  onClick={handleCreateCard}>카드 만들기</button>
             </div>
-        </div>
+        </div>  
     );
 
     const renderViewOtherCardsContent = () => {
@@ -281,8 +285,10 @@ const Matching = () => {
                 <div className={styles.match}>
                     <div className={styles.exhaustcard}>
                         <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                        <div className={styles.textdummy}>
                         <p className={styles.title}>지인이 부족해요...</p>
                         <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                        </div>
                         <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
                 </div>
@@ -296,8 +302,10 @@ const Matching = () => {
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
                             <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                            <div className={styles.textdummy}>
                             <p className={styles.title}>지인이 부족해요...</p>
                             <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
+                            </div>
                             <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                         </div>
                     </div>
@@ -305,10 +313,12 @@ const Matching = () => {
             } else {
                 return (
                     <div className={styles.match}>
-                        <div className={styles.exhaustcard1}>
-                    <p className={styles.fisttext}>카드가 떨어졌어요...</p>
+                        <div className={styles.exhaustcard}>
                     <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
-                    <p className={styles.secondtext2}>내일 접속해서 새로운 카드를 받으세요</p>
+                    <div className={styles.textdummy}>
+                    <p className={styles.title}>카드가 떨어졌어요...</p>
+                    <p className={styles.subtitle}>내일 접속해서 새로운 카드를 받으세요</p>
+                    </div>
                 </div>
                     </div>
                 );
@@ -336,7 +346,13 @@ const Matching = () => {
                         </div>
                     )}
                 </div>
-
+                <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={700}
+        limit={1}
+        position="top-center"
+      />
                 <ReactCardFlip isFlipped={!isFront} flipDirection="horizontal">
                     <div
                         className={`${styles.card} ${styles.front}`}
@@ -463,17 +479,19 @@ const Matching = () => {
 
         
         <div className={styles.match}>
-            <div className={styles.matchoff}>
-                <img src="/assets/NoMatchingMode.png" alt="Matching No Mode" />
-            </div>
-            <div className={styles.offModeContent}>
-                <p>매칭 OFF 상태 입니다</p>
-                <button onClick={() => navigate('/like')}>지인 현황보기</button>
-            </div>
+        <div className={styles.exhaustcard}>
+        <img src="/assets/NoMatchingMode.png" alt="Matching No Mode"  className={styles.image} />
+        <div className={styles.textdummy}>
+            <p className={styles.title}>매칭 OFF 상태 입니다</p>
+            <p className={styles.subtitle}>&nbsp;</p>
         </div>
+            <button className={styles.inviteButton} onClick={() => navigate('/like')}>지인 현황보기</button>
+        </div>
+    </div>
     );
 
     const getContent = () => {
+
         if (isLoading) {
             return (
                 <div className={styles.spinner}>
