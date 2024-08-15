@@ -360,7 +360,7 @@ const MypageView = () => {
       </div>
       <div className={styles.settingsBox}>
         <button className={styles.settingsButton} onClick={() => navigate('/settings')}>설정<i className="bi bi-chevron-right"/></button>
-        <button className={styles.settingsButton} id={styles.userGuideButton} onClick={() => navigate('/userguide')}>사용자 가이드<i className="bi bi-chevron-right"/></button>
+        <button className={styles.settingsButton} id={styles.userGuideButton} onClick={() => navigate('/userguide')}>FAQ<i className="bi bi-chevron-right"/></button>
       </div>
       <div className={styles.footer}>
         <button 
