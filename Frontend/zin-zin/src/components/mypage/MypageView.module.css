@@ -8,7 +8,7 @@
 
 .boxTitle{
   margin-bottom: 15px;
-  margin-right: 10px;
+  margin-right: 0.5rem;
 }
 
 .userInfoBox, .matchingModeBox, .settingsBox, .logoutBox {
@@ -137,7 +137,6 @@
 
 .editCardButtonContainer{
   display: flex;
-  /* position: relative; */
 }
 
 .introButton {
@@ -156,7 +155,7 @@
   gap: 10px;
 }
 
-.logoutButton, .imageEditButton, .cardEditButton {
+.logoutButton, .imageEditButton{
   background: none;
   border: none;
   color: black;
@@ -167,7 +166,7 @@
   font-family: inherit;
 }
 
-.imageEditButton, .cardEditButton {
+.imageEditButton {
   background: none;
   border: none;
   color: black;
@@ -190,7 +189,12 @@
 }
 
 .cardEditButton{
+  background: none;
   height: fit-content;
+  background: none;
+  border: none;
+  color: #FF9494;
+  margin-top: 2px;
 }
 
 .nameText {

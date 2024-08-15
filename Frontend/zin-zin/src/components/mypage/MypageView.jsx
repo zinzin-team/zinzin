@@ -257,7 +257,7 @@ const MypageView = () => {
           <button 
             className={styles.cardEditButton}
             onClick={() => navigate(`/update-card/${userData.card?.id}`)}>
-            <MdEdit  size={18}/>
+            <MdEdit  size={19}/>
           </button>
           </div>
           <div className={styles.matchingModeBottom} style={{ padding: userData.matchingMode ? '10px 20px' : '0' }}>
