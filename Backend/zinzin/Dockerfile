@@ -1,6 +1,12 @@
 # 베이스 이미지 설정
 FROM openjdk:17-jdk-alpine
 
+ENV TZ=Asia/Seoul
+
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo "${TZ}" > /etc/timezone
+
 # maintainer 정보
 LABEL maintainer="hckhong@naver.com"
 
