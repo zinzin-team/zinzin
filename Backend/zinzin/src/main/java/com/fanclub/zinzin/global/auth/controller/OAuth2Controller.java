@@ -2,7 +2,7 @@ package com.fanclub.zinzin.global.auth.controller;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.repository.MemberRepository;
-import com.fanclub.zinzin.global.auth.OAuth2Service;
+import com.fanclub.zinzin.global.auth.service.OAuth2Service;
 import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;

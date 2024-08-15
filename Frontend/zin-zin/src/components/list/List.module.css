@@ -1,7 +1,7 @@
 /* 전체 리스트 스타일 */
 .list {
   /* background-color: #f9f9f9; */
-  padding: 20px;
+  /* padding: 20px; */
   border-radius: 12px;
   max-width: 400px;
   margin: 0 auto;
@@ -11,6 +11,7 @@
 .tmptmp{
   display: flex;
   justify-content: center;
+  margin: 20px;
 }
 
 .titletitle{
@@ -23,7 +24,6 @@
 .header {
   font-family: 'Pretendard', sans-serif;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .titletitle {
@@ -84,9 +84,9 @@
 }
 
 /* 하트 아이콘 스타일 */
-.heart i{
+.hearty i{
   font-size: 24px;
-  color: #FF6B6B;
+  color: #ff4d4d;
 }
 
 .pagination {
@@ -113,9 +113,9 @@
 }
 
 .pagination .activePage {
-  background-color: #FF6B6B;
+  background-color: #ff9494;
   color: #fff;
-  border-color: #FF6B6B;
+  border-color: #ff9494;
 }
 
 .lovelove{
@@ -210,7 +210,7 @@
   top: 0;
   width: 25px;
   height: 40px;
-  background: #ff1d8e;
+  background: #ff4d4d;
   border-radius: 50px 50px 0 0;
   transform: rotate(-45deg);
   transform-origin: 0 100%;
@@ -240,7 +240,7 @@
 }
 
 .loadingtext {
-  color: #C22160;
+  color: #ff4d4d;
 }
 
 .dot1, .dot2, .dot3 {
@@ -270,4 +270,78 @@
   100% {
       opacity: 0;
   }
+}
+.match img {
+  width:   285px;
+  height: auto;
+  border-radius: 20px;
+  
+}
+
+.match {  
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;
+}
+
+
+.exhaustcard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 290px;
+height: 483px;
+  background-color: white;
+  border-radius: 16px;
+  text-align: center;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+
+.exhaustcard img{
+  margin-top: 40px;
+  width: 232px;
+  height: 232px;
+}
+
+.textdummy{
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+
+
+}
+
+.subtitle {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  color: #555;  
+}
+
+.inviteButton {
+  font-family: 'Pretendard', sans-serif;
+  width: 248px;
+  height: 40px;
+  background-color: #ff9494;
+  color: white;
+  border: none;
+  border-radius: 200px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
 }
