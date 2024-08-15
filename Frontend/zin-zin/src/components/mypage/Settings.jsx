@@ -128,6 +128,7 @@ const Settings = () => {
   };
 
   const handleVisibilityModalCancel = () => {
+    setIsNamePublic(!isNamePublic)
     setShowVisibilityModal(false); // 모달 숨기기
   };
 

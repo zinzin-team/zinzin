@@ -466,7 +466,7 @@ const Matching = () => {
                     {mates.length > 0 ? (
                         mates.map((mate, index) => (
                             <div key={index} className={styles.mate}>
-                                <img src={mate.profileImage} alt={mate.name} className={styles.profileImage} />
+                                <img src={mate.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : mate.profileImage} alt={mate.name} className={styles.profileImage} />
                                 <p>{mate.name}</p>
                                 <i className="bi bi-chat-dots-fill" onClick={() => startChatWithMate(mate.memberId)}></i>
                             </div>

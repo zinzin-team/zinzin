@@ -268,8 +268,8 @@ const Chattingroom = () => {
     <p  className={styles.textsecond}>채팅방에서 나가시겠습니까?</p>
     </div>
     <div className={styles.modalButtons}>
-        <button className={styles.okayokay} onClick={goout}>확인</button>
         <button className={styles.nono} onClick={closeConfirmGooutModal}>취소</button>
+        <button className={styles.okayokay} onClick={goout}>확인</button>
     </div>
 </Modal>
         <div className={styles.topfix}>
