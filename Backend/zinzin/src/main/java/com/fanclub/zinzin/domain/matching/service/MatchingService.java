@@ -20,6 +20,8 @@ import com.fanclub.zinzin.global.error.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MatchingService {
+    private static final int MAX_RECOMMEND_CNT = 10;
+
     private final MemberRepository memberRepository;
     private final PersonRepository personRepository;
     private final CardRepository cardRepository;
@@ -47,21 +51,24 @@ public class MatchingService {
 
         List<RecommendedCard> todayRecommendation = findTodayRecommendation(member);
 
+        int position = 1;
+        Set<Matching> matchings = new HashSet<>();
         if(todayRecommendation.size() != 0){
-            List<Matching> matchings = new ArrayList<>();
 
             for(RecommendedCard recommendedCard:todayRecommendation){
                 MatchingPartner matchingPartner = personRepository.getPersonByCardId(recommendedCard.getCard().getId());
                 List<Mate> mates = personRepository.getMatesByMatchingPartnerId(memberId, matchingPartner.getMemberId());
                 matchings.add(recommendedCard.toMatching(matchingPartner, mates));
             }
-            return MatchingResponse.of(matchings);
+
+            if(matchings.size() == MAX_RECOMMEND_CNT){
+                return MatchingResponse.of(matchings);
+            }
+
+            position = matchings.size();
         }
 
         List<MatchingPartner> matchingPartners = personRepository.getMatchingPartners(memberId);
-
-        List<Matching> matchings = new ArrayList<>();
-        int position = 1;
         for(MatchingPartner matchingPartner:matchingPartners){
             CardInfo cardInfo = getCard(matchingPartner.getCardId());
             if(cardInfo == null){
@@ -69,13 +76,17 @@ public class MatchingService {
             }
 
             List<Mate> mates = personRepository.getMatesByMatchingPartnerId(memberId, matchingPartner.getMemberId());
-            matchings.add(Matching.of(matchingPartner, cardInfo, mates, position, false));
+            Matching matching = Matching.of(matchingPartner, cardInfo, mates, position, false);
+            if(matchings.contains(matching)){
+                continue;
+            }
+            matchings.add(matching);
 
             Card card = cardRepository.getReferenceById(cardInfo.getCardId());
             recommendedCardRepository.save(RecommendedCard.of(position,false,member,card));
             personRepository.updateRecommendedRelation(memberId, matchingPartner.getMemberId());
 
-            if(++position > 3){
+            if(++position > MAX_RECOMMEND_CNT){
                 break;
             }
         }
