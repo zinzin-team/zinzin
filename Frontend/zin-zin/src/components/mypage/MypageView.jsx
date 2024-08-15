@@ -221,7 +221,7 @@ const MypageView = () => {
               className={styles.imageEditButton}
               onClick={handleProfileImageClick}
             >
-              <MdEdit  size={18}/>
+              <MdEdit size={18} className={styles.imageEditIcon}/>
             </button>
             <input 
               type="file" 
