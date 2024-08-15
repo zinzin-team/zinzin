@@ -422,7 +422,7 @@ const Matching = () => {
                             currentCard.gender === 'MALE' ? <span className={styles.maleSpan}><i className="bi bi-gender-male"></i></span>
                                 : <span className={styles.femaleSpan}><i className="bi bi-gender-female"></i></span>
                         }</p>
-                        <p>만 {age} </p>
+                        <p>만 {age}세</p>
                     </div>
                     <button className={styles.flipbutton} onClick={handleCardFlip}>
                     <svg className={styles.flipicon} fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">

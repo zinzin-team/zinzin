@@ -15,9 +15,23 @@ const MypageView = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false); // 로그아웃 모달 상태 추가
   const [isFront, setIsFront] = useState(true);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [age, setAge] = useState(null);
 
   const navigate = useNavigate(); 
   const { logout } = useAuth();
+
+  const calculateAge = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    // 생일이 지나지 않았다면 나이에서 1을 뺍니다.
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
 
   const fetchUserData = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
@@ -34,8 +48,12 @@ const MypageView = () => {
         },
         credentials: 'include',
       });
-      console.log(response);
       setUserData(response.data);
+
+      const birth = response.data.birth;
+      if (birth) {
+        setAge(calculateAge(birth))
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -48,9 +66,9 @@ const MypageView = () => {
   }, [navigate]); 
 
   useEffect(() => {
-    if (userData) {
-      console.log("User Data:", userData);
-    }
+    // if (userData) {
+      // console.log("User Data:", userData);
+    // }
   }, [userData]);
 
   if (isLoading) {
@@ -97,7 +115,7 @@ const MypageView = () => {
 
     try {
       const response = await apiClient.put("/api/member/me", formData, {
-        headers: {
+        headers: { 
           "Content-Type": "multipart/form-data"
         },
         credentials: 'include',
@@ -171,7 +189,7 @@ const MypageView = () => {
   const handleCardFlip = () => {
     setIsFront(!isFront);
   };
-
+  
   const ImageStack = ({ images }) => {
     const [imageOrder, setImageOrder] = useState([0, 1, 2]);
 
@@ -304,8 +322,11 @@ const MypageView = () => {
                   </ReactCardFlip>
                   <div className={styles.cardbottom}>
                     <div className={styles.cardbuttomtext}>
-                        <p>{userData.nickname}</p>
-                        <p>{userData.card.age} {userData.card.gender === 'MALE' ? '남' : '여'}</p>
+                        <p>{userData.nickname}{
+                            userData.gender === 'MALE' ? <span className={styles.maleSpan}><i className="bi bi-gender-male"></i></span>
+                                : <span className={styles.femaleSpan}><i className="bi bi-gender-female"></i></span>
+                        }</p>
+                    <p>만 {age}세</p>
                     </div>
                     <button className={styles.flipbutton} onClick={handleCardFlip}>
                         <svg className={styles.flipicon} fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
