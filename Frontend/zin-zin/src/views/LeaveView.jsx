@@ -86,7 +86,7 @@ const LeaveView = () => {
                         checked={isChecked1}
                         onChange={(e) => setIsChecked1(e.target.checked)}
                     />
-                    <label htmlFor="checkbox1">확인했습니다</label>
+                    <label htmlFor="checkbox1">확인했습니다.</label>
                 </div>
                 <p>회원 탈퇴 후 15일 간 회원 정보가 보관되며, 이후에는 회원 정보가 완전히 삭제되어 재가입이 필요합니다.</p>
                 <div className="checkbox-container">

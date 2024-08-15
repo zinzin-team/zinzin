@@ -183,12 +183,6 @@ const Chattingroom = () => {
         window.open("https://gift.kakao.com/home", "_blank");
     };
 
-    // console.log(mates)
-    //     mates.push({  
-    //     memberId: 121,
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" 
-    // })
     return (
         <div className={styles.chatContainer}>  
         <Modal 
@@ -209,8 +203,7 @@ const Chattingroom = () => {
                 className={`${styles.mateItem} ${selectedMate === mate ? styles.selected : ''}`} 
                 onClick={() => handleMateSelect(mate)}
             >
-                <img src={mate.profileImage} alt={mate.name} className={styles.picpicpic} /> 
-                {/* <img src="/assets/홍창기.png" alt={mate.name} className={styles.picpicpic} /> */}
+                <img src={mate.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : mate.profileImage} alt={mate.name} className={styles.picpicpic} />
 
                 <p>{mate.name}</p>
             </div>
@@ -242,8 +235,7 @@ const Chattingroom = () => {
                     <div>
                         <p className={styles.secondText3}>인연을 맺어준 지인에게</p>
                         <p className={styles.secondText4}> 감사함을 표현해보세요</p>
-                        {/* <img src="/assets/홍창기.png"alt={selectedMate.name} className={styles.picpicpic2}/> */}
-                        <img src={selectedMate.profileImage} alt={selectedMate.name} className={styles.picpicpic2}/>
+                        <img src={selectedMate.profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : selectedMate.profileImage} alt={selectedMate.name} className={styles.picpicpic2}/>
                         <p className={styles.secondText5}>{selectedMate.name}</p>
                         <div className={styles.buttoncontainer}>
                         <button onClick={handleButtonClick} className={styles.kakaoGiftButton}>
@@ -279,7 +271,6 @@ const Chattingroom = () => {
         </div>
         <div className={styles.imagecontainer}>
             <img src={profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : profileImage}/>
-            {/* <img src="/assets/홍창기.png"/> */}
             {roomType === 'MATE' ? <div>{name}</div> : <div>{nickname}</div>}
         </div>
                     <div className={styles.reportcontainer}>
@@ -320,10 +311,10 @@ const Chattingroom = () => {
                 </div>
             </div>
             )}
-              {roomType === "LOVE" && (
-            <div className={styles.centercenter}>
-               <img src="/assets/prettyHeart.png" className={styles.hearth}/>
-            </div>
+            {roomType === "LOVE" && (
+                <div className={styles.centercenter}>
+                <img src="/assets/prettyHeart.png" className={styles.hearth}/>
+                </div>
             )}
             <div className={styles.customDivider}></div>
         </div>
@@ -334,8 +325,7 @@ const Chattingroom = () => {
                             {message.memberId === memberId ? (
                                 <div key={index} className={styles.yourMessage}>
                                     <div>
-                                        <img src={profileImage}/>
-                                        {/* <img src="/assets/홍창기.png"/> */}
+                                        <img src={profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : profileImage}/>
                                         <div className={styles.text}>{message.message}</div>
                                     </div>
                                 </div>
