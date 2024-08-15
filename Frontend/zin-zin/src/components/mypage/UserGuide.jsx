@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"; 
 import React, { useState, useEffect } from "react";
 import styles from './UserGuide.module.css';
 
@@ -52,7 +53,10 @@ const UserGuide = () => {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>FAQ</h1>
+            <div className={styles.toptop}>
+                <Link to="/mypage" className={styles.backButton}><i className="bi bi-chevron-left"/></Link>
+                <h2>FAQ</h2>
+            </div>
             <p className={styles.subtitle}>자주 묻는 질문들을 모아봤어요!</p>
             {faqs.map((faq, index) => (
                 <div key={index} className={styles.faqItem}>
