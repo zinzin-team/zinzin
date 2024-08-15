@@ -2,10 +2,21 @@ import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,  // API의 기본 URL
-  headers: {
-    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}` // 초기 액세스 토큰 설정
-  }
 });
+
+// 요청 인터셉터 추가
+apiClient.interceptors.request.use(
+  config => {
+    const token = sessionStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 apiClient.interceptors.response.use(
   response => response,  // 성공적인 응답은 그대로 반환
