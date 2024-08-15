@@ -242,7 +242,7 @@ const Searchfriend = () => {
       {result && (
         <div className={styles.result}>
           <img
-            src={result.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : result.profileImagePath}
+            src={!result.profileImagePath || result.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : result.profileImagePath}
             alt={`${result.name} 프로필`}
             className={styles.profileImage}
           />

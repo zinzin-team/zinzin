@@ -98,7 +98,7 @@ const Like = () => {
                         <div key={index} className={styles.matchItem}>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate1.profileImage === "default.jpg" ? `${match.mate1.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={!match.mate1.profileImage || match.mate1.profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : match.mate1.profileImage} 
                                     alt={match.mate1.name} 
                                     className={styles.profileImage} 
                                 />
@@ -109,7 +109,7 @@ const Like = () => {
                             </div>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate2.profileImage === "default.jpg" ? `${match.mate2.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={!match.mate2.profileImage || match.mate2.profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : match.mate2.profileImage} 
                                     alt={match.mate2.name} 
                                     className={styles.profileImage} 
                                     />
