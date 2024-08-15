@@ -339,11 +339,15 @@ white-space: pre-line;
   background-color: #b0b0b0;
   cursor: not-allowed;
   border: none;
-  width: 230px;
+  width: 120px;
 height: 40px;
 border-radius: 200px;
-color : rgb(128, 128, 128);
-margin-top: 20px;
+color: white;
+margin-right: 10px;
+text-align: center;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
 }
 
 /* 활성화된 버튼 스타일 */
@@ -353,11 +357,14 @@ margin-top: 20px;
   cursor: pointer;
   border: none;
   transition: background-color 0.3s ease;
-  width: 230px;
+  width: 120px;
 height: 40px;
 border-radius: 200px;
-margin-top: 20px;
-
+margin-right: 10px;
+text-align: center;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
 }
 
 .activeButton:hover {
