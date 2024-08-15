@@ -336,16 +336,31 @@ const Matching = () => {
         // currentCardInfo.info = "안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안"
         // currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
 
+        const calculateAge = (birthdate) => {
+            const today = new Date();
+            const birthDate = new Date(birthdate);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            // 생일이 지나지 않았다면 나이에서 1을 뺍니다.
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        };
+
+        const age = calculateAge(currentCard.birth);
+
         return (
             <div className={styles.match}>
-                <div className={styles.reportcontainer}>
+                 <div className={styles.reportcontainer}>
                     <i className="bi bi-three-dots" onClick={toggleReportDropdown}></i>
                     {isReportDropdownOpen && (
                         <div className={styles.dropdownMenu}>
                             <button onClick={reportbadperson}>신고</button>
                         </div>
                     )}
-                </div>
+                </div> 
                 <ToastContainer 
         hideProgressBar={true}
         closeOnClick
@@ -404,7 +419,7 @@ const Matching = () => {
                 <div className={styles.cardbottom}>
                     <div className={styles.cardbuttomtext}>
                         <p>{currentCard.nickname}</p>
-                        <p>{currentCard.age} {currentCard.gender === 'MALE' ? '남' : '여'}</p>
+                        <p>만 {age} {currentCard.gender === 'MALE' ? '남' : '여'}</p>
                     </div>
                     <button className={styles.flipbutton} onClick={handleCardFlip}>
                     <svg className={styles.flipicon} fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
