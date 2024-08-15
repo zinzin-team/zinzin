@@ -7,11 +7,13 @@ import { useAuth } from '../../context/AuthContext';
 import Modal from 'react-modal'; // 모달 추가
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './MypageView.module.css'; 
+import ReactCardFlip from 'react-card-flip';
 
 const MypageView = () => {
   const [userData, setUserData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false); // 로그아웃 모달 상태 추가
+  const [isFront, setIsFront] = useState(true);
 
   const navigate = useNavigate(); 
   const { logout } = useAuth();
@@ -149,6 +151,40 @@ const MypageView = () => {
     setShowLogoutModal(false); // 로그아웃 모달 숨기기
   };
 
+
+
+
+
+  const handleCardFlip = () => {
+    setIsFront(!isFront);
+  };
+
+  const ImageStack = ({ images }) => {
+    const [imageOrder, setImageOrder] = useState([0, 1, 2]);
+
+    const handleImageClick = () => {
+        setImageOrder(prevOrder => {
+            const newOrder = [...prevOrder];
+            const first = newOrder.shift(); // 첫번째 요소를 빼내고
+            newOrder.push(first); // 마지막에 추가
+            return newOrder;
+        });
+    };
+
+    return (
+        <div className={styles.imageStackContainer} onClick={handleImageClick}>
+            {imageOrder.map((index, position) => (
+                <img
+                    key={index}
+                    src={images[index]}
+                    className={`${styles.cardImage} ${styles[`position${position}`]}`}
+                    alt={`Image ${index}`}
+                />
+            ))}
+        </div>
+    );
+};
+
   return (
     <div className={styles.mypageContainer}>
       <ToastContainer 
@@ -217,38 +253,66 @@ const MypageView = () => {
         </div>
       </div>
       <div className={styles.matchingModeBox}>
-        <div className={styles.matchingModeTop}>
-          <h3 className={styles.matchingModeText}>매칭 모드 {userData.matchingMode ? "ON" : "OFF"}</h3>
-          <p className={styles.matchingModeLog}>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
-        </div>
-        <div className={styles.matchingModeBottom} style={{ margin: userData.matchingMode ? '20px' : '0' }}>
-        {userData.matchingMode ? (
-          userData.hasCard ? (
-            <div className={styles.matchingContent}>
-              <div className={styles.matchingProfileImageContainer}>
-                <img 
-                  src={matchingProfileImage ? matchingProfileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
-                  alt="프로필" 
-                  className={styles.profileImageSmall} 
-                />
-              </div>
-              <div className={styles.matchingUserInfo}>
-                <p>{userData.card ? userData.card.info : "소개말을 입력해 주세요."}</p>
-                
-                <button 
-                  className={styles.cardEditButton} 
-                  onClick={() => navigate(`/update-card/${userData.card?.id}`)}
-                >
-                  수정 하기
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.noCardMessage}>
-              <p>생성 된 카드가 없습니다</p>
-            </div>
-          )
-        ) : <div></div>}
+          <div className={styles.editCardButtonContainer}>
+          <h3 className={styles.boxTitle}>내 카드 정보</h3>
+          <button 
+              className={styles.imageEditButton}
+              onClick={() => navigate(`/update-card/${userData.card?.id}`)}
+          >
+            <MdEdit size={18} />
+          </button>
+          </div>
+          <div className={styles.matchingModeBottom} style={{ padding: userData.matchingMode ? '10px 20px' : '0' }}>
+            {userData.matchingMode ? (
+              userData.hasCard ? (
+                <div>
+                  <ReactCardFlip isFlipped={!isFront} flipDirection="horizontal">
+                    <div
+                        className={`${styles.card} ${styles.front}`}
+                    >
+                        <ImageStack images={userData.card.images} />
+                    </div>
+                    <div>
+                        <div className={styles.backContent}>
+                            <div className={styles.tagContainer}>
+                                <p className={styles.sectionTitle}>💖 나는 이런 사람이예요</p>
+                                <div className={styles.longtext1}>
+                                {/* {userData.card.tags.map((tag, index) => (
+                                    <span key={index} className={styles.tag}>{tag}</span>
+                                ))} */}
+                                </div>
+                            </div>
+                            <div className={styles.introContainer}>
+                                <p className={styles.sectionTitle}>💖 나의 한줄 소개</p>
+                                <p className={styles.longtext2}>{userData.card ? userData.card.info : "소개말을 입력해 주세요."}</p>
+                            </div>
+                          </div>
+                      </div>
+                  </ReactCardFlip>
+                  <div className={styles.cardbottom}>
+                    <div className={styles.cardbuttomtext}>
+                        <p>{userData.nickname}</p>
+                        <p>{userData.card.age} {userData.card.gender === 'MALE' ? '남' : '여'}</p>
+                    </div>
+                    <button className={styles.flipbutton} onClick={handleCardFlip}>
+                        <svg className={styles.flipicon} fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <g stroke="#FF9494" strokeLinecap="round" strokeWidth="1.5">
+                                <path d="m3.33337 10.8333c0 3.6819 2.98477 6.6667 6.66663 6.6667 3.682 0 6.6667-2.9848 6.6667-6.6667 0-3.68188-2.9847-6.66664-6.6667-6.66664-1.29938 0-2.51191.37174-3.5371 1.01468"></path>
+                                <path d="m7.69867 1.58163-1.44987 3.28435c-.18587.42104.00478.91303.42582 1.0989l3.28438 1.44986"></path>
+                            </g>
+                        </svg>
+
+                        <span className={styles.fliplabel}></span>
+                    </button>
+                  </div>
+                </div>
+                ) : (
+                  <div className={styles.noCardMessage}>
+                    <p>생성 된 카드가 없습니다</p>
+                  </div>
+                )
+              ) : <div></div>
+            }
         </div>
       </div>
       <div className={styles.settingsBox}>
