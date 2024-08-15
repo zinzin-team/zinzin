@@ -203,16 +203,29 @@
 }
 
 /* New styles for conditional rendering */
-.noCardMessage {
+.noCardMessage, .matchingOffContent {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100px;
-  background-color: #e0e0e0;
-  color: #757575;
+  /* background-color: #e0e0e0; */
+
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.25);
+  color: #808080;
   border-radius: 10px;
   font-size: 16px;
   width: 280px;
+  padding: 20px 10px;
+}
+
+.noCardMessage{
+  gap: 10px;
+}
+
+.matchingOffContent{
+  height: fit-content;
+  gap: 5px;
 }
 
 .modal {

@@ -89,6 +89,10 @@ const MypageView = () => {
 
   const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
 
+  const handleCreateCard = () => {
+    navigate('/create-card');
+  };
+  
   const handleProfileImageClick = () => {
     document.getElementById('fileInput').click();
   };
@@ -121,7 +125,7 @@ const MypageView = () => {
         credentials: 'include',
       });
 
-      console.log('프로필 이미지 업데이트 성공:', response.data);
+      // console.log('프로필 이미지 업데이트 성공:', response.data);
 
       // 업데이트된 내용을 반영하기 위해 사용자 데이터를 다시 가져옴
       fetchUserData();
@@ -149,7 +153,7 @@ const MypageView = () => {
         credentials: 'include',
       });
 
-      console.log('닉네임 변경 성공:', response.data);
+      // console.log('닉네임 변경 성공:', response.data);
       setUserData(prevData => ({
         ...prevData,
         nickname: response.data.nickname,
@@ -164,7 +168,7 @@ const MypageView = () => {
   const handleInviteButtonClick = () => {
     const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
-      console.log("초대링크를 클립보드에 저장했어요! :)");
+      // console.log("초대링크를 클립보드에 저장했어요! :)");
       toast.dismiss();
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
@@ -346,10 +350,11 @@ const MypageView = () => {
                 </div>
                 ) : (
                   <div className={styles.noCardMessage}>
-                    <p>생성 된 카드가 없습니다</p>
+                    <p>생성된 카드가 없습니다.</p>
+                    <button className={styles.inviteButton}  onClick={handleCreateCard}>카드 만들기</button>
                   </div>
                 )
-              ) : <div></div>
+              ) : <div className={styles.matchingOffContent}><p><b>매칭 OFF</b> 상태입니다.</p><p>카드 정보를 원하시는 경우</p><p>설정에서 매칭 모드를 변경해주세요.</p></div>
             }
         </div>
       </div>
