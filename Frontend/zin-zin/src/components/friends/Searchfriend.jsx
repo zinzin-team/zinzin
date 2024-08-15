@@ -26,9 +26,16 @@ const Searchfriend = () => {
 
     const accessToken = sessionStorage.getItem('accessToken');
     const memberId = sessionStorage.getItem('memberId');
+    const searchId2 =  sessionStorage.getItem('searchId');
 
     if (!accessToken) {
       setError('로그인이 필요합니다.');
+      setLoading(false);
+      return;
+    }
+
+    if(searchId === searchId2){
+      setError('자신을 사랑하는 마음은 모든 위대한 사랑의 시작이다.');
       setLoading(false);
       return;
     }
@@ -41,7 +48,6 @@ const Searchfriend = () => {
         setLoading(false);
         return;
       }
-
       const response = await apiClient.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
         headers: {
           'Content-Type': 'application/json'
@@ -50,6 +56,7 @@ const Searchfriend = () => {
       });
 
       const data = response.data;
+      console.log(response.data)
       if (data.success) {
         setResult(data.member);
       } else {
@@ -231,7 +238,7 @@ const Searchfriend = () => {
           </div>
         </div>
       )}
-      {error && <p className={styles.error}>{error}</p>}
+{error && <p className={error === '자신을 사랑하는 마음은 모든 위대한 사랑의 시작이다.' ? styles.blueError : styles.error}>{error}</p>}
       {result && (
         <div className={styles.result}>
           <img

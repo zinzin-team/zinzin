@@ -269,7 +269,7 @@ const Matching = () => {
     const renderCreateCardContent = () => (
             <div className={styles.match}>
             <div className={styles.exhaustcard}>
-            <img src="/assets/Matchingnocard.png" alt="Matching No Card"  className={styles.image} />
+            <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingnocard.png`} alt="Matching No Card"  className={styles.image} />
             <div className={styles.textdummy}>
                 <p className={styles.title}>새로운 만남을 위해서</p>
                 <p className={styles.subtitle}>내 카드를 만들어 주세요</p>
@@ -284,7 +284,7 @@ const Matching = () => {
             return (
                 <div className={styles.match}>
                     <div className={styles.exhaustcard}>
-                        <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Nomorecard.png`} alt="No More Card" className={styles.image} />
                         <div className={styles.textdummy}>
                         <p className={styles.title}>지인이 부족해요...</p>
                         <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
@@ -297,11 +297,11 @@ const Matching = () => {
 
         const visibleCards = matchingCardData.filter(card => card && !card.checked);
         if (visibleCards.length === 0) {
-            if (!matchingCardData || matchingCardData.length < 3) {
+            if (!matchingCardData || matchingCardData.length < 10) {
                 return (
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
-                            <img src="/assets/Nomorecard.png" alt="No More Card" className={styles.image} />
+                            <img src={`${process.env.REACT_APP_BASE_URL}/assets/Nomorecard.png`} alt="No More Card" className={styles.image} />
                             <div className={styles.textdummy}>
                             <p className={styles.title}>지인이 부족해요...</p>
                             <p className={styles.subtitle}>더 많은 카드를 받기 위해서</p>
@@ -314,7 +314,7 @@ const Matching = () => {
                 return (
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
-                    <img src="/assets/exhaustcard.png" alt="Exhausted Card" />
+                    <img src={`${process.env.REACT_APP_BASE_URL}/assets/exhaustcard.png`} alt="Exhausted Card" />
                     <div className={styles.textdummy}>
                     <p className={styles.title}>카드가 떨어졌어요...</p>
                     <p className={styles.subtitle}>내일 접속해서 새로운 카드를 받으세요</p>
@@ -328,12 +328,6 @@ const Matching = () => {
         const currentCard = matchingCardData[currentIndex];
         console.log(currentCard.memberId)
         const currentCardInfo = currentCard.card;
-        // currentCard.mates.shift();currentCard.mates.shift();
-        // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: '/assets/박상우.png'}))
-        // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: 'default.jpg'}))
-        // console.log(currentCard.mates.push({memberId: 111, name: '이나라', profileImage: 'default.jpg'}))
-        // console.log(currentCardInfo.tags.push("피자먹는"))
-        // currentCardInfo.info = "안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안안"
         // currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
 
         const calculateAge = (birthdate) => {
@@ -353,7 +347,7 @@ const Matching = () => {
 
         return (
             <div className={styles.match}>
-                 <div className={styles.reportcontainer}>
+                <div className={styles.reportcontainer}>
                     <i className="bi bi-three-dots" onClick={toggleReportDropdown}></i>
                     {isReportDropdownOpen && (
                         <div className={styles.dropdownMenu}>
@@ -362,16 +356,14 @@ const Matching = () => {
                     )}
                 </div> 
                 <ToastContainer 
-        hideProgressBar={true}
-        closeOnClick
-        autoClose={700}
-        limit={1}
-        position="top-center"
-      />
+                    hideProgressBar={true}
+                    closeOnClick
+                    autoClose={700}
+                    limit={1}
+                    position="top-center"
+                />
                 <ReactCardFlip isFlipped={!isFront} flipDirection="horizontal">
-                    <div
-                        className={`${styles.card} ${styles.front}`}
-                    >
+                    <div className={`${styles.card} ${styles.front}`}>
                         <ImageStack images={currentCardInfo.images} />
                     </div>
                     <div>
@@ -438,15 +430,15 @@ const Matching = () => {
                 <div className={styles.buttons}>
                     <div className={styles.dislikebutton} onClick={handleDislike}>
                         {/* <i className="bi bi-x-lg"></i> */}
-                        <img src="/assets/dislike.png" alt="dislike" />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/dislike.png`} alt="dislike" />
                     </div>
                     <div className={styles.askbutton} onClick={questiontofriend}>
                         {/* <i className="bi bi-chat-square-text"></i> */}
-                        <img src="/assets/chat-after.png" alt="chat" />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/chat-after.png`} alt="chat" />
                     </div>
                     <div className={styles.likebutton} onClick={handleLike}>
                         {/* <i className="bi bi-heart-fill"></i> */}
-                        <img src="/assets/like.png" alt="like" />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/like.png`} alt="like" />
                     </div>
                     
                     {/* <button onClick={handleDislike}>싫어요</button>
@@ -501,7 +493,7 @@ const Matching = () => {
         
         <div className={styles.match}>
         <div className={styles.exhaustcard}>
-        <img src="/assets/NoMatchingMode.png" alt="Matching No Mode"  className={styles.image} />
+        <img src={`${process.env.REACT_APP_BASE_URL}/assets/NoMatchingMode.png`} alt="Matching No Mode"  className={styles.image} />
         <div className={styles.textdummy}>
             <p className={styles.title}>매칭 OFF 상태 입니다</p>
             <p className={styles.subtitle}>&nbsp;</p>

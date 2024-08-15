@@ -49,7 +49,7 @@ const LoginView = () => {
         </div>
       </div>
       <img
-        src="/assets/kakao_login_large_wide.png"
+        src={`${process.env.REACT_APP_BASE_URL}/assets/kakao_login_large_wide.png`}
         alt="카카오 로그인"
         className={styles.loginButton}
         onClick={handleKakaoLogin}

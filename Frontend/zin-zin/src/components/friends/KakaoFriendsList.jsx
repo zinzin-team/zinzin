@@ -242,7 +242,7 @@ const KakaoFriendsList = () => {
             {requests.map((request, index) => (
               <div key={index} className={styles.requestItem}>
                 <img
-                  src={request.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : request.profileImagePath }
+                  src={request.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : request.profileImagePath}
                   alt={`${request.name} 프로필`}
                   className={styles.avatar}
                   onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
@@ -259,7 +259,7 @@ const KakaoFriendsList = () => {
         {friends.map((friend, index) => (
           <div key={index} className={styles.friendItem}>
             <img
-              src={friend.profileImage ? friend.profileImage : `${process.env.REACT_APP_BASE_URL}/assets/default.png`}
+              src={friend.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : friend.profileImage}
               alt={`${friend.kakaoName} 프로필`}
               className={styles.profileImage}
               onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
