@@ -10,7 +10,8 @@ const Header = () => {
       </Link>
             <div className={styles.icon}>
      <Link to="/friends" className={styles.friends}  >
-        <img src={`${process.env.REACT_APP_BASE_URL}/assets/friend-icon.png`} />
+        {/* <img src={`${process.env.REACT_APP_BASE_URL}/assets/friend-icon.png`} /> */}
+        <i className="bi bi-person-add"></i>
       </Link>
             </div>
     </header>

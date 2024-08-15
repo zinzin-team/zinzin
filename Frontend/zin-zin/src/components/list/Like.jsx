@@ -12,14 +12,14 @@ const Like = () => {
     const itemsPerPage = 10; // 페이지당 아이템 수
     const navigate = useNavigate();
 
-   // matchingList.push({  mate1: {
-    //     name: "호기심 많은 청둥오리",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "김은지",
-    //     profileImage: null // 공개
-    // }})
+   matchingList.push({  mate1: {
+        name: "호기심 많은 청둥오리",
+        profileImage: "/assets/박상우.png" // 공개
+    },
+    mate2: {
+        name: "김은지",
+        profileImage: null // 공개
+    }})
     // matchingList.push({  mate1: {
     //     name: "조성훈",
     //     profileImage: "/assets/박상우.png" // 공개
@@ -61,14 +61,14 @@ const Like = () => {
     //     name: "김은지",
     //     profileImage: null // 공개
     // }})
-    // matchingList.push({  mate1: {
-    //     name: "조성훈",
-    //     profileImage: "/assets/박상우.png" // 공개
-    // },
-    // mate2: {
-    //     name: "산뜻한 우산",
-    //     profileImage: null // 공개
-    // }}) 
+    matchingList.push({  mate1: {
+        name: "조성훈",
+        profileImage: "/assets/박상우.png" // 공개
+    },
+    mate2: {
+        name: "산뜻한 우산",
+        profileImage: null // 공개
+    }}) 
 
     useEffect(() => {
         const fetchSuccessCount = async () => {
@@ -134,11 +134,20 @@ const Like = () => {
         );
     }
 
-    return (
-        <div className={styles.list}>
+
+    let matchingHeader = null;
+
+    if (matchingList.length > 0) {
+        matchingHeader = (
             <div className={styles.tmptmp}>
                 <p className={styles.titletitle}>지인 매칭 현황</p>
             </div>
+        );
+    }
+
+    return (
+        <div className={styles.list}>
+              {matchingHeader}
             <div className={styles.header}>
                 {successCount === 0 || successCount === null ? <p></p> : <p>총 {successCount}커플 탄생</p> }
             </div>
@@ -154,7 +163,7 @@ const Like = () => {
                                 />
                                 <p className={styles.matename}>{match.mate1.name}</p>
                             </div>
-                            <div className={styles.heart}>
+                            <div className={styles.hearty}>
                                 <i className="bi bi-heart-fill"></i>
                             </div>
                             <div className={styles.mate}>
@@ -168,13 +177,23 @@ const Like = () => {
                         </div>
                     ))
                 ) : (
-                    <div className={styles.nomatch}>
-                        <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode" />
-                       <p>
-                       지인 소식이 비어있어요
-                        </p> 
+                    // <div className={styles.nomatch}>
+                    //     <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode" />
+                    //    <p>
+                    //    지인 소식이 비어있어요
+                    //     </p> 
+                    //     <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
+                    // </div>
+                    <div className={styles.match}>
+                    <div className={styles.exhaustcard}>
+                    <img src={`${process.env.REACT_APP_BASE_URL}/assets/Matchingcouple.png`} alt="Matching No Mode"  className={styles.image} />
+                        <div className={styles.textdummy}>
+                        <p className={styles.title}>지인 소식이 비어있어요</p>
+                        <p className={styles.subtitle}>더 많은 소식을 듣기 위해서</p>
+                        </div>
                         <button className={styles.inviteButton} onClick={() => navigate('/friends')}>지인 초대하기</button>
                     </div>
+                </div>
                 )}
             </div>
             <div className={styles.pagination}>

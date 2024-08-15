@@ -155,10 +155,11 @@ letter-spacing: -0.4px;
 
 .title {
   font-family: 'Pretendard', sans-serif;
-  margin-top: 36px;
-  font-size: 28px;
-  font-style: normal;
-font-weight: 1000; 
+  font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+
+
 }
 
 .exhaustcard{
@@ -199,10 +200,16 @@ height: 443px;
 
 
 .exhaustcard img{
-  margin-top: 28px;
-  margin-bottom: 35px;
+  margin-top: 40px;
   width: 232px;
   height: 232px;
+}
+
+.textdummy{
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .subtitle {
@@ -210,8 +217,7 @@ height: 443px;
   font-size: 14px;
   font-style: normal;
   font-weight: 300;
-  color: #555;
-  margin-bottom: 16px;
+  color: #555;  
 }
 
 .inviteButton {
@@ -227,6 +233,7 @@ height: 443px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 30px;
 }
 
  .backContent{
@@ -266,6 +273,7 @@ height: 443px;
     height: 380px;
     object-fit: cover;
     transition: transform 0.5s ease, z-index 0s ease 0.5s;
+    background-color: white;
 }
 
 .position0 {
@@ -820,7 +828,7 @@ border: 3px dashed #FF9494;
 }
 
 .likebutton i{
-  color: #FF375F;
+  color: #ff4d4d;
 }
 
 .likebutton:hover{
@@ -905,7 +913,7 @@ margin-top: 10px;
   top: 0;
   width: 25px;
   height: 40px;
-  background: #ff1d8e;
+  background: #ff4d4d;
   border-radius: 50px 50px 0 0;
   transform: rotate(-45deg);
   transform-origin: 0 100%;
@@ -935,7 +943,7 @@ margin-top: 10px;
 }
 
 .loadingtext {
-  color: #C22160;
+  color: #ff4d4d;
 }
 
 .dot1, .dot2, .dot3 {
