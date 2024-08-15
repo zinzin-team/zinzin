@@ -3,10 +3,12 @@ import apiClient from '../../api/apiClient';
 import { useLocation, useParams, useNavigate ,Link} from 'react-router-dom';
 import styles from './Chattingroom.module.css';
 import { Stomp } from "@stomp/stompjs"; 
+import Modal from 'react-modal'; 
 
 const Chattingroom = () => {
     const location = useLocation();
-    const { roomType, name, nickname, profileImage, memberId, heartToggle } = location.state || {};
+    const { name, nickname, profileImage, memberId, heartToggle } = location.state || {};
+    const [roomType, setRoomType] = useState(location.state?.roomType || "MATE");
     const { roomId } = useParams(); // URL에서 roomId를 가져옴
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -16,6 +18,16 @@ const Chattingroom = () => {
     const navigate = useNavigate();
     const [isGooutDropdownOpen, setIsGooutDropdownOpen] = useState(false); // 신고 드롭다운 상태
     const messagesEndRef = useRef(null); // 메시지 리스트 끝에 대한 ref 추가
+    const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태 추가
+    const [finalModalIsOpen, setFinalModalIsOpen] = useState(false); // 두 번째 모달 상태 추가
+    const [mates, setMates] = useState([]); // mates 데이터를 저장할 상태 추가
+    const [selectedMate, setSelectedMate] = useState(null); // 선택된 mate를 저장할 상태 추가
+
+
+    const handleMateSelect = (mate) => {
+        console.log(mate)
+        setSelectedMate(mate);
+    };
 
     // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
     const handleInputChange = (event) => {
@@ -126,7 +138,13 @@ const Chattingroom = () => {
             const response = await apiClient.put(`/api/chatroom/${roomId}/heart`, {
                 heart: newIsHeart
             });
-
+            // setModalIsOpen(true);
+            console.log(response.data)
+            if (response.data.heart) {
+                setMates(response.data.mates); // mates 데이터를 저장
+                setModalIsOpen(true); // 모달 열기
+                setRoomType("LOVE");
+            }
             // 서버로부터의 응답을 확인하고 추가적인 처리가 필요하다면 여기에 작성
             console.log('Heart status updated:', response.data);
         } catch (error) {
@@ -134,8 +152,95 @@ const Chattingroom = () => {
         }
     };
 
+    const handleNext = async () => {
+        if (selectedMate) {
+            try {
+                await apiClient.post('/api/success-count', {
+                    targetId: selectedMate.memberId,
+                    roomId: roomId
+                });
+
+                // 선택된 mate의 정보를 사용하여 최종 모달을 열기
+                setModalIsOpen(false); // 첫 번째 모달 닫기
+                setFinalModalIsOpen(true); // 최종 모달 열기
+            } catch (error) {
+                console.error('Error sending success count:', error);
+            }
+        }
+    };
+
+    const handleButtonClick = () => {
+        window.open("https://gift.kakao.com/home", "_blank");
+    };
+
+    // console.log(mates)
+    //     mates.push({  
+    //     memberId: 121,
+    //     name: "조성훈",
+    //     profileImage: "/assets/박상우.png" 
+    // })
     return (
         <div className={styles.chatContainer}>  
+        <Modal 
+    isOpen={modalIsOpen}
+    onRequestClose={() => setModalIsOpen(false)}
+    contentLabel="Mates Information"
+    className={styles.modal}
+    overlayClassName={styles.overlay} 
+>
+    <p className={styles.firstText}>서로 호감을 표현했어요!</p>
+    <p className={styles.secondText1}>인연을 맺어준 데에</p>
+    <p className={styles.secondText2}>가장 큰 도움을 준 지인을 선택해 보세요</p>
+    <div className={styles.matesList}>
+        <div className={styles.imgconimgcon}>
+        {mates.map((mate, index) => (
+            <div 
+                key={index} 
+                className={`${styles.mateItem} ${selectedMate === mate ? styles.selected : ''}`} 
+                onClick={() => handleMateSelect(mate)}
+            >
+                <img src={mate.profileImage} alt={mate.name} /> className={styles.picpicpic}
+                {/* <img src="/assets/홍창기.png" alt={mate.name} className={styles.picpicpic} /> */}
+
+                <p>{mate.name}</p>
+            </div>
+        ))}
+        </div>
+        <button 
+            onClick={handleNext} 
+            disabled={!selectedMate}  // selectedMate가 null일 때 비활성화
+            className={!selectedMate ? styles.disabledButton : styles.activeButton} // 비활성화 시 스타일 추가
+        >
+            다음
+        </button>
+    </div>
+</Modal>
+ 
+
+            {/* 최종 모달 */}
+            <Modal 
+                isOpen={finalModalIsOpen}
+                onRequestClose={() => setFinalModalIsOpen(false)}
+                contentLabel="Final Mate Information"
+                className={styles.modal}
+                overlayClassName={styles.overlay} 
+            >
+                {selectedMate && (
+                    <div>
+                        <p className={styles.secondText3}>인연을 맺어준 지인에게</p>
+                        <p className={styles.secondText4}> 감사함을 표현해보세요</p>
+                        {/* <img src="/assets/홍창기.png"alt={selectedMate.name} className={styles.picpicpic2}/> */}
+                        <img src={selectedMate.profileImage} alt={selectedMate.name} className={styles.picpicpic2}/>
+                        <p className={styles.secondText5}>{selectedMate.name}</p>
+                        <div className={styles.buttoncontainer}>
+                        <button onClick={handleButtonClick} className={styles.kakaoGiftButton}>
+                    보답하기
+                </button>
+                        <button onClick={() => setFinalModalIsOpen(false) } className={styles.closebtn}>닫기</button>
+                        </div>
+                    </div>
+                )}
+            </Modal>  
         <div className={styles.topfix}>
         <div className={styles.toptop}>
         <div>

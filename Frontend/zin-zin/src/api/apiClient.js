@@ -29,6 +29,13 @@ apiClient.interceptors.response.use(
         return axios(originalRequest);
       } catch (err) {
         console.error('Token refresh failed:', err);
+        
+        // 세션 정보 삭제
+        sessionStorage.clear();
+
+        // /login 페이지로 리디렉션
+        window.location.href = '/login';
+
         return Promise.reject(err);
       }
     }
