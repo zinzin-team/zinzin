@@ -419,13 +419,16 @@ const Matching = () => {
                 </div>
                 <div className={styles.buttons}>
                     <div className={styles.dislikebutton} onClick={handleDislike}>
-                    <i className="bi bi-x-lg"></i>
+                        {/* <i className="bi bi-x-lg"></i> */}
+                        <img src="/assets/dislike.png" alt="dislike" />
                     </div>
                     <div className={styles.askbutton} onClick={questiontofriend}>
-                    <i className="bi bi-chat-square-text"></i>
+                        {/* <i className="bi bi-chat-square-text"></i> */}
+                        <img src="/assets/chat-after.png" alt="chat" />
                     </div>
                     <div className={styles.likebutton} onClick={handleLike}>
-                    <i className="bi bi-heart-fill"></i>
+                        {/* <i className="bi bi-heart-fill"></i> */}
+                        <img src="/assets/like.png" alt="like" />
                     </div>
                     
                     {/* <button onClick={handleDislike}>싫어요</button>
