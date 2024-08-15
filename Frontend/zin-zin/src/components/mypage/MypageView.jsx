@@ -119,6 +119,7 @@ const MypageView = () => {
         ...prevData,
         nickname: response.data.nickname,
       }));
+      toast.dismiss()
       toast.success("닉네임이 변경되었습니다!");
     } catch (error) {
       console.error("닉네임 변경 중 오류 발생:", error);
@@ -126,9 +127,10 @@ const MypageView = () => {
   };
 
   const handleInviteButtonClick = () => {
-    const loginUrl = "https://zin-zin.site/login";
+    const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
+      toast.dismiss()
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
@@ -154,8 +156,9 @@ const MypageView = () => {
       <ToastContainer 
         hideProgressBar={true}
         closeOnClick
-        autoClose={800}
+        autoClose={700}
         limit={1}
+        position="top-center"
       />
       <div className={styles.userInfoBox}>
         <div className={styles.userInfoTop}>
@@ -210,7 +213,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              초대하기
+              초대링크복사
             </button>
           </div>
         </div>
