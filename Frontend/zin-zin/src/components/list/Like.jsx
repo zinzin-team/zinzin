@@ -12,14 +12,14 @@ const Like = () => {
     const itemsPerPage = 10; // 페이지당 아이템 수
     const navigate = useNavigate();
 
-   matchingList.push({  mate1: {
-        name: "호기심 많은 청둥오리",
-        profileImage: "/assets/박상우.png" // 공개
-    },
-    mate2: {
-        name: "김은지",
-        profileImage: null // 공개
-    }})
+//    matchingList.push({  mate1: {
+//         name: "호기심 많은 청둥오리",
+//         profileImage: "/assets/박상우.png" // 공개
+//     },
+//     mate2: {
+//         name: "김은지",
+//         profileImage: null // 공개
+//     }})
     // matchingList.push({  mate1: {
     //     name: "조성훈",
     //     profileImage: "/assets/박상우.png" // 공개
@@ -61,14 +61,14 @@ const Like = () => {
     //     name: "김은지",
     //     profileImage: null // 공개
     // }})
-    matchingList.push({  mate1: {
-        name: "조성훈",
-        profileImage: "/assets/박상우.png" // 공개
-    },
-    mate2: {
-        name: "산뜻한 우산",
-        profileImage: null // 공개
-    }}) 
+    // matchingList.push({  mate1: {
+    //     name: "조성훈",
+    //     profileImage: "/assets/박상우.png" // 공개
+    // },
+    // mate2: {
+    //     name: "산뜻한 우산",
+    //     profileImage: null // 공개
+    // }}) 
 
     useEffect(() => {
         const fetchSuccessCount = async () => {
