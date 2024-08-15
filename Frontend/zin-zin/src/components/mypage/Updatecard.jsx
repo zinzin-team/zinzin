@@ -33,6 +33,7 @@ const UpdateCard = () => {
                 setSelectedImages(images);
                 setSelectedTags(tags);
             } catch (error) {
+                toast.dismiss()
                 toast.error('카드 정보를 불러오는 데 실패했습니다.');
             }
         };
@@ -51,6 +52,7 @@ const UpdateCard = () => {
             const maxFileSize = 5 * 1024 * 1024; // 5MB 사이즈 제한
 
             if (file.size > maxFileSize) {
+                toast.dismiss()
                 toast.warn("5MB 이하의 이미지만 업로드할 수 있습니다.");
                 return;
             }
@@ -78,6 +80,7 @@ const UpdateCard = () => {
                 setSelectedTags((prevTags) => [...prevTags, value]);
             } else {
                 e.target.checked = false;
+                toast.dismiss()
                 toast.warn(`태그는 최대 ${MAX_TAGS}개까지 선택할 수 있습니다.`);
             }
         } else {
@@ -99,6 +102,7 @@ const UpdateCard = () => {
         // }
 
         if (selectedTags.length < 5) {
+            toast.dismiss()
             toast.error("태그를 5개 선택해야 합니다.");
             return;
         }
@@ -129,12 +133,15 @@ const UpdateCard = () => {
                 timeout: 30000, // 타임아웃을 30초로 설정
             });
 
+            toast.dismiss()
             toast.success('카드 수정 성공');
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 413) {
+                toast.dismiss()
                 toast.error("업로드 가능한 이미지 용량을 초과하여 카드 수정에 실패했습니다.");
             } else {
+                toast.dismiss()
                 toast.error("카드 수정에 실패했습니다.");
             }
         }
@@ -154,7 +161,13 @@ const UpdateCard = () => {
 
     return (
         <div className={styles.createcard}>
-            <ToastContainer position="top-center" />
+            <ToastContainer 
+                hideProgressBar={true}
+                closeOnClick
+                autoClose={700}
+                limit={1}
+                position="top-center"
+            />
             <form onSubmit={handleSubmit}>
                 <div className={styles.optionContainer}>
                     <input 
