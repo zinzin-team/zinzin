@@ -206,7 +206,7 @@ input:checked + .slider::after {
 }
 
 .modal button:last-of-type {
-  background-color: #ff6b6b;
+  background-color: #FF9494;
   color: white;
 }
 
