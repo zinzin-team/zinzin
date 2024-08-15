@@ -11,7 +11,7 @@
   margin-right: 0.5rem;
 }
 
-.userInfoBox, .matchingModeBox, .settingsBox, .logoutBox {
+.userInfoBox, .matchingModeBox, .settingsBox{
   background-color: white;
   border-radius: 10px;
   padding: 20px;
@@ -149,13 +149,13 @@
   margin-top: 10px;
 }
 
-.settingsBox, .logoutBox {
+.settingsBox {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.logoutButton, .imageEditButton{
+.imageEditButton{
   background: none;
   border: none;
   color: black;
@@ -457,4 +457,20 @@ background-color: white;
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
   overflow-y: auto; 
+}
+
+.footer{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #808080;
+  text-decoration: underline;
+  font-size: small;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
 }
