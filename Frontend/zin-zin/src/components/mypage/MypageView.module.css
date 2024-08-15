@@ -239,6 +239,9 @@
   text-align: center;
   z-index: 1001; /* 오버레이보다 높은 z-index 설정 */
   pointer-events: auto; /* 모달 내부에 클릭 이벤트 허용 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay {
@@ -278,9 +281,17 @@
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:hover {
+  background-color: #b7b7b7;
+}
+
 .modal button:last-of-type {
   background-color: #FF9494;
   color: white;
+}
+
+.modal button:last-of-type:hover {
+  background-color: #ff7a7a;
 }
 
 .imageStackContainer {
