@@ -46,7 +46,52 @@ const NameReveal = ({ userData, setUserData }) => {
 
             if (response.status === 200) {
                 console.log('회원가입 성공');
-                navigate('/');
+                const tokens = {
+                    accessToken: response.data.accessToken,
+                };
+                login(tokens);
+          
+                sessionStorage.setItem('accessToken', response.data.accessToken);
+
+                try {
+                    const decodedToken = jwtDecode(data.accessToken);
+                    console.log('디코딩된 토큰:', decodedToken); // 토큰 전체 내용을 출력
+                    const memberId = decodedToken.memberId;
+                    console.log('추출된 memberId:', memberId); // 추출된 memberId를 출력
+                    sessionStorage.setItem('memberId', memberId);
+                } catch (decodeError) {
+                    console.error('토큰 디코딩 실패:', decodeError.message);
+                    navigate("/login");
+                    return; // 이후 코드 실행을 막기 위해 리턴
+                }
+        
+                try {
+                    const memberResponse = await apiClient.get('/api/member/me', {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: 'include',
+                    });
+                    const memberData = memberResponse.data;
+                    console.log('회원 정보:', memberData.matchingMode);
+                    
+                    sessionStorage.setItem('email', memberData.email);
+                    sessionStorage.setItem('birth', memberData.birth);
+                    sessionStorage.setItem('card', memberData.card);
+                    sessionStorage.setItem('gender', memberData.gender);
+                    sessionStorage.setItem('hasCard', memberData.hasCard);
+                    sessionStorage.setItem('matchingMode', memberData.matchingMode);
+                    sessionStorage.setItem('matchingModeLog', memberData.matchingModeLog);
+                    sessionStorage.setItem('name', memberData.name);
+                    sessionStorage.setItem('nickname', memberData.nickname);
+                    sessionStorage.setItem('profileImage', memberData.profileImage);
+                    sessionStorage.setItem('searchId', memberData.searchId);
+        
+                    navigate("/");
+                } catch (memberError) {
+                    console.error('사용자 정보 가져오기 실패:', memberError.response ? memberError.response.data : memberError.message);
+                    navigate("/login");
+                }
             } else {
                 console.error('회원가입 실패');
                 alert('회원가입에 실패했습니다.');
