@@ -67,6 +67,7 @@
   font-size: 18px;
   font-family: 'Pretendard', sans-serif;
   outline: none;
+  border-radius: 5px;
 }
 
 .submitGroup {
@@ -77,8 +78,9 @@
 .submitButton {
   width: calc(100% - 40px);
   height: 59px;
-  background-color: #505DB9;
+  background-color: #FF9494;
   border: none;
+  border-radius: 5px;
   color: #fff;
   font-family: 'Pretendard', sans-serif;
   font-size: 16px;
@@ -101,7 +103,7 @@
 }
 
 .success {
-  color: #505DB9;
+  color: #808080;
   font-size: 13px;
   margin-left: 5px;
   margin-top: 15px;

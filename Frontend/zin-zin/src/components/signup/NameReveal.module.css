@@ -70,7 +70,7 @@
 .radioLabel {
   font-family: 'Pretendard', sans-serif;
   font-size: 20px;
-  color: #505965;
+  color: #000000;
   margin-left: 10px;
   cursor: pointer;
   transition: color 0.3s;
@@ -95,12 +95,12 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + .radioLabel:before {
-  border-color: #505DB9;
+  border-color: #000000;
 }
 
 .radioInput {
   margin-right: 10px;
-  accent-color: #3B82F6;
+  accent-color: #000000;
 }
 
 .nextButton {
