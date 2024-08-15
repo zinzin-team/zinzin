@@ -36,7 +36,7 @@ const AppContent = () => {
 
   // 특정 경로에서 Header와 Navbar를 숨기기
   const hideHeaderPaths = ['/friend', '/login', '/signup', '/create-card','/update-card', '/callback', '/leave', '/mypage', '/settings', '/userguide'];
-  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave'];
+  const hideNavbarPaths = ['/friend', '/login', '/signup', '/callback',  '/leave', '/settings', '/userguide'];
   const isChatRoom = location.pathname.startsWith('/chat/') && location.pathname.split('/').length === 3;
 
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path)) || isChatRoom;
@@ -61,7 +61,6 @@ const AppContent = () => {
         <Route path="/create-card" element={<ProtectedRoute element={<CreatecardView />} />} />
         <Route path="/update-card/:cardId" element={<ProtectedRoute element={<UpdateCard />} />} />
         <Route path="/leave" element={<ProtectedRoute element={<LeaveView />} />} />
-        {/* <Route path="/logout" element={<LogoutButton />} /> */}
       </Routes>
       {!isNavbarHidden && <Navbar />}
     </div>
