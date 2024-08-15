@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import "./LeaveView.css";
 
@@ -38,7 +38,10 @@ const LeaveView = () => {
 
     return (
         <div className="leave-container">
-            <h1 className="leave-title">회원탈퇴</h1>
+            <div className="toptop">
+                <Link to="/settings" className="backButton"><i className="bi bi-chevron-left"/></Link>
+                <h2>회원 탈퇴</h2>
+            </div>
             <p className="leave-message">정말 정말 탈퇴 하시나요 <span role="img" aria-label="crying">😭</span></p>
             <p className="leave-reason">
                 {name} 님 덕분에

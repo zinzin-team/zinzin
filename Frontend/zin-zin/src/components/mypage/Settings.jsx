@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; 
 import styles from './Settings.module.css'; 
 import Modal from 'react-modal';
 import { ToastContainer, toast } from 'react-toastify';
@@ -237,7 +237,10 @@ const Settings = () => {
         limit={1}
         position="top-center"
       />
-      <h2>설정</h2>
+      <div className={styles.toptop}>
+        <Link to="/mypage" className={styles.backButton}><i className="bi bi-chevron-left"/></Link>
+        <h2>설정</h2>
+      </div>
       <div className={styles.settingSection}>
         <h3 className={styles.settingSectionTitle}>아이디 변경</h3>
         <input 

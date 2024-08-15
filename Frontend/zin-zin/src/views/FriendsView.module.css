@@ -20,18 +20,25 @@
       margin-bottom: 30px;
 } */
 
-.backButton i{
-  font-size: 24px;
-  color: rgb(133, 133, 133);  
+.toptop {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin: 20px 0px;
+  padding-left: 20px;
 }
 
-.toptop{
-  /* display: flex; */
-  /* flex-direction: row; */
-  justify-content: space-around;
+.backButton {
+  display: flex;
   align-items: center;
-  width: 400px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+.backButton i {
+  font-size: 24px;
+  color: rgb(133, 133, 133);  
 }
