@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NameReveal.module.css';
 import apiClient from '../../api/apiClient';
+import { useAuth } from '../../context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 
 const NameReveal = ({ userData, setUserData }) => {
     const navigate = useNavigate();
     const [matchingVisibility, setMatchingVisibility] = useState('PRIVATE');
+    const { login } = useAuth();
 
     useEffect(() => {
         const storedData = JSON.parse(sessionStorage.getItem('userData'));
@@ -54,7 +57,7 @@ const NameReveal = ({ userData, setUserData }) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken);
 
                 try {
-                    const decodedToken = jwtDecode(data.accessToken);
+                    const decodedToken = jwtDecode(response.data.accessToken);
                     console.log('디코딩된 토큰:', decodedToken); // 토큰 전체 내용을 출력
                     const memberId = decodedToken.memberId;
                     console.log('추출된 memberId:', memberId); // 추출된 memberId를 출력
