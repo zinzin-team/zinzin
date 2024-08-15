@@ -3,18 +3,21 @@
   min-height: 600px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 
+.boxTitle{
+  margin-bottom: 15px;
+  margin-right: 0.5rem;
+}
+
 .userInfoBox, .matchingModeBox, .settingsBox, .logoutBox {
-  width: 90%;
-  background-color: #fff;
+  background-color: white;
   border-radius: 10px;
   padding: 20px;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .userInfoBox {
@@ -28,7 +31,7 @@
 
 .profileImageContainer {
   flex-shrink: 0;
-  margin: auto;
+  margin: auto 10px;
   position: relative;
 }
 
@@ -36,11 +39,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* margin-left: 10px; */
+  margin: 0px 10px;
 }
 
 .nicknameContainer, .nameContainer, .buttonGroup {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 .userInfoBottom {
@@ -71,32 +74,26 @@
 
 .nameContainer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 3px;
 }
 
 .buttonGroup {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .buttonGroup button {
-  width: 34;
-  background-color: white;
-  border: 1px solid #000;
-  border-radius: 6px;
-  padding: 8px;
+  height: 35px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
-  font-size: 14px;
   text-align: center;
-  color: #000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #808080;
   transition: background-color 0.3s ease;
-}
-
-.buttonGroup button:hover {
-  background-color: #f0f0f0;
 }
 
 .inviteContainer {
@@ -105,20 +102,20 @@
 }
 
 .inviteInput, .inviteButton {
-  height: 40px;
-  line-height: 40px;
+  height: 35px;
+  line-height: 35px;
   padding: 0 10px;
 }
 
 .inviteInput {
   width: 40px;
   flex-grow: 1;
-  border: 1px solid #505DB9;
+  border: 1px solid #FF9494;
   border-radius: 5px;
 }
 
 .inviteButton {
-  background-color: #505DB9;
+  background-color: #FF9494;
   color: white;
   border: none;
   border-radius: 5px;
@@ -128,41 +125,18 @@
 .matchingModeBox {
   display: flex;
   flex-direction: column;
-  text-align: center;
-}
-
-.matchingModeTop {
-  /* margin-bottom: 20px; */
+  /* text-align: center; */
 }
 
 .matchingModeBottom {
   display: flex;
   align-items: center;
   gap: 20px;
+  justify-content: center;
 }
 
-.matchingModeLog{
-  margin-top: 8px;
-  font-size: small;
-  color: #b0b0b0;
-}
-
-.matchingProfileImageContainer {
-  flex-shrink: 0;
-}
-
-.profileImageSmall {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.matchingUserInfo {
+.editCardButtonContainer{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-left: 20px;
 }
 
 .introButton {
@@ -181,16 +155,7 @@
   gap: 10px;
 }
 
-.button {
-  background-color: #FF9494;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.logoutButton, .cardEditButton {
+.logoutButton, .imageEditButton{
   background: none;
   border: none;
   color: black;
@@ -198,7 +163,6 @@
   font-size: 14px;
   cursor: pointer;
   padding: 0;
-  margin-top: 20px;
   font-family: inherit;
 }
 
@@ -210,29 +174,37 @@
   font-size: 14px;
   cursor: pointer;
   padding: 4px 4px 0;
-  margin-top: 20px;
-  font-family: inherit;
-  position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #006b6b;
+  background-color: #008281;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);;
   filter: invert(1);
 }
 
-.cardEditButton {
-  font-size: 18px; /* Increase the font size */
+.imageEditButton{
+  font-family: inherit;
+  position: absolute;
+  margin-top: 20px;
+}
+
+.cardEditButton{
+  background: none;
+  height: fit-content;
+  background: none;
+  border: none;
+  color: #FF9494;
+  margin-top: 2px;
 }
 
 .nameText {
-  font-size: 18px;
   margin-bottom: 0;
 }
 
 .searchIdText {
-  font-size: 14px;
+  font-size: small;
   margin-bottom: 0;
+  color: #808080;
 }
 
 /* New styles for conditional rendering */
@@ -245,15 +217,6 @@
   color: #757575;
   border-radius: 10px;
   font-size: 16px;
-}
-
-.matchingContent {
-  display: flex;
-  align-items: center;
-}
-
-.matchingModeText {
-  
 }
 
 .modal {
@@ -310,10 +273,188 @@
 }
 
 .modal button:last-of-type {
-  background-color: #ff6b6b;
+  background-color: #FF9494;
   color: white;
 }
 
-.modal button:hover {
-  opacity: 0.9;
+.imageStackContainer {
+  position: relative;
+  width: 260px;
+  height: 320px;
+  cursor: pointer;
+  border-radius: 16px;
+  margin-bottom: 30px;
+}
+
+.imageStackContainer img {
+height: 320px;
+background-color: white;
+border-radius: 16px 16px 0px 0px;
+filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.25));
+
+}
+
+.backContent{
+  width: 260px;
+  height: 350px;
+  background-color: white;
+  border-radius: 16px 16px 0px 0px;
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.25));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardbottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+  height: 70px;
+  background-color: #FFFFFF;
+  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.2));
+  border-radius: 0px 0px 16px 16px;
+  padding: 0 20px;
+}
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, z-index 0s ease 0.5s;
+}
+
+.position0 {
+  z-index: 3;
+  transform: translateY(30px) scale(1);
+}
+
+.position1 {
+  z-index: 2;
+  transform: translateY(5.5px) scale(0.95);
+}
+
+.position2 {
+  z-index: 1;
+  transform: translateY(-19px) scale(0.9);
+}
+
+.imageStackContainer:active .cardImage {
+  transition: transform 0.2s ease;
+}
+
+.imageStackContainer:hover .position1, 
+.imageStackContainer:hover .position2 {
+  transform: translateY(30px) scale(0.98);
+}
+
+.imageStackContainer:hover .position0 {
+  transform: translateY(30px) scale(1);
+}
+
+.cardcontain{
+background-color: white;
+}
+
+
+.cardbuttomtext {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-family: 'Pretendard', sans-serif;
+  margin-left: 5px;
+}
+
+.cardbuttomtext p:first-child {
+  font-size: 15px;
+  font-weight: 400;
+  color: #4A4A4A;
+  margin-bottom: 5px;
+}
+
+.cardbuttomtext p:nth-child(2) {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9B9B9B;
+  margin: 0;
+}
+
+/* From Uiverse.io by andrew-demchenk0 */ 
+.flipbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  border: none;
+  background: #ff362b34;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease; /* 색상 변화와 배경 변화에 대한 전환 */
+  margin-bottom: 5px;
+  margin-right: 5px;
+
+}
+
+.fliplabel {
+  line-height: 20px;
+  font-size: 17px;
+  color: #FFE3E1;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+  transition: color 0.3s ease; /* 텍스트 색상 변화에 대한 전환 */
+
+}
+
+.flipbutton:hover {
+  background: #ff362b52;
+  
+}
+
+.flipbutton:hover .flipicon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.tagContainer, .introContainer {
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 90%;
+  height: fit-content;
+  border: 3px dashed #FF9494;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 20px 10px;
+}
+
+.sectionTitle {
+  font-family: 'Pretendard', sans-serif;
+  font-size: small;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.8rem;
+  text-align: left;
+}
+
+.longtext1{
+  overflow-y: auto; 
+}
+
+.longtext2{
+  text-align: left;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  overflow-y: auto; 
 }
