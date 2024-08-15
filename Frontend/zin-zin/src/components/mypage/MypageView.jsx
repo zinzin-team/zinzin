@@ -119,6 +119,7 @@ const MypageView = () => {
         ...prevData,
         nickname: response.data.nickname,
       }));
+      toast.dismiss()
       toast.success("닉네임이 변경되었습니다!");
     } catch (error) {
       console.error("닉네임 변경 중 오류 발생:", error);
@@ -126,9 +127,10 @@ const MypageView = () => {
   };
 
   const handleInviteButtonClick = () => {
-    const loginUrl = "https://zin-zin.site/login";
+    const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
+      toast.dismiss()
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
@@ -154,8 +156,9 @@ const MypageView = () => {
       <ToastContainer 
         hideProgressBar={true}
         closeOnClick
-        autoClose={800}
+        autoClose={700}
         limit={1}
+        position="top-center"
       />
       <div className={styles.userInfoBox}>
         <div className={styles.userInfoTop}>
@@ -210,7 +213,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              초대하기
+              초대링크복사
             </button>
           </div>
         </div>
@@ -218,10 +221,11 @@ const MypageView = () => {
       <div className={styles.matchingModeBox}>
         <div className={styles.matchingModeTop}>
           <h3 className={styles.matchingModeText}>매칭 모드 {userData.matchingMode ? "ON" : "OFF"}</h3>
-          <p>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
+          <p className={styles.matchingModeLog}>마지막 변경: {new Date(userData.matchingModeLog).toLocaleDateString()}</p>
         </div>
-        <div className={styles.matchingModeBottom}>
-          {userData.matchingMode && userData.hasCard ? (
+        <div className={styles.matchingModeBottom} style={{ margin: userData.matchingMode ? '20px' : '0' }}>
+        {userData.matchingMode ? (
+          userData.hasCard ? (
             <div className={styles.matchingContent}>
               <div className={styles.matchingProfileImageContainer}>
                 <img 
@@ -245,7 +249,8 @@ const MypageView = () => {
             <div className={styles.noCardMessage}>
               <p>생성 된 카드가 없습니다</p>
             </div>
-          )}
+          )
+        ) : <div></div>}
         </div>
       </div>
       <div className={styles.settingsBox}>

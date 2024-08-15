@@ -128,12 +128,15 @@ const openRejectModal = (item) => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (accepted) {
+        toast.dismiss()
         toast.success(`${selectedRequest.name} 님과 지인이 되었습니다.`);
       } else {
-        toast.info(`${selectedRequest.name} 님의 지인 요청을 거절했습니다.`);
+        toast.dismiss()
+        toast.success(`${selectedRequest.name} 님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
+      toast.dismiss()
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
@@ -164,6 +167,7 @@ const openRejectModal = (item) => {
         )
       );
   
+      toast.dismiss()
       toast.success(`${selectedFriend.kakaoName} 님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
       console.error('오류:', error.message);
@@ -205,6 +209,7 @@ const openRejectModal = (item) => {
         )
       );
   
+      toast.dismiss()
       toast.success(`${selectedFriend.kakaoName} 님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
       console.error('Error during invite request:', error);
@@ -235,6 +240,7 @@ const openRejectModal = (item) => {
   const handleNullButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
     navigator.clipboard.writeText(loginUrl).then(() => {
+      toast.dismiss()
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
@@ -248,7 +254,13 @@ const openRejectModal = (item) => {
 
   return (
     <div className={styles.container}>
-      <ToastContainer />
+      <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={700}
+        limit={1}
+        position="top-center"
+      />
       {requests.length > 0 && (
         <>
           <div className={styles.subHeader}>지인 요청을 수락할까요?</div>

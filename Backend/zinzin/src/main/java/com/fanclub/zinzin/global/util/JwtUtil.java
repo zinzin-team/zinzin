@@ -87,12 +87,18 @@ public class JwtUtil {
         }
     }
 
-    public String regenerateTokens(String refreshToken, HttpServletResponse response) {
-        Claims claims = getClaims(refreshToken);
-        Long memberId = claims.get("memberId", Long.class);
-        String sub = claims.getSubject();
+    public String regenerateTokens(String expiredAccessToken, String refreshToken, HttpServletResponse response) {
+        Claims refreshClaims = getClaims(refreshToken);
+        Long refreshTokenMemberId = refreshClaims.get("memberId", Long.class);
+        String sub = refreshClaims.getSubject();
+        Claims accessTokenClaims = getClaims(expiredAccessToken);
+        Long accessTokenMemberId = accessTokenClaims.get("memberId", Long.class);
 
-        Member member = memberRepository.findById(memberId)
+        if(!refreshTokenMemberId.equals(accessTokenMemberId)) {
+            throw new BaseException(TokenErrorCode.INVALID_INPUT);
+        }
+
+        Member member = memberRepository.findById(refreshTokenMemberId)
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND));
 
         if(member.getStatus() == Status.DELETED){
@@ -108,8 +114,8 @@ public class JwtUtil {
             throw new BaseException(MemberErrorCode.MEMBER_ROLE_NOT_FOUND);
         }
 
-        addRefreshTokenToCookie(response, generateRefreshToken(memberId, sub));
-        return generateAccessToken(memberId, sub, role);
+        addRefreshTokenToCookie(response, generateRefreshToken(refreshTokenMemberId, sub));
+        return generateAccessToken(refreshTokenMemberId, sub, role);
     }
 
     public void addRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {

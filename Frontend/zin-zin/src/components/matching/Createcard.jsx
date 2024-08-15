@@ -27,6 +27,7 @@ const Createcard = () => {
             const maxFileSize = 5 * 1024 * 1024; // 5MB 사이즈 제한
 
             if (file.size > maxFileSize) {
+                toast.dismiss()
                 toast.warn("5MB 이하의 이미지만 업로드할 수 있습니다.");
                 return;
             }
@@ -54,6 +55,7 @@ const Createcard = () => {
                 setSelectedTags((prevTags) => [...prevTags, value]);
             } else {
                 e.target.checked = false; // 체크박스를 원래 상태로 되돌림
+                toast.dismiss()
                 toast.warn(`태그는 최대 ${MAX_TAGS}개까지 선택할 수 있습니다.`);
             }
         } else {
@@ -66,11 +68,13 @@ const Createcard = () => {
 
         // 검증 로직 추가
         if (selectedFiles.filter(file => file !== null).length < 3) {
+            toast.dismiss()
             toast.error("사진을 3개 첨부해야 합니다.");
             return;
         }
 
         if (selectedTags.length < 5) {
+            toast.dismiss()
             toast.error("태그를 5개 선택해야 합니다.");
             return;
         }
@@ -100,8 +104,10 @@ const Createcard = () => {
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 413) {
+                toast.dismiss()
                 toast.error("업로드 가능한 이미지 용량을 초과하여 카드 수정에 실패했습니다.");
             } else {
+                toast.dismiss()
                 toast.error("카드 수정에 실패했습니다.");
             }
         }
@@ -132,7 +138,13 @@ const Createcard = () => {
 
     return (
         <div className={styles.createcard}>
-            <ToastContainer position="top-center" />
+            <ToastContainer 
+                hideProgressBar={true}
+                closeOnClick
+                autoClose={700}
+                limit={1}
+                position="top-center"
+            />
             <Link to="/" className={styles.link}><i className="bi bi-chevron-left"/></Link>
             <form onSubmit={handleSubmit}>
                 <div className={styles.optionContainer}>
