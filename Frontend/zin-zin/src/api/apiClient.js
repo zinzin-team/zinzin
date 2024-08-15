@@ -1,5 +1,17 @@
 import axios from 'axios';
 
+// 쿠키 삭제 함수
+function deleteAllCookies() {
+  const cookies = document.cookie.split(";");
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i];
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  }
+}
+
 const apiClient = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,  // API의 기본 URL
   headers: {
@@ -32,6 +44,7 @@ apiClient.interceptors.response.use(
         
         // 세션 정보 삭제
         sessionStorage.clear();
+        deleteAllCookies(); // 쿠키 삭제
 
         // /login 페이지로 리디렉션
         window.location.href = '/login';
