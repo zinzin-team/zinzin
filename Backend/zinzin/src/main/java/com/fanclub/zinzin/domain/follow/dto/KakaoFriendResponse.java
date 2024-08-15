@@ -21,7 +21,7 @@ public class KakaoFriendResponse {
     public static KakaoFriendResponse of(Long memberId, String profileImage, String kakaoName, String relationship){
         return KakaoFriendResponse.builder()
                 .memberId(memberId)
-                .profileImage(profileImage)
+                .profileImage(profileImage == null ? "default.jpg" : profileImage)
                 .kakaoName(kakaoName)
                 .relationship(relationship)
                 .build();

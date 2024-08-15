@@ -67,7 +67,7 @@ public class Person {
 
     public MatchingMate toMatchingMate(){
         if(this.matchingVisibility == MatchingVisibility.PRIVATE){
-            return MatchingMate.of(this.nickname, null);
+            return MatchingMate.of(this.nickname, "default.jpg");
         }
 
         return MatchingMate.of(this.name, this.profileImage);
