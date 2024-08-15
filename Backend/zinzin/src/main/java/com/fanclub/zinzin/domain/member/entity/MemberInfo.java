@@ -4,14 +4,11 @@ import com.fanclub.zinzin.domain.member.dto.MemberRegisterDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "member_info")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberInfo {
@@ -36,7 +33,6 @@ public class MemberInfo {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean matchingMode;
 
-    @LastModifiedDate
     private LocalDateTime matchingModeLog;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -47,12 +43,13 @@ public class MemberInfo {
     private Integer successCount;
 
     @Builder
-    public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, Member member) {
+    public MemberInfo(String profileImage, String nickname, String searchId, MatchingVisibility matchingVisibility, boolean matchingMode, LocalDateTime matchingModeLog, Member member) {
         this.profileImage = (profileImage == null) ? "default.jpg" : profileImage;
         this.nickname = nickname;
         this.searchId = searchId;
         this.matchingVisibility = matchingVisibility;
         this.matchingMode = matchingMode;
+        this.matchingModeLog = matchingModeLog;
         this.member = member;
         this.successCount = 0;
     }
@@ -85,6 +82,7 @@ public class MemberInfo {
         this.searchId = memberRegisterDto.getSearchId();
         this.matchingMode = memberRegisterDto.isMatchingMode();
         this.matchingVisibility = memberRegisterDto.getMatchingVisibility();
+        this.matchingModeLog = LocalDateTime.now();
         this.nickname = nickname;
     }
 }
