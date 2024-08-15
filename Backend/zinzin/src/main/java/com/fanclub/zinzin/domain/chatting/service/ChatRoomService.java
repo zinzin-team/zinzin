@@ -1,9 +1,6 @@
 package com.fanclub.zinzin.domain.chatting.service;
 
-import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
-import com.fanclub.zinzin.domain.chatting.dto.HeartToggleDto;
-import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
-import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
+import com.fanclub.zinzin.domain.chatting.dto.*;
 import com.fanclub.zinzin.domain.chatting.entity.*;
 import com.fanclub.zinzin.domain.chatting.repository.ChatMessageRepository;
 import com.fanclub.zinzin.domain.chatting.repository.ChatRoomMemberRepository;
@@ -195,6 +192,10 @@ public class ChatRoomService {
         }
 
         return new HeartToggleDto(false, null);
+    }
+
+    public ChatRoomAuthDto checkMemberAuth (Long memberId, Long roomId) {
+        return chatRoomMemberRepository.existsByChatRoomIdAndMemberId(roomId, memberId) ? new ChatRoomAuthDto(true) : new ChatRoomAuthDto(false);
     }
 }
 

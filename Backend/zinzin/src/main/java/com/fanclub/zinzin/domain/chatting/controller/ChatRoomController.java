@@ -1,9 +1,6 @@
 package com.fanclub.zinzin.domain.chatting.controller;
 
-import com.fanclub.zinzin.domain.chatting.dto.CreateChatRoomDto;
-import com.fanclub.zinzin.domain.chatting.dto.HeartToggleDto;
-import com.fanclub.zinzin.domain.chatting.dto.ResponseChatRoomDto;
-import com.fanclub.zinzin.domain.chatting.dto.ResponseMessageDto;
+import com.fanclub.zinzin.domain.chatting.dto.*;
 import com.fanclub.zinzin.domain.chatting.service.ChatRoomService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +25,11 @@ public class ChatRoomController {
     public ResponseEntity<List<ResponseMessageDto>> getRoomMessages(HttpServletRequest request, @PathVariable Long roomId) {
         List<ResponseMessageDto> messages = chatRoomService.getRoomMessages(roomId, (Long) request.getAttribute("memberId"));
         return ResponseEntity.ok(messages);
+    }
+
+    @GetMapping("/{roomId}/auth")
+    public ResponseEntity<ChatRoomAuthDto> getRoomAuth(HttpServletRequest request, @PathVariable Long roomId) {
+        return ResponseEntity.ok(chatRoomService.checkMemberAuth((Long)request.getAttribute("memberId"), roomId));
     }
 
     @PostMapping("/create")
