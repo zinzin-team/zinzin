@@ -1,11 +1,34 @@
 import axios from 'axios';
 
+// 쿠키 삭제 함수
+function deleteAllCookies() {
+  const cookies = document.cookie.split(";");
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i];
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  }
+}
+
 const apiClient = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,  // API의 기본 URL
-  headers: {
-    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}` // 초기 액세스 토큰 설정
-  }
 });
+
+// 요청 인터셉터 추가
+apiClient.interceptors.request.use(
+  config => {
+    const token = sessionStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 apiClient.interceptors.response.use(
   response => response,  // 성공적인 응답은 그대로 반환
@@ -32,6 +55,7 @@ apiClient.interceptors.response.use(
         
         // 세션 정보 삭제
         sessionStorage.clear();
+        deleteAllCookies(); // 쿠키 삭제
 
         // /login 페이지로 리디렉션
         window.location.href = '/login';

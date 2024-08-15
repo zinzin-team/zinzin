@@ -84,13 +84,15 @@ const Searchfriend = () => {
         }
       });
 
+      toast.dismiss()
       toast.success(`${result.name}님과 지인이 되었습니다.`);
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
+      toast.dismiss()
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleUnfriend = async () => {
@@ -108,13 +110,15 @@ const Searchfriend = () => {
       });
 
       setRelationship({ ...relationship, relationship: 'MEMBER' });
+      toast.dismiss()
       toast.success(`${result.name}님과 지인관계가 해제되었습니다.`);
     } catch (error) {
       console.error('오류:', error.message);
+      toast.dismiss()
       toast.error('지인 해제 중 오류가 발생했습니다.');
     }
     closeModal();
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleInvite = async () => {
@@ -131,13 +135,15 @@ const Searchfriend = () => {
       });
 
       setRelationship({ ...relationship, relationship: 'REQUEST_FOLLOW' });
+      toast.dismiss()
       toast.success(`${result.name}님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
       console.error('지인 요청 중 오류 발생:', error);
+      toast.dismiss()
       toast.error('지인 요청 중 오류가 발생했습니다.');
     }
     closeModal();
-    window.location.reload();
+    // window.location.reload();
   };
 
   const renderButton = (result) => {
@@ -194,7 +200,13 @@ const Searchfriend = () => {
 
   return (
     <div className={styles.container}>
-      <ToastContainer />
+      <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={700}
+        limit={1}
+        position="top-center"
+      />
       <p className={styles.searchInfo}>아이디를 통해 지인을 찾아보세요!</p>
       <div className={styles.searchContainer}>
         <input

@@ -121,6 +121,7 @@ const MypageView = () => {
         ...prevData,
         nickname: response.data.nickname,
       }));
+      toast.dismiss()
       toast.success("닉네임이 변경되었습니다!");
     } catch (error) {
       console.error("닉네임 변경 중 오류 발생:", error);
@@ -128,9 +129,10 @@ const MypageView = () => {
   };
 
   const handleInviteButtonClick = () => {
-    const loginUrl = "https://zin-zin.site/login";
+    const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
+      toast.dismiss()
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
@@ -150,10 +152,6 @@ const MypageView = () => {
   const handleLogoutCancel = () => {
     setShowLogoutModal(false); // 로그아웃 모달 숨기기
   };
-
-
-
-
 
   const handleCardFlip = () => {
     setIsFront(!isFront);
@@ -190,8 +188,9 @@ const MypageView = () => {
       <ToastContainer 
         hideProgressBar={true}
         closeOnClick
-        autoClose={800}
+        autoClose={700}
         limit={1}
+        position="top-center"
       />
       <h2>마이페이지</h2>
       <div className={styles.userInfoBox}>
@@ -247,7 +246,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              복사하기
+              초대링크복사
             </button>
           </div>
         </div>
@@ -256,10 +255,9 @@ const MypageView = () => {
           <div className={styles.editCardButtonContainer}>
           <h3 className={styles.boxTitle}>내 카드 정보</h3>
           <button 
-              className={styles.imageEditButton}
-              onClick={() => navigate(`/update-card/${userData.card?.id}`)}
-          >
-            <MdEdit size={18} />
+            className={styles.cardEditButton}
+            onClick={() => navigate(`/update-card/${userData.card?.id}`)}>
+            <MdEdit  size={18}/>
           </button>
           </div>
           <div className={styles.matchingModeBottom} style={{ padding: userData.matchingMode ? '10px 20px' : '0' }}>

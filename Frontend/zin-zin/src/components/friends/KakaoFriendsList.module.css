@@ -115,7 +115,7 @@
   border-radius: 6px;
   color: #808080;
   cursor: pointer;
-  width: 50px;
+  width: 45px !important;
   height: 30px;
 }
 
@@ -127,9 +127,9 @@
   border-radius: 6px;
   color: #fff;
   cursor: pointer;
-  width: 50px;
+  width: 45px !important;
   height: 30px;
-  margin-left: 10px;
+  margin-left: 4px;
 }
 
 .friendsList {

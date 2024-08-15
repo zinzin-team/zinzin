@@ -84,10 +84,12 @@ const Settings = () => {
       setMatchingMode(prevState => !prevState);
       setLastModified(new Date());
       setShowModal(false);
+      toast.dismiss()
       toast.success('매칭 모드가 변경되었습니다.');
       sessionStorage.setItem('matchingMode', !matchingMode)
     } catch (error) {
       console.error('매칭 모드 변경 중 오류 발생:', error);
+      toast.dismiss()
       toast.error('매칭 모드 변경 중 오류가 발생했습니다.');
       // alert('매칭 모드 변경 중 오류가 발생했습니다.');
     }
@@ -110,9 +112,11 @@ const Settings = () => {
       );
 
       setShowVisibilityModal(false);
+      toast.dismiss()
       toast.success('실명 공개 여부가 변경되었습니다.');
     } catch (error) {
       console.error('실명 공개 여부 변경 중 오류 발생:', error);
+      toast.dismiss()
       toast.error('실명 공개 여부 변경 중 오류가 발생했습니다.');
     }
   };
@@ -199,6 +203,7 @@ const Settings = () => {
         ...userData,
         searchId: newSearchId,
       }));
+      toast.dismiss()
       toast.success('아이디가 성공적으로 변경되었습니다.');
     } catch (error) {
       console.error("아이디 변경 중 오류 발생:", error);
@@ -207,7 +212,13 @@ const Settings = () => {
 
   return (
     <div className={styles.settingsContainer}>
-      <ToastContainer />
+      <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={700}
+        limit={1}
+        position="top-center"
+      />
       <h2>설정</h2>
       <div className={styles.settingSection}>
         <h3 className={styles.settingSectionTitle}>아이디 변경</h3>

@@ -32,6 +32,7 @@ const AcquaintancesList = () => {
       } catch (error) {
         console.error('지인 목록을 가져오는 중 오류 발생:', error);
         setLoading(false);
+        toast.dismiss()
         toast.error('지인 목록을 가져오는 중 오류가 발생했습니다.');
       }
     };
@@ -66,12 +67,14 @@ const AcquaintancesList = () => {
       });
   
       if (response.status === 200) { // 성공적으로 요청이 완료된 경우
+        toast.dismiss()
         toast.success(`${selectedAcquaintance.kakaoName?selectedAcquaintance.kakaoName:selectedAcquaintance.name}님과 지인관계가 해제되었습니다ㅠㅠ`);
         setAcquaintances(acquaintances.filter(acquaintance => acquaintance.id !== selectedAcquaintance.id));
       }
     } catch (error) {
       console.error('오류:', error.message);
-      toast.error('지인 해제 중 오류가 발생했습니다.');
+        toast.dismiss()
+        toast.error('지인 해제 중 오류가 발생했습니다.');
     }
   
     closeUnfriendModal();
@@ -84,7 +87,13 @@ const AcquaintancesList = () => {
 
   return (
     <div className={styles.container}>
-      <ToastContainer />
+      <ToastContainer 
+        hideProgressBar={true}
+        closeOnClick
+        autoClose={700}
+        limit={1}
+        position="top-center"
+      />
       <div className={styles.friendsList}>
         {acquaintances.map((acquaintance, index) => (
           <div key={index} className={styles.friendItem}>
