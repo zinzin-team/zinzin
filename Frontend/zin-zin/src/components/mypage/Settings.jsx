@@ -14,6 +14,7 @@ const Settings = () => {
   const [showVisibilityModal, setShowVisibilityModal]  = useState(false);
   const [lastModified, setLastModified] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   
   const [isEditingId, setIsEditingId] = useState(false); // 아이디 수정 모드 여부
   const [newSearchId, setNewSearchId] = useState(""); // 새로운 아이디 입력값
@@ -49,6 +50,8 @@ const Settings = () => {
       setNewSearchId(response.data.searchId); // 초기 아이디 설정
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
     }
   };
 	
@@ -84,14 +87,13 @@ const Settings = () => {
       setMatchingMode(prevState => !prevState);
       setLastModified(new Date());
       setShowModal(false);
-      toast.dismiss()
+      toast.dismiss();
       toast.success('매칭 모드가 변경되었습니다.');
-      sessionStorage.setItem('matchingMode', !matchingMode)
+      sessionStorage.setItem('matchingMode', !matchingMode);
     } catch (error) {
       console.error('매칭 모드 변경 중 오류 발생:', error);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('매칭 모드 변경 중 오류가 발생했습니다.');
-      // alert('매칭 모드 변경 중 오류가 발생했습니다.');
     }
   };
 
@@ -112,11 +114,11 @@ const Settings = () => {
       );
 
       setShowVisibilityModal(false);
-      toast.dismiss()
+      toast.dismiss();
       toast.success('실명 공개 여부가 변경되었습니다.');
     } catch (error) {
       console.error('실명 공개 여부 변경 중 오류 발생:', error);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('실명 공개 여부 변경 중 오류가 발생했습니다.');
     }
   };
@@ -203,12 +205,28 @@ const Settings = () => {
         ...userData,
         searchId: newSearchId,
       }));
-      toast.dismiss()
+      toast.dismiss();
       toast.success('아이디가 성공적으로 변경되었습니다.');
     } catch (error) {
       console.error("아이디 변경 중 오류 발생:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinner}>
+        <div className={`${styles.heart} ${styles.heart1}`}></div>
+        <div className={`${styles.heart} ${styles.heart2}`}></div>
+        <div className={`${styles.heart} ${styles.heart3}`}></div>
+        <div className={styles.loadingtext}>
+          Loading
+          <span className={styles.dot1}>.</span>
+          <span className={styles.dot2}>.</span>
+          <span className={styles.dot3}>.</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.settingsContainer}>
@@ -243,8 +261,6 @@ const Settings = () => {
       <div className={styles.settingSection}>
         <h3 className={styles.settingSectionTitle}>매칭 모드 변경</h3>
         <div className={styles.matchingModeContainer}>
-          {/* <p>매칭 모드 {matchingMode ? "ON" : "OFF"}</p> */}
-          {/* <p>마지막 변경: {lastModified ? lastModified.toLocaleDateString() : 'N/A'}</p> */}
           <div className={styles.toggleSwitch}>
             <label className={styles.switch}>
               <input type="checkbox" checked={matchingMode} onChange={handleToggleMatchingMode} />

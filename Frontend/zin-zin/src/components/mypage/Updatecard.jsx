@@ -14,6 +14,7 @@ const UpdateCard = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [introduction, setIntroduction] = useState('');
     const [charCount, setCharCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
     const MAX_TAGS = 5;
     const navigate = useNavigate();
 
@@ -33,8 +34,10 @@ const UpdateCard = () => {
                 setSelectedImages(images);
                 setSelectedTags(tags);
             } catch (error) {
-                toast.dismiss()
+                toast.dismiss();
                 toast.error('카드 정보를 불러오는 데 실패했습니다.');
+            } finally {
+                setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
             }
         };
 
@@ -52,7 +55,7 @@ const UpdateCard = () => {
             const maxFileSize = 5 * 1024 * 1024; // 5MB 사이즈 제한
 
             if (file.size > maxFileSize) {
-                toast.dismiss()
+                toast.dismiss();
                 toast.warn("5MB 이하의 이미지만 업로드할 수 있습니다.");
                 return;
             }
@@ -80,7 +83,7 @@ const UpdateCard = () => {
                 setSelectedTags((prevTags) => [...prevTags, value]);
             } else {
                 e.target.checked = false;
-                toast.dismiss()
+                toast.dismiss();
                 toast.warn(`태그는 최대 ${MAX_TAGS}개까지 선택할 수 있습니다.`);
             }
         } else {
@@ -96,13 +99,8 @@ const UpdateCard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // if (selectedFiles.filter(file => file !== null).length < 3) {
-        //     toast.error("사진을 3개 첨부해야 합니다.");
-        //     return;
-        // }
-
         if (selectedTags.length < 5) {
-            toast.dismiss()
+            toast.dismiss();
             toast.error("태그를 5개 선택해야 합니다.");
             return;
         }
@@ -133,15 +131,15 @@ const UpdateCard = () => {
                 timeout: 30000, // 타임아웃을 30초로 설정
             });
 
-            toast.dismiss()
+            toast.dismiss();
             toast.success('카드 수정 성공');
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 413) {
-                toast.dismiss()
+                toast.dismiss();
                 toast.error("업로드 가능한 이미지 용량을 초과하여 카드 수정에 실패했습니다.");
             } else {
-                toast.dismiss()
+                toast.dismiss();
                 toast.error("카드 수정에 실패했습니다.");
             }
         }
@@ -158,6 +156,22 @@ const UpdateCard = () => {
         "개척적인", "주도적인", "인내심 있는", "논리적인", "감성적인", "즐거움을 찾는", "에너지 있는", "이해심 많은", "인기 있는", "친절한",
         "활발한", "조용한", "외향적인", "내향적인", "모험적인", "이상적인", "대담한", "진취적인", "차분한", "직설적인", "정직한", "긍정적인", "책임감 있는"
     ];
+
+    if (isLoading) {
+        return (
+            <div className={styles.spinner}>
+                <div className={`${styles.heart} ${styles.heart1}`}></div>
+                <div className={`${styles.heart} ${styles.heart2}`}></div>
+                <div className={`${styles.heart} ${styles.heart3}`}></div>
+                <div className={styles.loadingtext}>
+                    Loading
+                    <span className={styles.dot1}>.</span>
+                    <span className={styles.dot2}>.</span>
+                    <span className={styles.dot3}>.</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.createcard}>

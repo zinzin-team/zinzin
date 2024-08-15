@@ -42,7 +42,6 @@ const Searchfriend = () => {
         return;
       }
 
-      // 첫 번째 API 호출: searchId로 사용자 검색
       const response = await apiClient.get(`/api/search/${encodeURIComponent(sanitizedSearchId)}`, {
         headers: {
           'Content-Type': 'application/json'
@@ -51,7 +50,6 @@ const Searchfriend = () => {
       });
 
       const data = response.data;
-      // console.log(data)
       if (data.success) {
         setResult(data.member);
       } else {
@@ -84,15 +82,14 @@ const Searchfriend = () => {
         }
       });
 
-      toast.dismiss()
+      toast.dismiss();
       toast.success(`${result.name}님과 지인이 되었습니다.`);
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
-    // window.location.reload();
   };
 
   const handleUnfriend = async () => {
@@ -110,15 +107,14 @@ const Searchfriend = () => {
       });
 
       setRelationship({ ...relationship, relationship: 'MEMBER' });
-      toast.dismiss()
+      toast.dismiss();
       toast.success(`${result.name}님과 지인관계가 해제되었습니다.`);
     } catch (error) {
       console.error('오류:', error.message);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('지인 해제 중 오류가 발생했습니다.');
     }
     closeModal();
-    // window.location.reload();
   };
 
   const handleInvite = async () => {
@@ -135,20 +131,18 @@ const Searchfriend = () => {
       });
 
       setRelationship({ ...relationship, relationship: 'REQUEST_FOLLOW' });
-      toast.dismiss()
+      toast.dismiss();
       toast.success(`${result.name}님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
       console.error('지인 요청 중 오류 발생:', error);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('지인 요청 중 오류가 발생했습니다.');
     }
     closeModal();
-    // window.location.reload();
   };
 
   const renderButton = (result) => {
     if (!result.relationships) {
-      // relationship이 null이거나 undefined일 경우에도 MEMBER 케이스로 처리
       return (
         <button
           className={styles.memberButton}
@@ -159,7 +153,6 @@ const Searchfriend = () => {
       );
     }
 
-    // relationship 상태에서 relationship 속성에 접근하여 버튼 표시
     switch (result.relationships[0]) {
       case 'FOLLOW':
         return (
@@ -225,7 +218,19 @@ const Searchfriend = () => {
           검색
         </button>
       </div>
-      {loading && <p>검색 중...</p>}
+      {loading && (
+        <div className={styles.spinner}>
+          <div className={`${styles.heart} ${styles.heart1}`}></div>
+          <div className={`${styles.heart} ${styles.heart2}`}></div>
+          <div className={`${styles.heart} ${styles.heart3}`}></div>
+          <div className={styles.loadingtext}>
+            검색 중
+            <span className={styles.dot1}>.</span>
+            <span className={styles.dot2}>.</span>
+            <span className={styles.dot3}>.</span>
+          </div>
+        </div>
+      )}
       {error && <p className={styles.error}>{error}</p>}
       {result && (
         <div className={styles.result}>
