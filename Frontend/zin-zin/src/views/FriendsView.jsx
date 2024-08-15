@@ -9,7 +9,9 @@ import styles from './FriendsView.module.css';
 const FriendsView = () => {
   return (
     <div className={styles.friendsContainer}>
-      <Link to="/" className={styles.link}><i className="bi bi-chevron-left"/></Link>
+      <div className={styles.toptop}>
+        <Link to="/" className={styles.backButton}><i className="bi bi-chevron-left"/></Link>
+      </div>
       <FriendsNavbar />
       <div className={styles.content}>
         <Routes>
