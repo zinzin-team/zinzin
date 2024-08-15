@@ -1,0 +1,110 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Pretendard, sans-serif;
+}
+
+/* 기존 스타일 */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
+  width: 100%;
+  overflow: hidden; /* 그리드가 화면을 넘지 않도록 설정 */
+  position: relative;
+}
+
+/* 새로운 flip 카드 배경을 위한 추가 스타일 */
+.flipContainer {
+  position: absolute;
+  top: 5;
+  left: 0;
+  width: 100%;
+  height: 60%; /* 카드들이 상단에 배치되도록 높이 조정 */
+  z-index: 0; /* 배경에 위치 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 */
+  grid-template-rows: repeat(2, 1fr); /* 2행 */
+  gap: 20px;
+  padding: 80px 10px;
+  width: 90%; /* 그리드 컨테이너의 너비를 화면에 맞추기 위해 설정 */
+  height: 100%; /* 그리드 컨테이너의 높이를 조정 */
+  max-height: 100%; /* 그리드 컨테이너가 화면을 넘지 않도록 설정 */
+  max-width: 100%; /* 그리드 컨테이너가 화면을 넘지 않도록 설정 */
+  box-sizing: border-box;
+}
+
+.flip {
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+}
+
+.card {
+  width: 100%;
+  height: 80%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10%; /* 이미지 주변에 여백을 줘서 더 작게 보이게 함 */
+  /* box-shadow: 0px 4px 2px rgba(23, 135, 255, 0.14); */
+  border-radius: 16px;
+}
+
+.front {
+  background-color: rgb(255, 255, 255);
+}
+
+.back {
+  background-color: rgb(255, 255, 255);
+  transform: rotateY(180deg);
+}
+
+.cardImage {
+  width: 80%; /* 이미지 크기를 줄임 */
+  height: 80%; /* 이미지 크기를 줄임 */
+  object-fit: contain; /* 비율을 유지하며 크기 조정 */
+}
+
+.flip:hover .card {
+  transform: rotateY(180deg);
+}
+
+/* 로그인 버튼의 기존 스타일 */
+.loginButton {
+  position: absolute; /* 절대 위치 설정 */
+  top: 80%; /* 위에서부터 75% 내려가게 설정 */
+  left: 50%; /* 가로 방향 중앙 */
+  transform: translateX(-50%); /* 가로 방향 중앙 정렬을 위해 사용 */
+  z-index: 10; /* flip 카드 위에 배치 */
+  cursor: pointer;
+  width: 80%;
+  max-width: 300px;
+  min-width: 200px;
+  height: auto;
+  box-shadow: 0px 10px 20px rgba(156, 156, 156, 0.5); /* 흰색 그림자를 넓게 설정 */
+  border-radius: 10px; /* 버튼의 테두리를 둥글게 만듭니다 (필요에 따라 조정 가능) */
+}
