@@ -183,12 +183,12 @@ const Chattingroom = () => {
         window.open("https://gift.kakao.com/home", "_blank");
     };
 
-    console.log(mates)
-        mates.push({  
-        memberId: 121,
-        name: "조성훈",
-        profileImage: "/assets/박상우.png" 
-    })
+    // console.log(mates)
+    //     mates.push({  
+    //     memberId: 121,
+    //     name: "조성훈",
+    //     profileImage: "/assets/박상우.png" 
+    // })
     return (
         <div className={styles.chatContainer}>  
         <Modal 
