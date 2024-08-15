@@ -10,23 +10,33 @@ const Chat = () => {
     const topChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop: '20px' } : { marginTop: '0px' };
 const bottomChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop: '20px' } : { marginTop: '0px' };
 
+const fetchChatRooms = async () => {
+    try {
+        const response = await apiClient.get('/api/chatroom');
+        console.log(response.data)
+        if (response.data) {
+            setChatRooms(response.data);
+        }
+    } catch (error) {
+        console.error('Error fetching chat rooms:', error);
+    } finally {
+        setLoading(false); // 데이터 로딩 완료 후 로딩 상태를 false로 설정
+    }
+};
     useEffect(() => {
-        const fetchChatRooms = async () => {
-            try {
-                const response = await apiClient.get('/api/chatroom');
-                console.log(response.data)
-                if (response.data) {
-                    setChatRooms(response.data);
-                }
-            } catch (error) {
-                console.error('Error fetching chat rooms:', error);
-            } finally {
-                setLoading(false); // 데이터 로딩 완료 후 로딩 상태를 false로 설정
-            }
-        };
 
         fetchChatRooms();
         console.log(chatRooms)
+
+        //////////////////////////////////////////////////// 계속된 요청으로 오류가 생기면 밑에 코드를 빼주세요
+        const interval = setInterval(() => {
+            fetchChatRooms();
+        }, 5000); // 5000ms(5초)마다 채팅방 목록을 갱신
+    
+        // 컴포넌트가 언마운트될 때 interval을 클리어
+        return () => clearInterval(interval);
+        //////////////////////////////////////////////////
+
     }, []);
 
     const handleRoomClick = (room) => {
