@@ -11,7 +11,7 @@ import com.fanclub.zinzin.domain.member.repository.MemberRepository;
 import com.fanclub.zinzin.domain.member.repository.RandomNicknameRepository;
 import com.fanclub.zinzin.domain.person.entity.Person;
 import com.fanclub.zinzin.domain.person.repository.PersonRepository;
-import com.fanclub.zinzin.global.auth.OAuth2Service;
+import com.fanclub.zinzin.global.auth.service.OAuth2Service;
 import com.fanclub.zinzin.global.auth.dto.MemberAuthResponseDto;
 import com.fanclub.zinzin.global.error.code.CommonErrorCode;
 import com.fanclub.zinzin.global.error.code.MemberErrorCode;
@@ -180,7 +180,6 @@ public class MemberService {
                 .orElseThrow(() -> new BaseException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         member.withdraw();
-        personRepository.withdraw(member.getSub());
     }
 
     @Transactional

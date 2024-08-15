@@ -1,4 +1,4 @@
-package com.fanclub.zinzin.global.auth;
+package com.fanclub.zinzin.global.auth.service;
 
 import com.fanclub.zinzin.domain.member.entity.Member;
 import com.fanclub.zinzin.domain.member.entity.Role;
@@ -115,7 +115,10 @@ public class OAuth2Service {
             throw new BaseException(MemberErrorCode.SUSPENDED_MEMBER);
         }
 
-        if (member != null && member.getStatus() == Status.ACTIVE) {
+        if (member != null) {
+            if(member.getStatus() == Status.DELETED) {
+                member.reactivate();
+            }
             Long memberId = member.getId();
             Map<String, String> tokensMap = generateTokens(memberId, sub, Role.USER);
             String accessToken = tokensMap.get("accessToken");
