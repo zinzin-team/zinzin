@@ -139,7 +139,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + .radioLabel:before {
-  border-color: #505DB9;
+  border-color: #000000;
 }
 
 .submitButton {
