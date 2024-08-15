@@ -10,6 +10,7 @@ const Id = ({ userData, setUserData }) => {
     const [isDuplicate, setIsDuplicate] = useState(null);
     const [buttonText, setButtonText] = useState('중복 확인');
     const [isAvailable, setIsAvailable] = useState(false);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
     useEffect(() => {
         const storedData = JSON.parse(sessionStorage.getItem('userData'));
@@ -52,6 +53,8 @@ const Id = ({ userData, setUserData }) => {
                 } catch (error) {
                     console.error('ID 중복 확인 중 오류 발생:', error);
                     alert('ID 중복 확인 중 오류가 발생했습니다.');
+                } finally {
+                    setLoading(false); // 데이터 로드가 완료되면 로딩 상태를 false로 설정
                 }
             } else if (buttonText === '완료') {
                 const updatedData = { ...userData, searchId: id };
@@ -61,6 +64,21 @@ const Id = ({ userData, setUserData }) => {
             }
         }
     };
+    if (loading) {
+        return (
+            <div className={styles.spinner}>
+                <div className={`${styles.heart} ${styles.heart1}`}></div>
+                <div className={`${styles.heart} ${styles.heart2}`}></div>
+                <div className={`${styles.heart} ${styles.heart3}`}></div>
+                <div className={styles.loadingtext}>
+                    Loading
+                    <span className={styles.dot1}>.</span>
+                    <span className={styles.dot2}>.</span>
+                    <span className={styles.dot3}>.</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>

@@ -12,10 +12,26 @@
 }
 
 
-.link{
+/* .link{
   text-decoration: none;
       color: black;
       margin-top: 50px;
       margin-left: 15px;
       margin-bottom: 30px;
+} */
+
+.backButton i{
+  font-size: 24px;
+  color: rgb(133, 133, 133);  
+}
+
+.toptop{
+  /* display: flex; */
+  /* flex-direction: row; */
+  justify-content: space-around;
+  align-items: center;
+  width: 400px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }

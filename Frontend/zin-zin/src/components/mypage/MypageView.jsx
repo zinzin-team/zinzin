@@ -14,6 +14,7 @@ const MypageView = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false); // 로그아웃 모달 상태 추가
   const [isFront, setIsFront] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   const navigate = useNavigate(); 
   const { logout } = useAuth();
@@ -37,6 +38,8 @@ const MypageView = () => {
       setUserData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false); // 데이터 로드가 완료되면 로딩 상태를 false로 설정
     }
   };
 
@@ -50,8 +53,20 @@ const MypageView = () => {
     }
   }, [userData]);
 
-  if (!userData) {
-    return <div>로딩 중...</div>;
+  if (isLoading) {
+    return (
+      <div className={styles.spinner}>
+        <div className={`${styles.heart} ${styles.heart1}`}></div>
+        <div className={`${styles.heart} ${styles.heart2}`}></div>
+        <div className={`${styles.heart} ${styles.heart3}`}></div>
+        <div className={styles.loadingtext}>
+          Loading
+          <span className={styles.dot1}>.</span>
+          <span className={styles.dot2}>.</span>
+          <span className={styles.dot3}>.</span>
+        </div>
+      </div>
+    );
   }
 
   const matchingProfileImage = userData.card?.images?.[0] || userData.profileImage;
@@ -121,7 +136,7 @@ const MypageView = () => {
         ...prevData,
         nickname: response.data.nickname,
       }));
-      toast.dismiss()
+      toast.dismiss();
       toast.success("닉네임이 변경되었습니다!");
     } catch (error) {
       console.error("닉네임 변경 중 오류 발생:", error);
@@ -132,7 +147,7 @@ const MypageView = () => {
     const loginUrl = "https://zin-zin.site";
     navigator.clipboard.writeText(loginUrl).then(() => {
       console.log("초대링크를 클립보드에 저장했어요! :)");
-      toast.dismiss()
+      toast.dismiss();
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
@@ -161,27 +176,27 @@ const MypageView = () => {
     const [imageOrder, setImageOrder] = useState([0, 1, 2]);
 
     const handleImageClick = () => {
-        setImageOrder(prevOrder => {
-            const newOrder = [...prevOrder];
-            const first = newOrder.shift(); // 첫번째 요소를 빼내고
-            newOrder.push(first); // 마지막에 추가
-            return newOrder;
-        });
+      setImageOrder(prevOrder => {
+        const newOrder = [...prevOrder];
+        const first = newOrder.shift(); // 첫번째 요소를 빼내고
+        newOrder.push(first); // 마지막에 추가
+        return newOrder;
+      });
     };
 
     return (
-        <div className={styles.imageStackContainer} onClick={handleImageClick}>
-            {imageOrder.map((index, position) => (
-                <img
-                    key={index}
-                    src={images[index]}
-                    className={`${styles.cardImage} ${styles[`position${position}`]}`}
-                    alt={`Image ${index}`}
-                />
-            ))}
-        </div>
+      <div className={styles.imageStackContainer} onClick={handleImageClick}>
+        {imageOrder.map((index, position) => (
+          <img
+            key={index}
+            src={images[index]}
+            className={`${styles.cardImage} ${styles[`position${position}`]}`}
+            alt={`Image ${index}`}
+          />
+        ))}
+      </div>
     );
-};
+  };
 
   return (
     <div className={styles.mypageContainer}>
@@ -246,7 +261,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              초대링크복사
+              링크 복사
             </button>
           </div>
         </div>
@@ -275,9 +290,9 @@ const MypageView = () => {
                             <div className={styles.tagContainer}>
                                 <p className={styles.sectionTitle}>💖 나는 이런 사람이예요</p>
                                 <div className={styles.longtext1}>
-                                {/* {userData.card.tags.map((tag, index) => (
+                                {userData.card.tags.map((tag, index) => (
                                     <span key={index} className={styles.tag}>{tag}</span>
-                                ))} */}
+                                ))}
                                 </div>
                             </div>
                             <div className={styles.introContainer}>
@@ -314,15 +329,17 @@ const MypageView = () => {
         </div>
       </div>
       <div className={styles.settingsBox}>
-        <button onClick={() => navigate('/settings')}>설정</button>
-        <button onClick={() => navigate('/userguide')}>사용자 가이드</button>
+        <button className={styles.settingsButton} onClick={() => navigate('/settings')}>설정<i className="bi bi-chevron-right"/></button>
+        <button className={styles.settingsButton} id={styles.userGuideButton} onClick={() => navigate('/userguide')}>사용자 가이드<i className="bi bi-chevron-right"/></button>
       </div>
-      <button 
-        className={styles.logoutButton}
-        onClick={handleLogoutClick}
-      >
-        로그아웃
-      </button>
+      <div className={styles.footer}>
+        <button 
+          className={styles.logoutButton}
+          onClick={handleLogoutClick}
+        >
+          로그아웃
+        </button>
+      </div>
 
       <Modal
         isOpen={showLogoutModal}

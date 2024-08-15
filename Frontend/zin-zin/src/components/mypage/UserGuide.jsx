@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from './UserGuide.module.css';
 
 const UserGuide = () => {
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
     const faqs = [
         {
             question: "저는 왜 아무도 호감 표시를 안 해주나요?",
@@ -20,6 +22,33 @@ const UserGuide = () => {
             answer: "답변"
         },
     ];
+
+    useEffect(() => {
+        // 데이터를 가져오는 시뮬레이션을 위해 타임아웃을 사용
+        const fetchData = () => {
+            setTimeout(() => {
+                setIsLoading(false); // 로딩이 완료되면 상태를 false로 변경
+            }, 2000); // 2초 후에 로딩 완료
+        };
+
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className={styles.spinner}>
+                <div className={`${styles.heart} ${styles.heart1}`}></div>
+                <div className={`${styles.heart} ${styles.heart2}`}></div>
+                <div className={`${styles.heart} ${styles.heart3}`}></div>
+                <div className={styles.loadingtext}>
+                    Loading
+                    <span className={styles.dot1}>.</span>
+                    <span className={styles.dot2}>.</span>
+                    <span className={styles.dot3}>.</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>

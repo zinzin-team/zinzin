@@ -16,7 +16,6 @@ const KakaoFriendsList = () => {
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
   const [modalType, setModalType] = useState(null); // 'accept' 또는 'reject'로 모달 타입을 구분
 
-
   Modal.setAppElement('#root');
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const KakaoFriendsList = () => {
       try {
         const responseFriends = await apiClient.get('/api/mates/social-friends', {
           headers: {
-            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -39,7 +37,6 @@ const KakaoFriendsList = () => {
 
         const responseRequests = await apiClient.get('/api/mates/requests', {
           headers: {
-            // "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
           },
           credentials: 'include',
@@ -71,9 +68,9 @@ const KakaoFriendsList = () => {
     setSelectedRequest(formattedItem);
     setModalType('accept');
     setModalIsOpen(true);
-};
+  };
   
-const openRejectModal = (item) => {
+  const openRejectModal = (item) => {
     const formattedItem = {
         id: item.id || item.memberId,
         profileImagePath: item.profileImagePath || item.profileImage,
@@ -82,9 +79,7 @@ const openRejectModal = (item) => {
     setSelectedRequest(formattedItem);
     setModalType('reject');
     setModalIsOpen(true);
-};
-
-  
+  };
 
   const closeModal = () => {
     setSelectedRequest(null);
@@ -114,12 +109,10 @@ const openRejectModal = (item) => {
   const handleAccept = async (accepted) => {
     try {
       await apiClient.put('/api/mates', {
-        // targetMemberId: selectedRequest.memberId,
         targetMemberId: selectedRequest.id,
         accepted
       }, {
         headers: {
-          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         credentials: 'include',
@@ -128,15 +121,15 @@ const openRejectModal = (item) => {
       setRequests(requests.filter(request => request.id !== selectedRequest.id));
       
       if (accepted) {
-        toast.dismiss()
+        toast.dismiss();
         toast.success(`${selectedRequest.name} 님과 지인이 되었습니다.`);
       } else {
-        toast.dismiss()
+        toast.dismiss();
         toast.success(`${selectedRequest.name} 님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
       console.error('요청 처리 중 오류 발생:', error);
-      toast.dismiss()
+      toast.dismiss();
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
     closeModal();
@@ -149,7 +142,6 @@ const openRejectModal = (item) => {
     try {
       await apiClient.delete('/api/mates', {
         headers: {
-          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         data: {
@@ -167,11 +159,10 @@ const openRejectModal = (item) => {
         )
       );
   
-      toast.dismiss()
+      toast.dismiss();
       toast.success(`${selectedFriend.kakaoName} 님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
       console.error('오류:', error.message);
-      // toast.error('지인 해제 중 오류가 발생했습니다.');
     }
   
     closeUnfriendModal();
@@ -179,28 +170,18 @@ const openRejectModal = (item) => {
   };
 
   const handleInvite = async () => {
-    const accessToken = sessionStorage.getItem('accessToken');
     const userMemberId = sessionStorage.getItem('memberId');
-    
-    console.log('AccessToken:', accessToken);
-    console.log('UserMemberId:', userMemberId);
-    console.log('SelectedFriend:', selectedFriend);
   
     try {
-      console.log('Sending invite request...');
-      
       const response = await apiClient.post('/api/mates', {
         userMemberId: userMemberId,
         targetMemberId: selectedFriend.memberId
       }, {  
         headers: {
-          // "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         }
       });
-      
-      console.log('Invite request successful:', response.data);
-      
+  
       setFriends(prevFriends =>
         prevFriends.map(friend =>
           friend.id === selectedFriend.memberId
@@ -209,47 +190,40 @@ const openRejectModal = (item) => {
         )
       );
   
-      toast.dismiss()
+      toast.dismiss();
       toast.success(`${selectedFriend.kakaoName} 님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
       console.error('Error during invite request:', error);
-      
-      if (error.response && error.response.data) {
-        const errorCode = error.response.data.code;
-        console.log('Error code:', errorCode);
-        
-        if (errorCode === 'F001') {
-          // toast.error('잘못된 요청입니다. 다시 시도해주세요.');
-        } else if (errorCode === 'F002') {
-          // toast.info('이미 지인 관계이거나 요청 중입니다.');
-        } else {
-          // toast.error('지인 요청 중 오류가 발생했습니다.');
-        }
-      } else {
-        console.error('Unknown error occurred during invite request:', error);
-        // toast.error('지인 요청 중 오류가 발생했습니다.');
-      }
     }
   
-    console.log('Closing invite modal...');
     closeInviteModal();
     window.location.reload();
   };
-  
 
   const handleNullButtonClick = () => {
     const loginUrl = "https://zin-zin.site/login";
     navigator.clipboard.writeText(loginUrl).then(() => {
-      toast.dismiss()
+      toast.dismiss();
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
       console.error('링크 복사 중 오류 발생:', err);
-      // toast.error('링크 복사 중 오류가 발생했습니다.');
     });
   };
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return (
+      <div className={styles.spinner}>
+          <div className={`${styles.heart} ${styles.heart1}`}></div>
+          <div className={`${styles.heart} ${styles.heart2}`}></div>
+          <div className={`${styles.heart} ${styles.heart3}`}></div>
+          <div className={styles.loadingtext}>
+              Loading
+              <span className={styles.dot1}>.</span>
+              <span className={styles.dot2}>.</span>
+              <span className={styles.dot3}>.</span>
+          </div>
+      </div>
+    );
   }
 
   return (
@@ -298,18 +272,14 @@ const openRejectModal = (item) => {
                 <button className={styles.surakButton} onClick={() => openAcceptModal(friend)}>수락</button>
               </>
             ) : (
-            
               <button className={
                 friend.relationship === 'FOLLOW' ? styles.followButton :
-                // friend.relationship === 'RECEIVE_REQUEST' ? styles.receiveRequestButton :
                 friend.relationship === 'MEMBER' ? styles.memberButton :
                 friend.relationship === 'REQUEST_FOLLOW' ? styles.requestFollowButton :
                 styles.nullButton
               } onClick={() => {
                 if (friend.relationship === 'FOLLOW') {
                   openUnfriendModal(friend);
-                // } else if (friend.relationship === 'RECEIVE_REQUEST') {
-                //   openModal(friend);
                 } else if (friend.relationship === 'MEMBER') {
                   openInviteModal(friend);
                 } else if (friend.relationship === null) {
@@ -320,7 +290,6 @@ const openRejectModal = (item) => {
                 {friend.relationship === 'MEMBER' && '지인 요청 +'}
                 {friend.relationship === 'FOLLOW' && '지인 해제'}
                 {friend.relationship === 'REQUEST_FOLLOW' && '요청 대기중'}
-                {/* {friend.relationship === 'RECEIVE_REQUEST' && '요청 수락 +'} */}
               </button>
             )} 
           </div>
@@ -331,22 +300,6 @@ const openRejectModal = (item) => {
         onRequestClose={closeModal}
         shouldCloseOnOverlayClick={false}
         contentLabel="지인 요청"
-        className={styles.modal}
-        overlayClassName={styles.overlay}
-      >
-        {selectedRequest && (
-          <div>
-            <h2>{selectedRequest.name?selectedRequest.name:selectedRequest.kakaoName} 님의<br />지인 요청을 수락할까요?</h2>
-            <button onClick={() => handleAccept(false)}>거절하기</button>
-            <button onClick={() => handleAccept(true)}>수락하기</button>
-          </div>
-        )}
-      </Modal>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        shouldCloseOnOverlayClick={false}
-        contentLabel="지인 요청 응답"
         className={styles.modal}
         overlayClassName={styles.overlay}
       >
@@ -376,7 +329,7 @@ const openRejectModal = (item) => {
         {selectedFriend && (
           <div>
             <h2>{selectedFriend.kakaoName} 님과<br />지인관계를 해제할까요?</h2>
-            <button onClick={closeUnfriendModal}>최소</button>
+            <button onClick={closeUnfriendModal}>취소</button>
             <button onClick={handleUnfriend}>해제</button>
           </div>
         )}
