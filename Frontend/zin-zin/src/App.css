@@ -26,9 +26,9 @@
       background-color: #FFFBF4;
       padding-bottom: 86px;
   }
-  @media (min-width: 400px) {
+  @media (min-width: 450px) {
       .App {
-        max-width: 400px;
+        max-width: 450px;
       }
   }
 

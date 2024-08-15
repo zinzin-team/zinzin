@@ -59,7 +59,7 @@
   margin-bottom: 2px; /* 아이콘들끼리 수평 맞추기 위해 넣음 */
 }
 
- @media (max-width: 400px) {
+ @media (max-width: 450px) {
   .nav {
     max-width: 100%;
   }
