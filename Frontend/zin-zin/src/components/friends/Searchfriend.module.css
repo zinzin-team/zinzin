@@ -288,3 +288,9 @@
       opacity: 0;
   }
 }
+
+.blueError {
+  font-size: 14px;
+  color: #007bff; /* 파란색 텍스트 */
+  margin-top: 20px;
+}

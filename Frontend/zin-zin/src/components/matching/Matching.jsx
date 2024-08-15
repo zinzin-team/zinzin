@@ -297,7 +297,7 @@ const Matching = () => {
 
         const visibleCards = matchingCardData.filter(card => card && !card.checked);
         if (visibleCards.length === 0) {
-            if (!matchingCardData || matchingCardData.length < 3) {
+            if (!matchingCardData || matchingCardData.length < 10) {
                 return (
                     <div className={styles.match}>
                         <div className={styles.exhaustcard}>
