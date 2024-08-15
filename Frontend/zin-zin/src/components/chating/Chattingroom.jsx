@@ -22,11 +22,21 @@ const Chattingroom = () => {
     const [finalModalIsOpen, setFinalModalIsOpen] = useState(false); // 두 번째 모달 상태 추가
     const [mates, setMates] = useState([]); // mates 데이터를 저장할 상태 추가
     const [selectedMate, setSelectedMate] = useState(null); // 선택된 mate를 저장할 상태 추가
+    const [confirmGooutModalIsOpen, setConfirmGooutModalIsOpen] = useState(false); // 채팅방 나가기 확인 모달 상태 추가
+
 
 
     const handleMateSelect = (mate) => {
         console.log(mate)
         setSelectedMate(mate);
+    };
+
+    const openConfirmGooutModal = () => {
+        setConfirmGooutModalIsOpen(true);
+    };
+    
+    const closeConfirmGooutModal = () => {
+        setConfirmGooutModalIsOpen(false);
     };
 
     // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
@@ -241,6 +251,24 @@ const Chattingroom = () => {
                     </div>
                 )}
             </Modal>  
+
+            <Modal
+    isOpen={confirmGooutModalIsOpen}
+    onRequestClose={closeConfirmGooutModal}
+    contentLabel="Confirm Go Out"
+    className={styles.modal2}
+    overlayClassName={styles.overlay}
+>
+    <p className={styles.textfirst}>채팅방 나가기</p>
+    <div className={styles.textdummy}>
+    <p className={styles.textsecond}>채팅방에서 나가기를 하면 상대방의 메세지를 더 이상 받을 수 없습니다. 또한 지금까지의 내용이 모두 사라지게 됩니다.</p>
+    <p  className={styles.textsecond}>채팅방에서 나가시겠습니까?</p>
+    </div>
+    <div className={styles.modalButtons}>
+        <button className={styles.okayokay} onClick={goout}>확인</button>
+        <button className={styles.nono} onClick={closeConfirmGooutModal}>취소</button>
+    </div>
+</Modal>
         <div className={styles.topfix}>
         <div className={styles.toptop}>
         <div>
@@ -255,8 +283,8 @@ const Chattingroom = () => {
                     <i className="bi bi-three-dots" onClick={toggleGooutDropdown}></i>
                     {isGooutDropdownOpen && (
                         <div className={styles.dropdownMenu}>
-                            <button onClick={goout}>채팅방 나가기</button>
-                        </div>
+<button onClick={openConfirmGooutModal}>채팅방 나가기</button>
+</div>
                     )}
                 </div>
         </div>
