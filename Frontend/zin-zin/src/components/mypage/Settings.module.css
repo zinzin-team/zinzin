@@ -210,10 +210,6 @@ input:checked + .slider::after {
   color: white;
 }
 
-.modal button:hover {
-  opacity: 0.9;
-}
-
 .matchingVisibilitySettingDiv{
   margin-top: 20px;
 }
