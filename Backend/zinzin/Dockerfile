@@ -1,6 +1,14 @@
 # 베이스 이미지 설정
 FROM openjdk:17-jdk-alpine
 
+# Set the timezone environment variable
+ENV TZ=Asia/Seoul
+
+# Install tzdata and set the localtime
+RUN apt-get update && apt-get install -y tzdata && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    apt-get clean
+
 # maintainer 정보
 LABEL maintainer="hckhong@naver.com"
 
