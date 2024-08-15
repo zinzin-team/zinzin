@@ -116,6 +116,11 @@ const Searchfriend = () => {
       setRelationship({ ...relationship, relationship: 'MEMBER' });
       toast.dismiss();
       toast.success(`${result.name}님과 지인관계가 해제되었습니다.`);
+
+      setResult(prevResult => ({
+        ...prevResult,
+        relationships: ['MEMBER']
+      }));
     } catch (error) {
       console.error('오류:', error.message);
       toast.dismiss();
@@ -136,10 +141,16 @@ const Searchfriend = () => {
           'Content-Type': 'application/json'
         }
       });
-
       setRelationship({ ...relationship, relationship: 'REQUEST_FOLLOW' });
       toast.dismiss();
       toast.success(`${result.name}님에게 지인 요청을 보냈습니다.`);
+
+      setResult(prevResult => ({
+        ...prevResult,
+        relationships: ['REQUEST_FOLLOW']
+      }));
+
+
     } catch (error) {
       console.error('지인 요청 중 오류 발생:', error);
       toast.dismiss();
