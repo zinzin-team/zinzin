@@ -124,8 +124,16 @@
 .inviteInput {
   width: 40px;
   flex-grow: 1;
-  border: 1px solid #FF9494;
-  border-radius: 5px;
+  border: 1px solid #ff9494;
+  border-radius: 6px;
+  outline: none;
+  outline-color: #ff9494;
+  transition-duration: 0.3s;
+}
+
+.inviteInput:active,
+.inviteInput:hover {
+  outline: 1px solid #ff9494;
 }
 
 .inviteButton {

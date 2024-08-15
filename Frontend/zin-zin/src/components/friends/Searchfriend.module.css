@@ -19,17 +19,25 @@
 }
 
 .searchContainer{
- display: flex;
- flex-direction: row;
- justify-content: center;
- gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
 }
 
 .searchInput {
   width: 70%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ff9494;
   border-radius: 6px;
+  outline: none;
+  outline-color: #ff9494;
+  transition-duration: 0.3s;
+}
+
+.searchInput:active,
+.searchInput:hover {
+  outline: 1px solid #ff9494;
 }
 
 .searchButton {
