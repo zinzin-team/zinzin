@@ -229,7 +229,7 @@ const MypageView = () => {
         limit={1}
         position="top-center"
       />
-      <h2>마이페이지</h2>
+      <h2 className={styles.headerContainer}>마이페이지</h2>
       <div className={styles.userInfoBox}>
         <div className={styles.userInfoTop}>
           <div className={styles.profileImageContainer}>

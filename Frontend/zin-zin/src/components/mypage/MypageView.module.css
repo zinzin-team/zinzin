@@ -6,6 +6,10 @@
   padding: 20px;
 }
 
+.headerContainer{
+  margin: 20px 20px 10px 20px;
+}
+
 .boxTitle{
   margin-bottom: 15px;
   margin-right: 0.5rem;
