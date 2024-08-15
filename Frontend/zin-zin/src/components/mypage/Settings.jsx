@@ -28,7 +28,7 @@ const Settings = () => {
   const fetchUserData = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
-      console.error('No token found in session storage');
+      // console.error('No token found in session storage');
       navigate("/logout"); 
       return;
     }
@@ -41,7 +41,6 @@ const Settings = () => {
         },
         credentials: 'include',
       });
-      console.log(response);
       setUserData(response.data);
       setProfileImage(response.data.profileImage);
       setMatchingMode(response.data.matchingMode);
@@ -49,7 +48,7 @@ const Settings = () => {
       setLastModified(new Date(response.data.matchingModeLog));
       setNewSearchId(response.data.searchId); // 초기 아이디 설정
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      // console.error("Error fetching user data:", error);
     } finally {
       setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
     }
@@ -91,7 +90,6 @@ const Settings = () => {
       toast.success('매칭 모드가 변경되었습니다.');
       sessionStorage.setItem('matchingMode', !matchingMode);
     } catch (error) {
-      console.error('매칭 모드 변경 중 오류 발생:', error);
       toast.dismiss();
       toast.error('매칭 모드 변경 중 오류가 발생했습니다.');
     }
@@ -117,7 +115,6 @@ const Settings = () => {
       toast.dismiss();
       toast.success('실명 공개 여부가 변경되었습니다.');
     } catch (error) {
-      console.error('실명 공개 여부 변경 중 오류 발생:', error);
       toast.dismiss();
       toast.error('실명 공개 여부 변경 중 오류가 발생했습니다.');
     }
@@ -173,7 +170,7 @@ const Settings = () => {
         setIdStatusMessage("사용 가능한 아이디입니다.");
       }
     } catch (error) {
-      console.error("중복 확인 중 오류 발생:", error);
+      // console.error("중복 확인 중 오류 발생:", error);
     }
   };
 
@@ -209,7 +206,7 @@ const Settings = () => {
       toast.dismiss();
       toast.success('아이디가 성공적으로 변경되었습니다.');
     } catch (error) {
-      console.error("아이디 변경 중 오류 발생:", error);
+      // console.error("아이디 변경 중 오류 발생:", error);
     }
   };
 

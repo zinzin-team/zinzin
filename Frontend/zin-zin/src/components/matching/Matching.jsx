@@ -51,10 +51,10 @@ const Matching = () => {
                     }
                 });
             } else {
-                console.error('채팅방 생성에 실패했습니다.');
+                // console.error('채팅방 생성에 실패했습니다.');
             }
         } catch (error) {
-            console.error('채팅방 생성 중 오류 발생:', error);
+            // console.error('채팅방 생성 중 오류 발생:', error);
         }
     };
 
@@ -95,13 +95,12 @@ const Matching = () => {
         try {
             const response = await apiClient.get('/api/matchings');
             if (response.data && Array.isArray(response.data.matchings)) {
-                console.log(response.data)
                 setMatchingCardData(response.data.matchings);
             } else {
-                console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
+                // console.error('매칭 카드 데이터를 가져오는 데 실패했습니다.');
             }
         } catch (error) {
-            console.error('매칭 카드 데이터를 가져오는 중 오류 발생:', error);
+            // console.error('매칭 카드 데이터를 가져오는 중 오류 발생:', error);
         } finally {
             setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
         }
@@ -127,15 +126,14 @@ const Matching = () => {
             try {
                 const response = await apiClient.get('/api/cards');
                 if (response.data) {
-                    console.log(response.data)
                     const { cardId, tags, info, images } = response.data;
                     setCardData({ cardId, tags, info, images });
                     sessionStorage.setItem('cardData', JSON.stringify({ cardId, tags, info, images }));
                 } else {
-                    console.error('카드 데이터를 가져오는 데 실패했습니다.');
+                    // console.error('카드 데이터를 가져오는 데 실패했습니다.');
                 }
             } catch (error) {
-                console.error('데이터를 가져오는 중 오류 발생:', error);
+                // console.error('데이터를 가져오는 중 오류 발생:', error);
             } finally {
                 setIsLoading(false); // 데이터 로드 완료 후 로딩 상태 해제
             }
@@ -175,27 +173,24 @@ const Matching = () => {
     const handleLikeDislike = async (like) => {
         const currentCard = matchingCardData[currentIndex];
         try {
-            const response = await apiClient.post('/api/matchings/like',
-                {
-                    cardId: currentCard.card.cardId,
-                    like: like
-                });
-            console.log(currentCard)
+            const response = await apiClient.post('/api/matchings/like', {
+                cardId: currentCard.card.cardId,
+                like: like
+            });
             // currentCard.card.checked = true;
             if (response.data) {
                 setCurrentImageIndex(0);
                 setIsFront(true);
-                console.log(currentCard)
+
                 if (response.data.matchingSuccess) {
                     const chatRoomResponse = await apiClient.post('/api/chatroom/create', {
                         roomType: "LIKE",
                         targetId: currentCard.memberId,
                     });
-                    
+
                     const room = chatRoomResponse.data;
-                    console.log(room)
                     setRoomData(room);  
-                    
+
                     firework();
                     setModalIsOpen(true);
                 } else {
@@ -203,7 +198,7 @@ const Matching = () => {
                 }
             }
         } catch (error) {
-            console.error('좋아요/싫어요 전송 중 오류 발생:', error);
+            // console.error('좋아요/싫어요 전송 중 오류 발생:', error);
         }
     };
 
@@ -224,7 +219,6 @@ const Matching = () => {
     const questiontofriend = () => {
         const currentCard = matchingCardData[currentIndex];
         setMates(currentCard.mates || []);
-        console.log(currentCard.mates)
         setModalIsOpen2(true);
     };
 
@@ -326,7 +320,6 @@ const Matching = () => {
         }
 
         const currentCard = matchingCardData[currentIndex];
-        console.log(currentCard.memberId)
         const currentCardInfo = currentCard.card;
         // currentCardInfo.images = ['/assets/임시3.png', '/assets/임시2.png', '/assets/임시1.png'];
 
