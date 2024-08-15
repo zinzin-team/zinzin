@@ -3,6 +3,7 @@ package com.fanclub.zinzin.domain.matching.dto;
 import com.fanclub.zinzin.domain.member.entity.Gender;
 import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
 import com.fanclub.zinzin.domain.person.dto.Mate;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,6 +32,25 @@ public class Matching {
         this.gender = gender;
         this.card = card;
         this.mates = mates;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o){
+            return true;
+        }
+
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+
+        Matching matching = (Matching) o;
+        return Objects.equals(this.memberId, matching.memberId);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(memberId);
     }
 
     public static Matching of(MatchingPartner matchingPartner, CardInfo card, List<Mate> mates, int position, boolean checked){
