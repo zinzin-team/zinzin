@@ -331,7 +331,7 @@ const Chattingroom = () => {
         {messages.length > 0 ? (
                     messages.map((message, index) => (
                         <div>
-                            {message.memberId === memberId || message.message === "ㄹ" ? (
+                            {message.memberId === memberId ? (
                                 <div key={index} className={styles.yourMessage}>
                                     <div>
                                         <img src={profileImage}/>
@@ -345,9 +345,7 @@ const Chattingroom = () => {
                                         <div className={styles.text}>{message.message}</div>
                                     </div>
                                 </div>
-                                
                             )}
-                            
                         </div>
                     ))
                 ) : (
