@@ -20,9 +20,12 @@ public class TokenService {
 
     public TokenDto refreshTokens(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = getRefreshTokenFromCookies(request);
+        String authorizationHeader = request.getHeader("Authorization");
+
+        String expiredAccessToken = extractToken(authorizationHeader);
 
         if (refreshToken != null && jwtUtil.validateRefreshToken(refreshToken)) {
-            String newAccessToken = jwtUtil.regenerateTokens(refreshToken, response);
+            String newAccessToken = jwtUtil.regenerateTokens(expiredAccessToken, refreshToken, response);
 
             return new TokenDto(newAccessToken);
         }
@@ -39,5 +42,9 @@ public class TokenService {
             }
         }
         return null;
+    }
+
+    private String extractToken(String header) {
+        return header.substring(7);
     }
 }
