@@ -10,7 +10,6 @@
     justify-content: left;
     align-items: center;
     overflow-y: auto;
-    margin-top: 20px;
     margin-left: 20px;
     margin-right: 20px; 
 }
@@ -72,7 +71,6 @@ transform: translateY(-12px)  translateX(21px);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
   margin-bottom: 30px;
 }
 

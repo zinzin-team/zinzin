@@ -7,6 +7,8 @@ const Chat = () => {
     const [chatRooms, setChatRooms] = useState([]);
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const navigate = useNavigate();
+    const topChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop: '20px' } : { marginTop: '0px' };
+const bottomChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop: '20px' } : { marginTop: '0px' };
 
     useEffect(() => {
         const fetchChatRooms = async () => {
@@ -58,7 +60,7 @@ const Chat = () => {
 
     return (
         <div className={styles.allcontainer}>
-            <div className={styles.topchatContainer}>
+            <div className={styles.topchatContainer} style={topChatContainerStyle}>
                 {chatRooms && chatRooms.length > 0 ? 
                 (
                     chatRooms.map(room => (
@@ -97,7 +99,7 @@ const Chat = () => {
             </div>
             {chatRooms && chatRooms.length > 0 ?
             <div className={styles.titlebox}> <p className={styles.titletitle}>채팅</p></div> : <div></div>}
-            <div className={styles.bottomchatContainer}>
+            <div className={styles.bottomchatContainer} style={bottomChatContainerStyle}>
                 {chatRooms && chatRooms.length > 0 ? (
                     chatRooms.map(room => (
                         <div key={room.roomId} className={styles.chatRoombottom} onClick={() => handleRoomClick(room)}>
