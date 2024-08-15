@@ -110,7 +110,7 @@ const AcquaintancesList = () => {
         {acquaintances.map((acquaintance, index) => (
           <div key={index} className={styles.friendItem}>
             <img
-              src={acquaintance.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : acquaintance.profileImagePath}
+              src={!acquaintance.profileImagePath || acquaintance.profileImagePath === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : acquaintance.profileImagePath}
               alt={`${acquaintance.name} 프로필`}
               className={styles.profileImage}
             />

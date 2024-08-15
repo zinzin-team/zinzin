@@ -234,10 +234,10 @@ const MypageView = () => {
         <div className={styles.userInfoTop}>
           <div className={styles.profileImageContainer}>
             <img 
-              src={userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage} 
+              src={!userData.profileImage || userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage}
               alt="프로필" 
               className={styles.profileImage} 
-              onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
+              // onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`;}}
             />
             <button 
               className={styles.imageEditButton}
