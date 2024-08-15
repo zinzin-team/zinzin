@@ -291,7 +291,7 @@ const MypageView = () => {
       <div className={styles.matchingModeBox}>
           <div className={styles.editCardButtonContainer}>
           <h3 className={styles.boxTitle}>내 카드 정보</h3>
-          {userData.hasCard ? (
+          {userData.hasCard && userData.matchingMode ? (
             <button 
               className={styles.cardEditButton}
               onClick={() => navigate(`/update-card/${userData.card?.id}`)}>
