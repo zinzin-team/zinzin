@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import { useAuth } from '../../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
+import styles from './KakaoRedirect.module.css'; // 로딩 하트를 위한 CSS 모듈 추가
 
 const KakaoRedirect = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { login } = useAuth();
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
     const handleOAuthKakao = async (code) => {
         console.log('handleOAuthKakao 호출됨');
@@ -27,10 +29,6 @@ const KakaoRedirect = () => {
                 login(tokens);
           
                 sessionStorage.setItem('accessToken', data.accessToken);
-
-                // const decodedToken = jwtDecode(data.accessToken);
-                // const memberId = decodedToken.memberId;
-                // sessionStorage.setItem('memberId', memberId);
 
                 try {
                     const decodedToken = jwtDecode(data.accessToken);
@@ -89,6 +87,8 @@ const KakaoRedirect = () => {
                 console.error('로그인 실패 메시지:', error.message);
             }
             navigate("/login");
+        } finally {
+            setLoading(false); // 로딩 완료 후 로딩 상태를 false로 설정
         }
     };
     
@@ -105,6 +105,22 @@ const KakaoRedirect = () => {
             navigate("/login");
         }
     }, [location, navigate]);
+
+    if (loading) {
+        return (
+            <div className={styles.spinner}>
+                <div className={`${styles.heart} ${styles.heart1}`}></div>
+                <div className={`${styles.heart} ${styles.heart2}`}></div>
+                <div className={`${styles.heart} ${styles.heart3}`}></div>
+                <div className={styles.loadingtext}>
+                    Loading
+                    <span className={styles.dot1}>.</span>
+                    <span className={styles.dot2}>.</span>
+                    <span className={styles.dot3}>.</span>
+                </div>
+            </div>
+        );
+    }
 
     return <div>로그인 처리 중...</div>;
 };
