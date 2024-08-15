@@ -211,7 +211,7 @@ const MypageView = () => {
               className={styles.inviteButton}
               onClick={handleInviteButtonClick}
             >
-              초대하기
+              복사하기
             </button>
           </div>
         </div>
