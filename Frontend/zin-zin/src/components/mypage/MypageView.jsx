@@ -287,11 +287,15 @@ const MypageView = () => {
       <div className={styles.matchingModeBox}>
           <div className={styles.editCardButtonContainer}>
           <h3 className={styles.boxTitle}>내 카드 정보</h3>
-          <button 
-            className={styles.cardEditButton}
-            onClick={() => navigate(`/update-card/${userData.card?.id}`)}>
-            <MdEdit  size={19}/>
-          </button>
+          {userData.hasCard ? (
+            <button 
+              className={styles.cardEditButton}
+              onClick={() => navigate(`/update-card/${userData.card?.id}`)}>
+              <MdEdit  size={19}/>
+            </button>
+
+          ) : <div></div>
+          }
           </div>
           <div className={styles.matchingModeBottom} style={{ padding: userData.matchingMode ? '10px 20px' : '0' }}>
             {userData.matchingMode ? (
