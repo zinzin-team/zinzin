@@ -275,9 +275,9 @@ const MypageView = () => {
                             <div className={styles.tagContainer}>
                                 <p className={styles.sectionTitle}>💖 나는 이런 사람이예요</p>
                                 <div className={styles.longtext1}>
-                                {/* {userData.card.tags.map((tag, index) => (
+                                {userData.card.tags.map((tag, index) => (
                                     <span key={index} className={styles.tag}>{tag}</span>
-                                ))} */}
+                                ))}
                                 </div>
                             </div>
                             <div className={styles.introContainer}>
