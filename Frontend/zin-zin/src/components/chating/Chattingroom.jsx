@@ -97,6 +97,22 @@ const Chattingroom = () => {
     };
 
     useEffect(() => {
+
+        const validateAccess = async () => {
+            try {
+                const response = await apiClient.get(`/api/chatroom/${roomId}/auth`);
+                console.log(response.data)
+                if (!response.data.canConnect) {
+                    navigate('/chat');
+                }
+            } catch (error) {
+                console.error('Error validating chatroom access:', error);
+                navigate('/chat');
+            }
+        };
+
+        validateAccess();
+
         console.log("Room Type:", roomType);
         console.log("Name:", name);
         console.log("Nickname:", nickname);
