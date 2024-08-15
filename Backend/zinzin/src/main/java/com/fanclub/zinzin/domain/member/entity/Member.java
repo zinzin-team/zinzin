@@ -76,4 +76,8 @@ public class Member extends BaseTimeEntity {
         this.status = Status.DELETED;
         this.deletedAt = LocalDateTime.now();
     }
+
+    public void reactivate() {
+        this.status = Status.ACTIVE;
+    }
 }
