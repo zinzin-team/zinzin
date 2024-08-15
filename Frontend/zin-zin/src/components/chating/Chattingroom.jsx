@@ -330,21 +330,22 @@ const Chattingroom = () => {
         <div className={styles.messageList} style={{ marginTop: marginTopValue }}>
         {messages.length > 0 ? (
                     messages.map((message, index) => (
-                        <div key={index} className={styles.message}>
-                            <div>
-                                {message.memberId === memberId ? (
-                                    <div className={styles.itisyou}>
+                        <div>
+                            {message.memberId === memberId ? (
+                                <div key={index} className={styles.yourMessage}>
+                                    <div>
                                         <img src={profileImage}/>
                                         {/* <img src="/assets/홍창기.png"/> */}
                                         <div className={styles.text}>{message.message}</div>
-                                    </div> 
-                                ) : (
-                                    <div className={styles.itisme}>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div key={index} className={styles.myMessage}>
+                                    <div>
                                         <div className={styles.text}>{message.message}</div>
                                     </div>
-                                    
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (
