@@ -314,8 +314,8 @@ const MypageView = () => {
         </div>
       </div>
       <div className={styles.settingsBox}>
-        <button onClick={() => navigate('/settings')}>설정</button>
-        <button onClick={() => navigate('/userguide')}>사용자 가이드</button>
+        <button className={styles.settingsButton} onClick={() => navigate('/settings')}>설정<i className="bi bi-chevron-right"/></button>
+        <button className={styles.settingsButton} id={styles.userGuideButton} onClick={() => navigate('/userguide')}>사용자 가이드<i className="bi bi-chevron-right"/></button>
       </div>
       <div className={styles.footer}>
         <button 

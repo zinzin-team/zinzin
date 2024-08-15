@@ -11,12 +11,22 @@
   margin-right: 0.5rem;
 }
 
-.userInfoBox, .matchingModeBox, .settingsBox{
+.userInfoBox, .matchingModeBox{
   background-color: white;
   border-radius: 10px;
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settingsBox{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -149,11 +159,7 @@
   margin-top: 10px;
 }
 
-.settingsBox {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+
 
 .imageEditButton{
   background: none;
@@ -457,6 +463,20 @@ background-color: white;
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
   overflow-y: auto; 
+}
+
+.settingsButton{
+  display: flex;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 30px;
+}
+
+#userGuideButton{
+  border: none;
 }
 
 .footer{
