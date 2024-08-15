@@ -68,20 +68,22 @@ const Chat = () => {
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
                                     <div className={styles.toptalk}>
-                                        <img
+                                        {/* <img
                                             src={`${process.env.REACT_APP_BASE_URL}/assets/starshape.png`}
                                             alt="Star"
                                             className={styles.icon}
-                                        />
+                                        /> */}
+                                        <i className="bi bi-star-fill" ></i>
                                         <p>{room.otherMember.name}</p>
                                     </div>
                                 ) : (
-                                    <div className={styles.toptalk}>
-                                        <img
+                                    <div className={styles.toptalk2}>
+                                        {/* <img
                                             src={`${process.env.REACT_APP_BASE_URL}/assets/heartshape.png`}
                                             alt="Heart"
                                             className={styles.icon}
-                                        />
+                                        /> */}
+                                        <i class="bi bi-heart-fill"></i>
                                         <p>{room.otherMember.nickname}</p>
                                     </div>
                                 )}
@@ -102,20 +104,22 @@ const Chat = () => {
                             <img src={room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage} alt={room.otherMember.profileImage} className={styles.profileImage} />
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
-                                    <div>
-                                        <img
+                                    <div className={styles.iconcon}>
+                                        {/* <img
                                             src={`${process.env.REACT_APP_BASE_URL}/assets/starshape.png`}
                                             alt="Star"
                                             className={styles.icon2}
-                                        />
+                                        /> */}
+                                        <i className="bi bi-star-fill" ></i>
                                     </div>
                                 ) : (
-                                    <div>
-                                        <img
+                                    <div className={styles.iconcon2}>
+                                        {/* <img
                                             src={`${process.env.REACT_APP_BASE_URL}/assets/heartshape.png`}
                                             alt="Heart"
                                             className={styles.icon2}
-                                        />
+                                        /> */}
+                                        <i class="bi bi-heart-fill"></i>
                                     </div>
                                 )}
                             </div>
