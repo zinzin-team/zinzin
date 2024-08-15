@@ -8,14 +8,14 @@
 .icon {
   display: flex;
   justify-content: flex-end;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-right: 50px;
 }
 
 .icon2 {
   display: flex;
   justify-content: flex-start;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-left: 50px;
 }
 
@@ -28,6 +28,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .friends i{
