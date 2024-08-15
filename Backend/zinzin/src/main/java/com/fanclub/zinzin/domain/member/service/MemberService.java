@@ -49,6 +49,9 @@ public class MemberService {
     @Transactional
     public MemberAuthResponseDto registerNewMember(HttpServletResponse response, MemberRegisterDto memberRegisterDto) {
         try {
+            if(memberRegisterDto.getSub() == null) {
+                throw new BaseException(MemberErrorCode.MEMBER_REGIST_FAILED);
+            }
             Member member = memberRepository.findBySub(memberRegisterDto.getSub());
             MemberInfo memberInfo = null;
 
