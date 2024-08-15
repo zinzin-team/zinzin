@@ -2,6 +2,7 @@ package com.fanclub.zinzin.domain.member.dto;
 
 import com.fanclub.zinzin.domain.member.entity.*;
 import com.fanclub.zinzin.domain.person.entity.Person;
+import java.time.LocalDateTime;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class MemberRegisterDto {
                 .searchId(searchId)
                 .matchingVisibility(matchingVisibility)
                 .matchingMode(matchingMode)
+                .matchingModeLog(LocalDateTime.now())
                 .member(member)
                 .build();
     }
