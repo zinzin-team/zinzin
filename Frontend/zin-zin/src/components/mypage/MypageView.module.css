@@ -11,12 +11,22 @@
   margin-right: 0.5rem;
 }
 
-.userInfoBox, .matchingModeBox, .settingsBox, .logoutBox {
+.userInfoBox, .matchingModeBox{
   background-color: white;
   border-radius: 10px;
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settingsBox{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -149,13 +159,9 @@
   margin-top: 10px;
 }
 
-.settingsBox, .logoutBox {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
-.logoutButton, .imageEditButton{
+
+.imageEditButton{
   background: none;
   border: none;
   color: black;
@@ -457,4 +463,34 @@ background-color: white;
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
   overflow-y: auto; 
+}
+
+.settingsButton{
+  display: flex;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 30px;
+}
+
+#userGuideButton{
+  border: none;
+}
+
+.footer{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #808080;
+  text-decoration: underline;
+  font-size: small;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
 }
