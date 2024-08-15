@@ -209,13 +209,14 @@ const Chattingroom = () => {
                 className={`${styles.mateItem} ${selectedMate === mate ? styles.selected : ''}`} 
                 onClick={() => handleMateSelect(mate)}
             >
-                <img src={mate.profileImage} alt={mate.name} /> className={styles.picpicpic}
+                <img src={mate.profileImage} alt={mate.name} className={styles.picpicpic} /> 
                 {/* <img src="/assets/홍창기.png" alt={mate.name} className={styles.picpicpic} /> */}
 
                 <p>{mate.name}</p>
             </div>
         ))}
         </div>
+        <div className={styles.buttoncontainer}>
         <button 
             onClick={handleNext} 
             disabled={!selectedMate}  // selectedMate가 null일 때 비활성화
@@ -223,6 +224,8 @@ const Chattingroom = () => {
         >
             다음
         </button>
+        <button onClick={() => setModalIsOpen(false) } className={styles.closebtn}>닫기</button>
+        </div>
     </div>
 </Modal>
  
@@ -265,8 +268,8 @@ const Chattingroom = () => {
     <p  className={styles.textsecond}>채팅방에서 나가시겠습니까?</p>
     </div>
     <div className={styles.modalButtons}>
-        <button className={styles.okayokay} onClick={goout}>확인</button>
         <button className={styles.nono} onClick={closeConfirmGooutModal}>취소</button>
+        <button className={styles.okayokay} onClick={goout}>확인</button>
     </div>
 </Modal>
         <div className={styles.topfix}>

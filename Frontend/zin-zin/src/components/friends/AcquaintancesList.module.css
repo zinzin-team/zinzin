@@ -104,13 +104,17 @@
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:hover {
+  background-color: #b7b7b7;
+}
+
 .modal button:last-of-type {
-  background-color: #ff6b6b;
+  background-color: #FF9494;
   color: white;
 }
 
-.modal button:hover {
-  opacity: 0.9;
+.modal button:last-of-type:hover {
+  background-color: #ff7a7a;
 }
 
 .spinner {

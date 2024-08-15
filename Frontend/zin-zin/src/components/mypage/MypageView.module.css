@@ -161,17 +161,6 @@
 
 
 
-.imageEditButton{
-  background: none;
-  border: none;
-  color: black;
-  text-decoration: underline;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0;
-  font-family: inherit;
-}
-
 .imageEditButton {
   background: none;
   border: none;
@@ -182,16 +171,16 @@
   padding: 4px 4px 0;
   bottom: 0;
   right: 0;
-  background-color: #008281;
+  background-color: #ff9494;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);;
-  filter: invert(1);
-}
-
-.imageEditButton{
   font-family: inherit;
   position: absolute;
   margin-top: 20px;
+}
+
+.imageEditIcon {
+  filter: invert(1);
 }
 
 .cardEditButton{
@@ -239,6 +228,9 @@
   text-align: center;
   z-index: 1001; /* 오버레이보다 높은 z-index 설정 */
   pointer-events: auto; /* 모달 내부에 클릭 이벤트 허용 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay {
@@ -278,9 +270,17 @@
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:hover {
+  background-color: #b7b7b7;
+}
+
 .modal button:last-of-type {
   background-color: #FF9494;
   color: white;
+}
+
+.modal button:last-of-type:hover {
+  background-color: #ff7a7a;
 }
 
 .imageStackContainer {
@@ -387,6 +387,22 @@ background-color: white;
   font-weight: 400;
   color: #9B9B9B;
   margin: 0;
+}
+
+.maleSpan{
+  padding: 5px 5px 3px 5px;
+  border-radius: 50%;
+  background-color: #d8f0ff;
+  color: #86b4fc;
+  margin-left: 5px;
+}
+
+.femaleSpan{
+  padding: 5px 5px 3px 5px;
+  border-radius: 50%;
+  background-color: #ffdad8;
+  color: #ff9494;
+  margin-left: 5px;
 }
 
 /* From Uiverse.io by andrew-demchenk0 */ 
