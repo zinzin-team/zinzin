@@ -56,7 +56,6 @@ const Searchfriend = () => {
       });
 
       const data = response.data;
-      console.log(response.data)
       if (data.success) {
         setResult(data.member);
       } else {
@@ -92,7 +91,6 @@ const Searchfriend = () => {
       toast.dismiss();
       toast.success(`${result.name}님과 지인이 되었습니다.`);
     } catch (error) {
-      console.error('요청 처리 중 오류 발생:', error);
       toast.dismiss();
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
@@ -122,7 +120,6 @@ const Searchfriend = () => {
         relationships: ['MEMBER']
       }));
     } catch (error) {
-      console.error('오류:', error.message);
       toast.dismiss();
       toast.error('지인 해제 중 오류가 발생했습니다.');
     }
@@ -152,7 +149,6 @@ const Searchfriend = () => {
 
 
     } catch (error) {
-      console.error('지인 요청 중 오류 발생:', error);
       toast.dismiss();
       toast.error('지인 요청 중 오류가 발생했습니다.');
     }

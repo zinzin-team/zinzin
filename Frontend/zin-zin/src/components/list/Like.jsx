@@ -20,7 +20,7 @@ const Like = () => {
                     setSuccessCount(response.data.successCount);
                 }
             } catch (error) {
-                console.error('Failed to fetch success count:', error);
+                // console.error('Failed to fetch success count:', error);
             }
         };
 
@@ -36,7 +36,7 @@ const Like = () => {
                     setMatchingList(response.data);
                 }
             } catch (error) {
-                console.error('Failed to fetch matching list:', error);
+                // console.error('Failed to fetch matching list:', error);
             } finally {
                 setLoading(false); // 데이터 로드가 완료되면 로딩 상태를 false로 설정
             }
@@ -50,7 +50,6 @@ const Like = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = matchingList.slice(indexOfFirstItem, indexOfLastItem);
-    console.log(matchingList)
 
     // 페이지 변경 핸들러
     const handlePageChange = (pageNumber) => {

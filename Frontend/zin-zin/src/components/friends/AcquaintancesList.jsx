@@ -15,7 +15,7 @@ const AcquaintancesList = () => {
     const fetchAcquaintances = async () => {
       const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {
-        console.error('No token found in session storage');
+        // console.error('No token found in session storage');
         setLoading(false);
         return;
       }
@@ -30,7 +30,7 @@ const AcquaintancesList = () => {
         setAcquaintances(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('지인 목록을 가져오는 중 오류 발생:', error);
+        // console.error('지인 목록을 가져오는 중 오류 발생:', error);
         setLoading(false);
         toast.dismiss()
         toast.error('지인 목록을 가져오는 중 오류가 발생했습니다.');
@@ -72,9 +72,9 @@ const AcquaintancesList = () => {
         setAcquaintances(acquaintances.filter(acquaintance => acquaintance.id !== selectedAcquaintance.id));
       }
     } catch (error) {
-      console.error('오류:', error.message);
-        toast.dismiss()
-        toast.error('지인 해제 중 오류가 발생했습니다.');
+      // console.error('오류:', error.message);
+      toast.dismiss()
+      toast.error('지인 해제 중 오류가 발생했습니다.');
     }
   
     closeUnfriendModal();

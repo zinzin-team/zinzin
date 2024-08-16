@@ -55,7 +55,6 @@ const LeaveView = () => {
                 setErrorMessage("탈퇴 중 문제가 발생했습니다. 다시 시도해주세요."); // 추가: 에러 메시지 설정
             }
         } catch (error) {
-            console.error("탈퇴 요청 중 에러가 발생했습니다.", error);
             setErrorMessage("탈퇴 요청 중 에러가 발생했습니다. 다시 시도해주세요."); // 추가: 에러 메시지 설정
         }
     };

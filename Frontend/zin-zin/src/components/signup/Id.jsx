@@ -50,7 +50,6 @@ const Id = ({ userData, setUserData }) => {
                         setButtonText('완료');
                     }
                 } catch (error) {
-                    console.error('ID 중복 확인 중 오류 발생:', error);
                     alert('ID 중복 확인 중 오류가 발생했습니다.');
                 }
             } else if (buttonText === '완료') {

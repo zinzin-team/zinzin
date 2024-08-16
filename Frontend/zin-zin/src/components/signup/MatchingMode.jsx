@@ -25,7 +25,6 @@ const MatchingMode = ({ userData, setUserData }) => {
             sessionStorage.setItem('userData', JSON.stringify(updatedData));
             navigate('/signup/namereveal');
         } catch (error) {
-            console.error('매칭 모드 설정 중 오류 발생:', error);
             alert('매칭 모드 설정 중 오류가 발생했습니다.');
         }
     };
