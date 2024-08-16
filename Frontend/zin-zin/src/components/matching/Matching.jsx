@@ -193,7 +193,7 @@ const Matching = () => {
                     }
                 }
             } catch (error) {
-                console.error('좋아x/싫어요 전송 중 오류 발생:', error);
+                // console.error('좋아x/싫어요 전송 중 오류 발생:', error);
             }
         };
 
