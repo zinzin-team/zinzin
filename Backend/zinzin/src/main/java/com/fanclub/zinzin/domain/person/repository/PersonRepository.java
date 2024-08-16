@@ -1,6 +1,7 @@
 package com.fanclub.zinzin.domain.person.repository;
 
 import com.fanclub.zinzin.domain.matchingstatus.repository.MatchingStatusRepository;
+import com.fanclub.zinzin.domain.member.entity.MatchingVisibility;
 import com.fanclub.zinzin.domain.person.dto.MatchingPartner;
 import com.fanclub.zinzin.domain.person.dto.Mate;
 import com.fanclub.zinzin.domain.person.entity.Person;
@@ -28,8 +29,8 @@ public interface PersonRepository extends Neo4jRepository<Person, String>, Match
             "ON CREATE SET r.kakao_name = $nickname")
     void saveKakaoFriends(String mySub, String friendSub, String nickname);
 
-    @Query("MATCH (p:Person {member_id: $memberId}) SET p.matching_mode = $matchingMode")
-    void updateMatchingMode(Long memberId, boolean matchingMode);
+    @Query("MATCH (p:Person {member_id: $memberId}) SET p.matching_mode = $matchingMode, p.matching_visibility = $matchingVisibility")
+    void updateMatchingMode(Long memberId, boolean matchingMode, MatchingVisibility matchingVisibility);
 
     @Query("MATCH (me:Person {member_id: $memberId})-[:FOLLOW]->(mate:Person)-[:FOLLOW]->(matching:Person) " +
             "WHERE me.gender <> matching.gender " +
