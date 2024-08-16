@@ -51,7 +51,7 @@ apiClient.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${response.data.token}`;
         return axios(originalRequest);
       } catch (err) {
-        console.error('Token refresh failed:', err);
+        // console.error('Token refresh failed:', err);
         
         // 세션 정보 삭제
         sessionStorage.clear();

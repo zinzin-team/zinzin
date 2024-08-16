@@ -13,20 +13,17 @@ const bottomChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop
 const fetchChatRooms = async () => {
     try {
         const response = await apiClient.get('/api/chatroom');
-        console.log(response.data)
         if (response.data) {
             setChatRooms(response.data);
         }
     } catch (error) {
-        console.error('Error fetching chat rooms:', error);
+        // console.error('Error fetching chat rooms:', error);
     } finally {
         setLoading(false); // 데이터 로딩 완료 후 로딩 상태를 false로 설정
     }
 };
     useEffect(() => {
-
         fetchChatRooms();
-        console.log(chatRooms)
 
         //////////////////////////////////////////////////// 계속된 요청으로 오류가 생기면 밑에 코드를 빼주세요
         const interval = setInterval(() => {

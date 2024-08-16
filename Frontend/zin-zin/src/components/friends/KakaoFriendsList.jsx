@@ -22,7 +22,7 @@ const KakaoFriendsList = () => {
     const fetchFriends = async () => {
       const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {
-        console.error('No token found in session storage');
+        // console.error('No token found in session storage');
         setLoading(false);
         return;
       }
@@ -46,7 +46,7 @@ const KakaoFriendsList = () => {
         setRequests(responseRequests.data);
         setLoading(false);
       } catch (error) {
-        console.error('친구 목록을 가져오는 중 오류 발생:', error);
+        // console.error('친구 목록을 가져오는 중 오류 발생:', error);
         setLoading(false);
       }
     };
@@ -128,7 +128,6 @@ const KakaoFriendsList = () => {
         toast.success(`${selectedRequest.name} 님의 지인 요청을 거절했습니다.`);
       }
     } catch (error) {
-      console.error('요청 처리 중 오류 발생:', error);
       toast.dismiss();
       toast.error('요청 처리 중 오류가 발생했습니다.');
     }
@@ -162,7 +161,7 @@ const KakaoFriendsList = () => {
       toast.dismiss();
       toast.success(`${selectedFriend.kakaoName} 님과 지인관계가 해제되었습니다ㅠㅠ`);
     } catch (error) {
-      console.error('오류:', error.message);
+      // console.error('오류:', error.message);
     }
   
     closeUnfriendModal();
@@ -193,7 +192,7 @@ const KakaoFriendsList = () => {
       toast.dismiss();
       toast.success(`${selectedFriend.kakaoName} 님에게 지인 요청을 보냈습니다.`);
     } catch (error) {
-      console.error('Error during invite request:', error);
+      // console.error('Error during invite request:', error);
     }
   
     closeInviteModal();
@@ -206,7 +205,7 @@ const KakaoFriendsList = () => {
       toast.dismiss();
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
-      console.error('링크 복사 중 오류 발생:', err);
+      // console.error('링크 복사 중 오류 발생:', err);
     });
   };
 

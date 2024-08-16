@@ -27,7 +27,6 @@ const Chattingroom = () => {
 
 
     const handleMateSelect = (mate) => {
-        console.log(mate)
         setSelectedMate(mate);
     };
 
@@ -56,7 +55,7 @@ const Chattingroom = () => {
                 setMessages((prevMessages) => [...prevMessages, newMessage]);
             });
         }, (error) => {
-            console.error('Connection error', error);
+            // console.error('Connection error', error);
         });
     };
 
@@ -65,7 +64,6 @@ const Chattingroom = () => {
         if (stompClient.current) {
             stompClient.current.disconnect(() => {
                 setConnected(false);
-                console.log("Disconnected");
             });
         }
     };
@@ -84,9 +82,8 @@ const Chattingroom = () => {
         try {
             const response = await apiClient.delete(`/api/chatroom/${roomId}/exit`);
             navigate('/chat');
-            console.log(response.data)
         } catch (error) {
-            console.error('Error exiting chat room:', error);
+            // console.error('Error exiting chat room:', error);
         }
     };
 
@@ -101,33 +98,24 @@ const Chattingroom = () => {
         const validateAccess = async () => {
             try {
                 const response = await apiClient.get(`/api/chatroom/${roomId}/auth`);
-                console.log(response.data)
                 if (!response.data.canConnect) {
                     navigate('/chat');
                 }
             } catch (error) {
-                console.error('Error validating chatroom access:', error);
+                // console.error('Error validating chatroom access:', error);
                 navigate('/chat');
             }
         };
 
         validateAccess();
 
-        console.log("Room Type:", roomType);
-        console.log("Name:", name);
-        console.log("Nickname:", nickname);
-        console.log("Profile Image:", profileImage);
-        console.log("memberId:", memberId);
-        console.log("heartToggle:", heartToggle);
-        
         const fetchMessages = async () => {
             try {
                 const response = await apiClient.get(`/api/chatroom/${roomId}/messages`);
                 const reversedMessages = response.data.reverse(); // 배열을 역순으로 만듦
-                console.log(reversedMessages);
                 setMessages(reversedMessages); // 역순으로 된 배열을 저장
             } catch (error) {
-                console.error('Error fetching messages:', error);
+                // console.error('Error fetching messages:', error);
             }
         };
 
@@ -152,7 +140,7 @@ const Chattingroom = () => {
             stompClient.current.send(`/app/${roomId}`, {}, JSON.stringify(body));
             setInputValue('');
         } else {
-            console.error('STOMP client is not connected');
+            // console.error('STOMP client is not connected');
         }
     };
 
@@ -165,16 +153,13 @@ const Chattingroom = () => {
                 heart: newIsHeart
             });
             // setModalIsOpen(true);
-            console.log(response.data)
             if (response.data.heart) {
                 setMates(response.data.mates); // mates 데이터를 저장
                 setModalIsOpen(true); // 모달 열기
                 setRoomType("LOVE");
             }
-            // 서버로부터의 응답을 확인하고 추가적인 처리가 필요하다면 여기에 작성
-            console.log('Heart status updated:', response.data);
         } catch (error) {
-            console.error('Error toggling heart status:', error);
+            // console.error('Error toggling heart status:', error);
         }
     };
 
@@ -190,7 +175,7 @@ const Chattingroom = () => {
                 setModalIsOpen(false); // 첫 번째 모달 닫기
                 setFinalModalIsOpen(true); // 최종 모달 열기
             } catch (error) {
-                console.error('Error sending success count:', error);
+                // console.error('Error sending success count:', error);
             }
         }
     };
@@ -353,7 +338,7 @@ const Chattingroom = () => {
                         </div>
                     ))
                 ) : (
-                    <div className={styles.noMessages}>새로운 채팅을 시작하세요</div>
+                    <div className={styles.noMessages}>새로운 채팅을 시작하세요.</div>
                 )}
                 <div ref={messagesEndRef} />
             </div>
@@ -363,7 +348,7 @@ const Chattingroom = () => {
                     value={inputValue}
                     onChange={handleInputChange}    
                     onKeyPress={handleKeyPress}    
-                    placeholder="메세지를 입력해주세요"
+                    placeholder="메세지를 입력해주세요."
                 />
                 <button onClick={sendMessage}>전송</button> 
             </div>
