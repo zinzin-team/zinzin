@@ -114,10 +114,7 @@ const Createcard = () => {
 
     }
 
-    useEffect(() => {
-        console.log(selectedFiles); // 상태가 변경될 때마다 출력
-        console.log(selectedTags);
-    }, [selectedFiles, selectedTags]);
+    useEffect(() => {}, [selectedFiles, selectedTags]);
 
     const tagOptions = [
         "ENFP", "ENTP", "ENFJ", "ENTJ", "ESTP", "ESFP", "ESTJ", "ESFJ", "INFJ", "INTJ",

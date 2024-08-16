@@ -36,7 +36,7 @@ const MypageView = () => {
   const fetchUserData = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
-      console.error('No token found in session storage');
+      // console.error('No token found in session storage');
       navigate("/logout"); 
       return;
     }
@@ -55,7 +55,7 @@ const MypageView = () => {
         setAge(calculateAge(birth))
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      // console.error("Error fetching user data:", error);
     } finally {
       setIsLoading(false); // 데이터 로드가 완료되면 로딩 상태를 false로 설정
     }
@@ -130,17 +130,17 @@ const MypageView = () => {
       // 업데이트된 내용을 반영하기 위해 사용자 데이터를 다시 가져옴
       fetchUserData();
     } catch (error) {
-      console.error("프로필 이미지 업데이트 중 오류 발생:", error);
+      // console.error("프로필 이미지 업데이트 중 오류 발생:", error);
   
-      if (error.response) {
-        console.error("응답 데이터:", error.response.data);
-        console.error("응답 상태 코드:", error.response.status);
-        console.error("응답 헤더:", error.response.headers);
-      } else if (error.request) {
-        console.error("요청이 이루어졌으나 응답이 없습니다:", error.request);
-      } else {
-        console.error("요청 설정 중 오류 발생:", error.message);
-      }
+      // if (error.response) {
+      //   console.error("응답 데이터:", error.response.data);
+      //   console.error("응답 상태 코드:", error.response.status);
+      //   console.error("응답 헤더:", error.response.headers);
+      // } else if (error.request) {
+      //   console.error("요청이 이루어졌으나 응답이 없습니다:", error.request);
+      // } else {
+      //   console.error("요청 설정 중 오류 발생:", error.message);
+      // }
     }
   };
 
@@ -161,7 +161,7 @@ const MypageView = () => {
       toast.dismiss();
       toast.success("닉네임이 변경되었습니다!");
     } catch (error) {
-      console.error("닉네임 변경 중 오류 발생:", error);
+      // console.error("닉네임 변경 중 오류 발생:", error);
     }
   };
 
@@ -172,7 +172,7 @@ const MypageView = () => {
       toast.dismiss();
       toast.success("초대링크를 클립보드에 저장했어요! :)");
     }).catch(err => {
-      console.error('링크 복사 중 오류 발생:', err);
+      // console.error('링크 복사 중 오류 발생:', err);
     });
   };
 
@@ -234,10 +234,10 @@ const MypageView = () => {
         <div className={styles.userInfoTop}>
           <div className={styles.profileImageContainer}>
             <img 
-              src={userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage} 
+              src={!userData.profileImage || userData.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : userData.profileImage}
               alt="프로필" 
               className={styles.profileImage} 
-              onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`; }}
+              // onError={(e) => { e.target.src = `${process.env.REACT_APP_BASE_URL}/assets/default.png`;}}
             />
             <button 
               className={styles.imageEditButton}

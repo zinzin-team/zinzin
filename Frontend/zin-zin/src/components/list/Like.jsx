@@ -20,7 +20,7 @@ const Like = () => {
                     setSuccessCount(response.data.successCount);
                 }
             } catch (error) {
-                console.error('Failed to fetch success count:', error);
+                // console.error('Failed to fetch success count:', error);
             }
         };
 
@@ -36,7 +36,7 @@ const Like = () => {
                     setMatchingList(response.data);
                 }
             } catch (error) {
-                console.error('Failed to fetch matching list:', error);
+                // console.error('Failed to fetch matching list:', error);
             } finally {
                 setLoading(false); // 데이터 로드가 완료되면 로딩 상태를 false로 설정
             }
@@ -50,7 +50,6 @@ const Like = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = matchingList.slice(indexOfFirstItem, indexOfLastItem);
-    console.log(matchingList)
 
     // 페이지 변경 핸들러
     const handlePageChange = (pageNumber) => {
@@ -98,7 +97,7 @@ const Like = () => {
                         <div key={index} className={styles.matchItem}>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate1.profileImage === "default.jpg" ? `${match.mate1.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={!match.mate1.profileImage || match.mate1.profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : match.mate1.profileImage} 
                                     alt={match.mate1.name} 
                                     className={styles.profileImage} 
                                 />
@@ -109,7 +108,7 @@ const Like = () => {
                             </div>
                             <div className={styles.mate}>
                                 <img 
-                                    src={match.mate2.profileImage === "default.jpg" ? `${match.mate2.profileImage}` : `${process.env.REACT_APP_BASE_URL}/assets/default.png`} 
+                                    src={!match.mate2.profileImage || match.mate2.profileImage === "default.jpg" ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : match.mate2.profileImage} 
                                     alt={match.mate2.name} 
                                     className={styles.profileImage} 
                                     />

@@ -13,20 +13,17 @@ const bottomChatContainerStyle = chatRooms && chatRooms.length > 0 ? { marginTop
 const fetchChatRooms = async () => {
     try {
         const response = await apiClient.get('/api/chatroom');
-        console.log(response.data)
         if (response.data) {
             setChatRooms(response.data);
         }
     } catch (error) {
-        console.error('Error fetching chat rooms:', error);
+        // console.error('Error fetching chat rooms:', error);
     } finally {
         setLoading(false); // 데이터 로딩 완료 후 로딩 상태를 false로 설정
     }
 };
     useEffect(() => {
-
         fetchChatRooms();
-        console.log(chatRooms)
 
         //////////////////////////////////////////////////// 계속된 요청으로 오류가 생기면 밑에 코드를 빼주세요
         const interval = setInterval(() => {
@@ -75,7 +72,7 @@ const fetchChatRooms = async () => {
                 (
                     chatRooms.map(room => (
                         <div key={room.roomId} className={styles.chatRoom}>
-                            <img src={room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage}
+                            <img src={!room.otherMember.profileImage || room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage}
                                 alt="Profile" className={styles.topprofileImage} onClick={() => handleRoomClick(room)}/>
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
@@ -113,7 +110,7 @@ const fetchChatRooms = async () => {
                 {chatRooms && chatRooms.length > 0 ? (
                     chatRooms.map(room => (
                         <div key={room.roomId} className={styles.chatRoombottom} onClick={() => handleRoomClick(room)}>
-                            <img src={room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage} alt={room.otherMember.profileImage} className={styles.profileImage} />
+                            <img src={!room.otherMember.profileImage || room.otherMember.profileImage === 'default.jpg' ? `${process.env.REACT_APP_BASE_URL}/assets/default.png` : room.otherMember.profileImage} alt={room.otherMember.profileImage} className={styles.profileImage} />
                             <div className={styles.roomInfo}>
                                 {room.roomType === 'MATE' ? (
                                     <div className={styles.iconcon}>
