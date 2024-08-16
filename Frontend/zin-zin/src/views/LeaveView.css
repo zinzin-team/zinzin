@@ -81,9 +81,18 @@
 .input-field {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1em;
+    outline: none;
+    outline-color: #ff9494;
+    transition-duration: 0.3s;
+}
+
+.input-field:active,
+.input-field:focus,
+.input-field:hover {
+    border: 1px solid #ff9494;
 }
 
 .leave-form {

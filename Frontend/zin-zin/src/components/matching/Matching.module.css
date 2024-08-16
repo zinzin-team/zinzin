@@ -45,21 +45,28 @@
 }
 
 
-  .makecard button{
-    width: 248px;
-height: 40px; 
-    border-radius: 200px;
-background: #FF9494;
-border: none  ;
-color: #FFF;
-text-align: center;
-font-family: Pretendard; 
-font-size: 20px;
-font-style: normal;
-font-weight: 700;
-line-height: 90%; 
-letter-spacing: -0.4px;
-      }
+.makecard button{
+  width: 248px;
+  height: 40px; 
+  border-radius: 200px;
+  background: #ff9494;
+  border: none  ;
+  color: #FFF;
+  text-align: center;
+  font-family: Pretendard; 
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 90%; 
+  letter-spacing: -0.4px;
+  transition: 0.3s;
+}
+
+.offModeContent:active,
+.offModeContent:focus,
+.offModeContent:hover {
+  background-color: #ff7a7a;
+}
 
   .offModeContent {
     margin-top: 23px;
@@ -91,22 +98,28 @@ height: 193px;
 }
 
 
-  .offModeContent button {
-    width: 248px;
-height: 40px; 
-    border-radius: 200px;
-background: #FF9494;
-border: none  ;
-color: #FFF;
-text-align: center;
-font-family: Pretendard; 
-font-size: 20px;
-font-style: normal;
-font-weight: 700;
-line-height: 90%; 
-letter-spacing: -0.4px;
+.offModeContent button {
+  width: 248px;
+  height: 40px; 
+  border-radius: 200px;
+  background: #ff9494;
+  border: none  ;
+  color: #FFF;
+  text-align: center;
+  font-family: Pretendard; 
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 90%; 
+  letter-spacing: -0.4px;
+  transition: 0.3s;
 }
 
+.offModeContent:active,
+.offModeContent:focus,
+.offModeContent:hover {
+    background-color: #ff7a7a;
+}
 
 /* 여기 밑에는 수정하기 */
 
@@ -234,6 +247,12 @@ height: 443px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 30px;
+}
+
+.inviteButton:active,
+.inviteButton:focus,
+.inviteButton:hover {
+  background-color: #ff7a7a;
 }
 
  .backContent{

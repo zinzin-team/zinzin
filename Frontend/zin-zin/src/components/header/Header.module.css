@@ -37,7 +37,7 @@
 }
 
 .friends{
-  background-color: #FF9494;
+  background-color: #ff9494;
   width: 40px;
   height: 40px;
   display: flex;
@@ -45,4 +45,11 @@
   align-items: center;
   border-radius: 100%;
   border: 1px solid #ffe6e6;
+  transition: 0.3s;
+}
+
+.friends:active,
+.friends:focus,
+.friends:hover {
+  background-color: #ff7a7a;
 }

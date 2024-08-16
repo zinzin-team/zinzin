@@ -106,45 +106,50 @@
 
 .nextbtn{
     width: 300px;
-height: 40px; 
+    height: 40px;
     border-radius: 200px;
-background: #FF9494;
-border: none  ;
-color: #FFF;
-text-align: center;
-font-family: Pretendard; 
-font-size: 20px;
-font-style: normal;
-font-weight: 700;
-line-height: 90%; 
-letter-spacing: -0.4px;
-      }
+    background: #ff9494;
+    border: none  ;
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard; 
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 90%; 
+    letter-spacing: -0.4px;
+    transition: 0.3s;
+}
 
-      .containerbtn{
-        padding: 30px;
-        display: flex;
-        justify-content: center;
-      }
+.nextbtn:active,
+.nextbtn:focus,
+.nextbtn:hover {
+    background-color: #ff7a7a;
+}
 
-      .tagtext{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
-      }
+.containerbtn{
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
 
-      .tagtext p {
-        color: #000;
-        font-family: 'Pretendard', sans-serif;
-        font-size: 18px;
-        font-style: light;
-        line-height: normal;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        
-      }
-      
+.tagtext{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.tagtext p {
+    color: #000;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 18px;
+    font-style: light;
+    line-height: normal;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 .hiddenCheckbox {
     display: none;
@@ -198,13 +203,15 @@ font-family: 'Pretendard', sans-serif;
     border-radius: 16px;
     margin-top: 10px;
     resize: none;
-    outline: none; 
-    transition: border-color 0.3s ease;
+    outline: none;
+    outline-color: #ff9494;
+    transition-duration: 0.3s;
 }
 
-.textareaCustom:focus {
-    border-color: #ff9494; 
-    outline: none; 
+.textareaCustom:active,
+.textareaCustom:focus,
+.textareaCustom:hover {
+    border: 1px solid #ff9494;
 }
 
 .charCount {
