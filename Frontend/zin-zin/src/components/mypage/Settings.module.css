@@ -30,18 +30,39 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  outline-color: #ff9494;
+  transition-duration: 0.3s;
+}
+
+.inputField:active:not(:disabled),
+.inputField:focus:not(:disabled),
+.inputField:hover:not(:disabled) {
+  border: 1px solid #ff9494;
+}
+
+.idStatusMessage {
+  margin-top: 12px;
+  font-size: 14px;
 }
 
 .changeIdButton {
-  background-color: #FF9494;
+  background-color: #ff9494;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.changeIdButton:active,
+.changeIdButton:focus,
+.changeIdButton:hover {
+  background-color: #ff7a7a;
 }
 
 .matchingModeContainer {
@@ -81,12 +102,18 @@
   right: 0;
   bottom: 0;
   background-color: #c0c7d0;
-  transition: 0.4s;
+  transition: 0.3s;
   border-radius: 100px;
   display: flex;
   align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
+}
+
+.slider:active,
+.slider:focus,
+.slider:hover {
+  background-color: #a7b1be;
 }
 
 .slider:before {
@@ -96,13 +123,19 @@
   width: 45px;
   left: 6%;
   background-color: white;
-  transition: 0.4s;
+  transition: 0.3s;
   border-radius: 50%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 input:checked + .slider {
-  background-color: #FF9494;
+  background-color: #ff9494;
+}
+
+input:checked + .slider:active,
+input:checked + .slider:focus,
+input:checked + .slider:hover {
+  background-color: #ff7a7a;
 }
 
 input:checked + .slider:before {
@@ -197,6 +230,7 @@ input:checked + .slider::after {
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  transition: 0.3s;
 }
 
 .modal button:first-of-type {
@@ -205,15 +239,19 @@ input:checked + .slider::after {
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:active,
+.modal button:first-of-type:focus,
 .modal button:first-of-type:hover {
   background-color: #b7b7b7;
 }
 
 .modal button:last-of-type {
-  background-color: #FF9494;
+  background-color: #ff9494;
   color: white;
 }
 
+.modal button:last-of-type:active,
+.modal button:last-of-type:focus,
 .modal button:last-of-type:hover {
   background-color: #ff7a7a;
 }

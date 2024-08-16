@@ -184,9 +184,14 @@
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
+.inviteButton:active,
+.inviteButton:focus,
+.inviteButton:hover {
+  background-color: #ff7a7a;
+}
 
 .spinner {
   margin: 180px auto 0 ;
@@ -328,20 +333,4 @@ height: 483px;
   font-style: normal;
   font-weight: 300;
   color: #555;  
-}
-
-.inviteButton {
-  font-family: 'Pretendard', sans-serif;
-  width: 248px;
-  height: 40px;
-  background-color: #ff9494;
-  color: white;
-  border: none;
-  border-radius: 200px;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 30px;
 }
