@@ -19,17 +19,26 @@
 }
 
 .searchContainer{
- display: flex;
- flex-direction: row;
- justify-content: center;
- gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
 }
 
 .searchInput {
   width: 70%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 6px;
+  outline: none;
+  outline-color: #ff9494;
+  transition-duration: 0.3s;
+}
+
+.searchInput:active,
+.searchInput:focus,
+.searchInput:hover {
+  border: 1px solid #ff9494;
 }
 
 .searchButton {
@@ -40,6 +49,14 @@
   background-color: #ff9494;
   border: 1px solid #ff9494;
   border-radius: 6px;
+  transition: 0.3s;
+}
+
+.searchButton:active,
+.searchButton:focus,
+.searchButton:hover {
+  background-color: #ff7a7a;
+  border: 1px solid #ff7a7a;
 }
 
 .result {
@@ -184,6 +201,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  transition: 0.3s;
 }
 
 .modal button:first-of-type {
@@ -192,15 +210,19 @@
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:active,
+.modal button:first-of-type:focus,
 .modal button:first-of-type:hover {
   background-color: #b7b7b7;
 }
 
 .modal button:last-of-type {
-  background-color: #FF9494;
+  background-color: #ff9494;
   color: white;
 }
 
+.modal button:last-of-type:active,
+.modal button:last-of-type:focus,
 .modal button:last-of-type:hover {
   background-color: #ff7a7a;
 }

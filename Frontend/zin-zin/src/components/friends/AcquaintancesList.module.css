@@ -43,6 +43,13 @@
   width: 90px; /* 버튼의 너비 */
   height: 30px; /* 버튼의 높이 */
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1); /* 버튼에 그림자 추가 */
+  transition: 0.3s;
+}
+
+.myAcquaintanceButton:active,
+.myAcquaintanceButton:focus,
+.myAcquaintanceButton:hover {
+  background-color: #b7b7b7;
 }
 
 /* span {
@@ -96,6 +103,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  transition: 0.3s;
 }
 
 .modal button:first-of-type {
@@ -104,15 +112,19 @@
   margin-right: 30px; /* 두 버튼 사이의 간격 */
 }
 
+.modal button:first-of-type:active,
+.modal button:first-of-type:focus,
 .modal button:first-of-type:hover {
   background-color: #b7b7b7;
 }
 
 .modal button:last-of-type {
-  background-color: #FF9494;
+  background-color: #ff9494;
   color: white;
 }
 
+.modal button:last-of-type:active,
+.modal button:last-of-type:focus,
 .modal button:last-of-type:hover {
   background-color: #ff7a7a;
 }

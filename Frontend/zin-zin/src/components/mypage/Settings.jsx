@@ -256,7 +256,7 @@ const Settings = () => {
         >
           {buttonLabel}
         </button>
-        {idStatusMessage && <p className={styles.idStatusMessage}>{idStatusMessage}</p>}
+        {idStatusMessage && <p align="center" className={styles.idStatusMessage}>{idStatusMessage}</p>}
       </div>
 
       <div className={styles.settingSection}>
