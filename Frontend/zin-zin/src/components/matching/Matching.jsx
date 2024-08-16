@@ -170,37 +170,32 @@ const Matching = () => {
         navigate('/create-card');
     };
 
-    const handleLikeDislike = async (like) => {
-        const currentCard = matchingCardData[currentIndex];
-        try {
-            const response = await apiClient.post('/api/matchings/like', {
-                cardId: currentCard.card.cardId,
-                like: like
-            });
-            // currentCard.card.checked = true;
-            if (response.data) {
-                setCurrentImageIndex(0);
-                setIsFront(true);
+        const handleLikeDislike = async (like) => {
+            const currentCard = matchingCardData[currentIndex];
+            try {
+                const response = await apiClient.post('/api/matchings/like', {
+                    cardId: currentCard.card.cardId,
+                    like: like
+                });
+                // currentCard.card.checked = true;
+                if (response.data) {
+                    setCurrentImageIndex(0);
+                    setIsFront(true);
 
-                if (response.data.matchingSuccess) {
-                    const chatRoomResponse = await apiClient.post('/api/chatroom/create', {
-                        roomType: "LIKE",
-                        targetId: currentCard.memberId,
-                    });
+                    if (response.data.matchingSuccess) {
+                        const room = response.data.responseChatRoomDto;
+                        setRoomData(room);  
 
-                    const room = chatRoomResponse.data;
-                    setRoomData(room);  
-
-                    firework();
-                    setModalIsOpen(true);
-                } else {
-                    fetchMatchingCards();
+                        firework();
+                        setModalIsOpen(true);
+                    } else {
+                        fetchMatchingCards();
+                    }
                 }
+            } catch (error) {
+                console.error('좋아x/싫어요 전송 중 오류 발생:', error);
             }
-        } catch (error) {
-            // console.error('좋아요/싫어요 전송 중 오류 발생:', error);
-        }
-    };
+        };
 
     useEffect(() => {
         if (!modalIsOpen) {
