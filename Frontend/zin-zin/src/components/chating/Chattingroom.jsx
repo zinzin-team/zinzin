@@ -355,7 +355,7 @@ const Chattingroom = () => {
                         </div>
                     ))
                 ) : (
-                    <div className={styles.noMessages}>새로운 채팅을 시작하세요</div>
+                    <div className={styles.noMessages}>새로운 채팅을 시작하세요.</div>
                 )}
                 <div ref={messagesEndRef} />
             </div>
@@ -365,7 +365,7 @@ const Chattingroom = () => {
                     value={inputValue}
                     onChange={handleInputChange}    
                     onKeyPress={handleKeyPress}    
-                    placeholder="메세지를 입력해주세요"
+                    placeholder="메세지를 입력해주세요."
                 />
                 <button onClick={sendMessage}>전송</button> 
             </div>
