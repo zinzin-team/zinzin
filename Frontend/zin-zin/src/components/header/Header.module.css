@@ -1,0 +1,55 @@
+.friends img {
+  background-color: #FFD1D1;
+  padding: 6px;
+  border-radius: 50%;
+  border: solid 1px rgba(255, 255, 255, 0.50);
+}
+
+.icon {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  margin-right: 50px;
+}
+
+.icon2 {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 40px;
+  margin-left: 50px;
+}
+
+.logo {
+  width: 35px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.friends i{
+  font-size: 24px;
+  color: white;
+}
+
+.friends{
+  background-color: #ff9494;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  border: 1px solid #ffe6e6;
+  transition: 0.3s;
+}
+
+.friends:active,
+.friends:focus,
+.friends:hover {
+  background-color: #ff7a7a;
+}

@@ -1,0 +1,42 @@
+.tabNavigation {
+  min-width: 320px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #b0b0b0;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.tabButton.active {
+  color: #FF9494;
+}
+
+.tabButton::after {
+  content: '';
+  display: block;
+  margin: 10px auto 0 auto;
+  height: 3px;
+  width: 0%;
+  background: transparent;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.tabButton.active::after {
+  width: 120px;
+  background: #FF9494;
+}

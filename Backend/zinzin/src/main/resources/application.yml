@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: zinzin
+  config:
+      import: application-secret.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.database}?useUnicode=true&serverTimezone=Asia/Seoul
+    username: ${mysql.username}
+    password: ${mysql.password}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        show_sql: false
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  file:
+    upload-dir: C:\Users\SSAFY\Desktop\ImageStorageTest   # 이미지 저장 경로
+
+  neo4j:
+    uri: bolt://${neo4j.host}:${neo4j.port}
+    authentication:
+      username: ${neo4j.username}
+      password: ${neo4j.password}
+  data:
+    mongodb:
+      uri: mongodb+srv://${mongodb.username}:${mongodb.password}@cluster0.8wwnigp.mongodb.net/zinzin?retryWrites=true&w=majority&appName=Cluster0
+
+cloud:
+  aws:
+    s3:
+      bucket: ${aws.s3.bucket}
+    region.static: ${aws.s3.region}
+    stack.auto: false
+    credentials:
+      accessKey: ${aws.s3.access-key}
+      secretKey: ${aws.s3.secret-key}
+
+server:
+  servlet:
+    context-path: /api

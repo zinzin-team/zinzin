@@ -1,0 +1,291 @@
+.allcontainer{
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.topchatContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    overflow-y: auto;
+    margin-left: 20px;
+    margin-right: 20px; 
+}
+
+.topprofileImage{
+  width: 57px;
+  height: 57px;
+  border-radius: 100%;
+}
+
+.toptalk, .toptalk2{
+  width: 100px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.chatRoom{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.toptalk img,.toptalk img{
+width: 15px;
+height: 14px;
+transform: translateY(-12px)  translateX(21px);
+}
+
+.toptalk i{
+  width: 15px;
+  height: 15px;
+  transform: translateY(-17px)  translateX(20px);
+  color: #27AAE4;
+  }
+
+  .toptalk2 i{
+    width: 15px;
+    height: 15px;
+    transform: translateY(-17px)  translateX(20px);
+    color : #ff4d4d
+  }
+  
+.toptalk p, .toptalk2 p{
+  font-size: 11px;
+  max-width: 60px; /* 적절한 최대 너비를 설정하세요 */
+  }
+  
+  .title{
+    display: flex;
+    justify-content: left;
+    text-align: left;
+    align-items: left;
+  }
+
+.bottomchatContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.nochattingroom img {
+    margin-top: 45px;
+    margin-bottom: 65px;
+    width: 232px;
+    height: 232px;
+  border-radius: 20px;
+}
+
+.nochattingroomtext{
+    font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+
+   .nochattingroom{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 290px;
+    height: 443px;
+    background-color: white;
+    border-radius: 16px;
+    text-align: center;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.topchatContainer::-webkit-scrollbar, .longtext2::-webkit-scrollbar {
+  height: 6px; /* 스크롤바 너비 */
+}
+
+.topchatContainer::-webkit-scrollbar-track, .longtext2::-webkit-scrollbar-track {
+ background: #ff949425;/* 스크롤바 트랙 배경 */
+  border-radius: 10px;
+}
+
+.topchatContainer::-webkit-scrollbar-thumb, .longtext2::-webkit-scrollbar-thumb {
+  background-color: #FF9494; /* 스크롤바 색상 */
+  border-radius: 10px; /* 스크롤바 둥글기 */
+  /* border: 1px solid #f1f1f1; 스크롤바와 트랙 사이의 간격 */
+}
+
+.topchatContainer::-webkit-scrollbar-thumb:hover, .longtext2::-webkit-scrollbar-thumb:hover {
+  background-color: #FF7A7A; /* 스크롤바 호버 색상 */
+}
+
+
+.titletitle{
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+
+.bottomchatContainer{
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+}
+
+.chatRoombottom{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.profileImage{
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin-left: 20px;
+}
+
+.icon2{
+  width: 15px;
+height: 14px;
+transform: translateY(18px)  translateX(-10px);
+}
+.iconcon, .iconcon2{
+  display: flex;
+}
+.iconcon i{
+  color: #27AAE4;
+  transform: translateY(17px)  translateX(-12px);
+}
+
+.iconcon2 i{
+  color: #ff4d4d;
+  transform: translateY(17px)  translateX(-12px);
+}
+
+.texttext{
+  margin-left: 3px;
+  display: flex;
+  flex-direction: column; 
+}
+
+.lastMessage {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; /* 적절한 최대 너비를 설정하세요 */
+  color: #9B9B9B;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.titlebox{
+  height: 50px;
+}
+
+.namename{
+  margin-bottom: 5px;
+  color: #4A4A4A;
+font-size: 19px;
+font-weight: 800;
+line-height: normal;
+}
+.startstart{
+  margin-bottom: 0px;
+}
+
+
+.spinner {
+  margin: 180px auto 0 ;
+  width: 100%;
+  text-align: center;
+}
+
+.spinner .heart {
+  width: 50px;
+  height: 45px;
+  display: inline-block;
+  opacity: 0.8;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  animation-fill-mode: both; /* Prevent first frame from flickering when animation starts */
+}
+
+.heart:before, .heart:after {
+  position: absolute;
+  content: "";
+  left: 25px;
+  top: 0;
+  width: 25px;
+  height: 40px;
+  background: #ff4d4d;
+  border-radius: 50px 50px 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.heart:after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.spinner .heart1 {
+  animation-delay: -0.32s;
+}
+
+.spinner .heart2 {
+  animation-delay: -0.16s;
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+      transform: scale(0.0);
+  }
+  40% {
+      transform: scale(1.0);
+  }
+}
+
+.loadingtext {
+  color: #ff4d4d;
+}
+
+.dot1, .dot2, .dot3 {
+  opacity: 0;
+  animation: dot-blink 1.5s infinite ease-in-out;
+}
+
+.dot1 {
+  animation-delay: 0s;
+}
+
+.dot2 {
+  animation-delay: 0.3s;
+}
+
+.dot3 {
+  animation-delay: 0.6s;
+}
+
+@keyframes dot-blink {
+  0%, 20% {
+      opacity: 0;
+  }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}
