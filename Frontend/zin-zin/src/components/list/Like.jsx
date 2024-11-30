@@ -89,7 +89,7 @@ const Like = () => {
         <div className={styles.list}>
             {matchingHeader}
             <div className={styles.header}>
-                {successCount === 0 || successCount === null ? <p></p> : <p>총 {successCount}커플 탄생</p> }
+                {/* {successCount === 0 || successCount === null ? <p></p> : <p>총 {successCount}커플 탄생</p> } */}
             </div>
             <div className={styles.matchList}>
                 {currentItems.length > 0 ? (

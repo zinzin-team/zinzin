@@ -117,7 +117,7 @@ public class MemberService {
             throw new BaseException(CommonErrorCode.BAD_REQUEST);
         }
 
-        personRepository.updateMatchingMode(memberId, matchingMode);
+        personRepository.updateMatchingMode(memberId, matchingMode, matchingVisibility);
 
         if (matchingMode) {
             memberInfoRepository.updateMatchingModeAndVisibility(memberId, matchingMode, matchingVisibility);
